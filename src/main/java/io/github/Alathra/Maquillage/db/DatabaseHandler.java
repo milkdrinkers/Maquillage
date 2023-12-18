@@ -1,12 +1,12 @@
-package io.github.ExampleUser.ExamplePlugin.db;
+package io.github.Alathra.Maquillage.db;
 
-import io.github.ExampleUser.ExamplePlugin.ExamplePlugin;
-import io.github.ExampleUser.ExamplePlugin.Reloadable;
-import io.github.ExampleUser.ExamplePlugin.db.flyway.DatabaseMigrationException;
-import io.github.ExampleUser.ExamplePlugin.db.flyway.DatabaseMigrationHandler;
-import io.github.ExampleUser.ExamplePlugin.db.jooq.JooqContext;
-import io.github.ExampleUser.ExamplePlugin.utility.Cfg;
-import io.github.ExampleUser.ExamplePlugin.utility.Logger;
+import io.github.Alathra.Maquillage.db.jooq.JooqContext;
+import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.Reloadable;
+import io.github.Alathra.Maquillage.db.flyway.DatabaseMigrationException;
+import io.github.Alathra.Maquillage.db.flyway.DatabaseMigrationHandler;
+import io.github.Alathra.Maquillage.utility.Cfg;
+import io.github.Alathra.Maquillage.utility.Logger;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Singleton
 public class DatabaseHandler implements Reloadable {
-    private final ExamplePlugin plugin;
+    private final Maquillage plugin;
     private boolean isConnected = false;
     private HikariDataSource hikariDataSource;
     private DatabaseType database;
@@ -33,7 +33,7 @@ public class DatabaseHandler implements Reloadable {
      *
      * @param plugin the plugin instance
      */
-    public DatabaseHandler(ExamplePlugin plugin) {
+    public DatabaseHandler(Maquillage plugin) {
         this.plugin = plugin;
     }
 
@@ -261,7 +261,7 @@ public class DatabaseHandler implements Reloadable {
         hikariConfig.setMaximumPoolSize(poolSize);
         hikariConfig.setMinimumIdle(poolSize);
 
-        hikariConfig.setPoolName("%s-hikari".formatted(ExamplePlugin.getInstance().getName()));
+        hikariConfig.setPoolName("%s-hikari".formatted(Maquillage.getInstance().getName()));
         hikariConfig.setAutoCommit(true);
         hikariConfig.setTransactionIsolation("TRANSACTION_REPEATABLE_READ");
         hikariConfig.setIsolateInternalQueries(true);

@@ -1,15 +1,15 @@
-package io.github.ExampleUser.ExamplePlugin.listener;
+package io.github.Alathra.Maquillage.listener;
 
-import io.github.ExampleUser.ExamplePlugin.ExamplePlugin;
-import io.github.ExampleUser.ExamplePlugin.Reloadable;
+import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.Reloadable;
 
 /**
  * A class to handle registration of event listeners.
  */
 public class ListenerHandler implements Reloadable {
-    private final ExamplePlugin plugin;
+    private final Maquillage plugin;
 
-    public ListenerHandler(ExamplePlugin plugin) {
+    public ListenerHandler(Maquillage plugin) {
         this.plugin = plugin;
     }
 

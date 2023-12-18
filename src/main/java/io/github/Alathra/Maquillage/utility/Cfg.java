@@ -1,7 +1,7 @@
-package io.github.ExampleUser.ExamplePlugin.utility;
+package io.github.Alathra.Maquillage.utility;
 
-import io.github.ExampleUser.ExamplePlugin.ExamplePlugin;
-import io.github.ExampleUser.ExamplePlugin.config.ConfigHandler;
+import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.config.ConfigHandler;
 import com.github.milkdrinkers.Crate.Config;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,6 +14,6 @@ public abstract class Cfg {
      */
     @NotNull
     public static Config get() {
-        return ExamplePlugin.getInstance().getConfigHandler().getConfig();
+        return Maquillage.getInstance().getConfigHandler().getConfig();
     }
 }

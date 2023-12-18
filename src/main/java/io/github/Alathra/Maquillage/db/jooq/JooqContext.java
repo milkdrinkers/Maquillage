@@ -1,6 +1,6 @@
-package io.github.ExampleUser.ExamplePlugin.db.jooq;
+package io.github.Alathra.Maquillage.db.jooq;
 
-import io.github.ExampleUser.ExamplePlugin.utility.Cfg;
+import io.github.Alathra.Maquillage.utility.Cfg;
 import org.jooq.*;
 import org.jooq.conf.*;
 import org.jooq.exception.DataAccessException;

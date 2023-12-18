@@ -1,9 +1,9 @@
-package io.github.ExampleUser.ExamplePlugin.utility;
+package io.github.Alathra.Maquillage.utility;
 
-import io.github.ExampleUser.ExamplePlugin.ExamplePlugin;
-import io.github.ExampleUser.ExamplePlugin.db.DatabaseHandler;
-import io.github.ExampleUser.ExamplePlugin.db.DatabaseType;
-import io.github.ExampleUser.ExamplePlugin.db.jooq.JooqContext;
+import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.db.DatabaseHandler;
+import io.github.Alathra.Maquillage.db.DatabaseType;
+import io.github.Alathra.Maquillage.db.jooq.JooqContext;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 
@@ -19,7 +19,7 @@ public abstract class DB {
      */
     @NotNull
     public static Connection getConnection() throws SQLException {
-        return ExamplePlugin.getInstance().getDataHandler().getConnection();
+        return Maquillage.getInstance().getDataHandler().getConnection();
     }
 
     /**
@@ -27,13 +27,13 @@ public abstract class DB {
      */
     @NotNull
     public static DSLContext getContext(Connection con) {
-        return ExamplePlugin.getInstance().getDataHandler().getJooqContext().createContext(con);
+        return Maquillage.getInstance().getDataHandler().getJooqContext().createContext(con);
     }
 
     /**
      * Convenience method for {@link DatabaseHandler#getDB()} to getConnection {@link DatabaseType}
      */
     public static DatabaseType getDB() {
-        return ExamplePlugin.getInstance().getDataHandler().getDB();
+        return Maquillage.getInstance().getDataHandler().getDB();
     }
 }

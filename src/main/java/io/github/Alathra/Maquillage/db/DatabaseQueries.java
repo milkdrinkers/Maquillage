@@ -1,7 +1,7 @@
-package io.github.ExampleUser.ExamplePlugin.db;
+package io.github.Alathra.Maquillage.db;
 
-import io.github.ExampleUser.ExamplePlugin.utility.DB;
-import io.github.ExampleUser.ExamplePlugin.utility.Logger;
+import io.github.Alathra.Maquillage.utility.DB;
+import io.github.Alathra.Maquillage.utility.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.DSLContext;

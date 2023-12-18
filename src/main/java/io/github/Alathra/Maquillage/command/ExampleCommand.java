@@ -1,4 +1,4 @@
-package io.github.ExampleUser.ExamplePlugin.command;
+package io.github.Alathra.Maquillage.command;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.jorel.commandapi.CommandAPICommand;

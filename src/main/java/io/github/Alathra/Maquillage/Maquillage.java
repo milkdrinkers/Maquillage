@@ -1,20 +1,20 @@
-package io.github.ExampleUser.ExamplePlugin;
+package io.github.Alathra.Maquillage;
 
-import io.github.ExampleUser.ExamplePlugin.command.CommandHandler;
-import io.github.ExampleUser.ExamplePlugin.config.ConfigHandler;
-import io.github.ExampleUser.ExamplePlugin.db.DatabaseHandler;
-import io.github.ExampleUser.ExamplePlugin.listener.ListenerHandler;
+import io.github.Alathra.Maquillage.db.DatabaseHandler;
+import io.github.Alathra.Maquillage.command.CommandHandler;
+import io.github.Alathra.Maquillage.config.ConfigHandler;
+import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public class ExamplePlugin extends JavaPlugin {
-    private static ExamplePlugin instance;
+public class Maquillage extends JavaPlugin {
+    private static Maquillage instance;
     private ConfigHandler configHandler;
     private DatabaseHandler databaseHandler;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
 
-    public static ExamplePlugin getInstance() {
+    public static Maquillage getInstance() {
         return instance;
     }
 
