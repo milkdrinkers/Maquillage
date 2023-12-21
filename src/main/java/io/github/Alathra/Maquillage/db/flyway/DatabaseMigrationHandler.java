@@ -1,7 +1,6 @@
 package io.github.Alathra.Maquillage.db.flyway;
 
 import io.github.Alathra.Maquillage.db.DatabaseType;
-import io.github.Alathra.Maquillage.db.flyway.migration.V3__Example;
 import com.github.milkdrinkers.Crate.Config;
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.ClassProvider;
@@ -18,7 +17,7 @@ import java.util.Map;
 public class DatabaseMigrationHandler {
     // List of Java migrations
     private final List<Class<? extends JavaMigration>> migrations = List.of(
-        V3__Example.class
+
     );
 
     private final Config config;
