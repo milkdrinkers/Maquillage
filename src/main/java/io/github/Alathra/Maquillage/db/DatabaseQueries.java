@@ -91,7 +91,7 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all tags. Should be called on server start and reload.
-    public static @Nullable Result<Record3<Integer, String, String>> loadAllTags() {
+    public static @Nullable Result<Record3<@NotNull Integer, @NotNull String, @Nullable String>> loadAllTags() {
         try (
             Connection con = DB.getConnection();
         ) {
@@ -108,7 +108,7 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all colors. Should be called on server start and reload.
-    public static @Nullable Result<Record3<Integer, String, String>> loadAllColors() {
+    public static @Nullable Result<Record3<@NotNull Integer, @NotNull String, @Nullable String>> loadAllColors() {
         try (
             Connection con = DB.getConnection();
         ) {
