@@ -1,0 +1,84 @@
+package io.github.Alathra.Maquillage.tag;
+
+import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.tag.Tag;
+import org.bukkit.entity.Player;
+import org.jooq.Record1;
+import org.jooq.Record3;
+import org.jooq.Result;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
+
+public class TagHandler {
+
+    public static HashMap<UUID, Tag> playerTags;
+    public static HashMap<Integer, Tag> loadedTags;
+
+    public static void loadPlayerTag(UUID uuid) {
+        Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
+        if (record == null)
+            return;
+        int colorID = record.component1();
+        playerTags.put(uuid, loadedTags.get(colorID));
+    }
+
+    public static void loadPlayerTag(Player p) {
+        loadPlayerTag(p.getUniqueId());
+    }
+
+    public static void removePlayerTag(UUID uuid) {
+        playerTags.remove(uuid);
+    }
+
+    public static void removePlayerTag(Player p) {
+        removePlayerTag(p.getUniqueId());
+    }
+
+    public static void loadTags() {
+        Result<Record3<Integer, String, String>> result =  DatabaseQueries.loadAllTags();
+        int index = 0;
+        for (Record3 record : result) {
+            loadedTags.put((int) result.getValue(index, "ID"),
+                new Tag(result.getValue(index, "TAG").toString(), result.getValue(index, "PERM").toString()));
+            index ++;
+        }
+    }
+
+    public static void addTag(String tag, String perm) {
+        DatabaseQueries.saveTag(tag, perm);
+        int nextID = Collections.max(loadedTags.keySet()) + 1;
+        loadedTags.put(nextID, new Tag(tag, perm));
+    }
+
+    public static boolean doesPlayerHaveTag (UUID uuid) {
+        return playerTags.containsKey(uuid);
+    }
+
+    public static boolean doesPlayerHaveTag (Player p) {
+        return doesPlayerHaveTag(p.getUniqueId());
+    }
+
+    public static String getPlayerTag (UUID uuid) {
+        return playerTags.get(uuid).getTag();
+    }
+
+    public static String getPlayerTag (Player p) {
+        return getPlayerTag(p.getUniqueId());
+    }
+
+    public static Tag getTagByID (int tagID) {
+        return loadedTags.get(tagID);
+    }
+
+    public static void setPlayerTag (UUID uuid, int tagID) {
+        playerTags.put(uuid, getTagByID(tagID));
+        DatabaseQueries.savePlayerColor(uuid, tagID);
+    }
+
+    public static void setPlayerTag (Player p, int tagID) {
+        setPlayerTag(p.getUniqueId(), tagID);
+    }
+
+}
