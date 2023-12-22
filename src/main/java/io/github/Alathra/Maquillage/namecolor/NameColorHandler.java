@@ -67,4 +67,16 @@ public class NameColorHandler {
         return getPlayerColor(p.getUniqueId());
     }
 
+    public static NameColor getNameColorByID (int colorID) {
+        return loadedColors.get(colorID);
+    }
+
+    public static void setPlayerColor (UUID uuid, int colorID) {
+        playerColors.put(uuid, getNameColorByID(colorID));
+        DatabaseQueries.savePlayerColor(uuid, colorID);
+    }
+
+    public static void setPlayerColor (Player p, int colorID) {
+        setPlayerColor(p.getUniqueId(), colorID);
+    }
 }
