@@ -12,13 +12,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public class PlayerJoinListener implements Listener {
 
-    private final Maquillage plugin;
-
-    public PlayerJoinListener(Maquillage plugin) {
-        this.plugin = plugin;
-    }
-
-
     @EventHandler
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
