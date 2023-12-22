@@ -1,4 +1,4 @@
-package io.github.Alathra.Maquillage.listener;
+package io.github.Alathra.Maquillage.listener.listeners;
 
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import org.bukkit.event.EventHandler;

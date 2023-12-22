@@ -2,6 +2,8 @@ package io.github.Alathra.Maquillage.listener;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.Reloadable;
+import io.github.Alathra.Maquillage.listener.listeners.PlayerJoinListener;
+import io.github.Alathra.Maquillage.listener.listeners.PlayerQuitListener;
 
 /**
  * A class to handle registration of event listeners.
@@ -20,7 +22,7 @@ public class ListenerHandler implements Reloadable {
     @Override
     public void onEnable() {
         // Register listeners here
-        plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(plugin), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
     }
 

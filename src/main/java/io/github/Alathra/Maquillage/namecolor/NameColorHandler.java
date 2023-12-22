@@ -51,4 +51,20 @@ public class NameColorHandler {
         loadedColors.put(nextID, new NameColor(color, perm));
     }
 
+    public static boolean doesPlayerHaveColor (UUID uuid) {
+        return playerColors.containsKey(uuid);
+    }
+
+    public static boolean doesPlayerHaveColor (Player p) {
+        return doesPlayerHaveColor(p.getUniqueId());
+    }
+
+    public static String getPlayerColor (UUID uuid) {
+        return playerColors.get(uuid).getColor();
+    }
+
+    public static String getPlayerColor (Player p) {
+        return getPlayerColor(p.getUniqueId());
+    }
+
 }
