@@ -12,10 +12,10 @@ import java.util.UUID;
 
 public class NameColorHandler {
 
-    public HashMap<UUID, NameColor> playerColors;
-    public HashMap<Integer, NameColor> loadedColors;
+    public static HashMap<UUID, NameColor> playerColors;
+    public static HashMap<Integer, NameColor> loadedColors;
 
-    public void loadPlayerColor(UUID uuid) {
+    public static void loadPlayerColor(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
         if (record == null)
             return;
@@ -23,19 +23,19 @@ public class NameColorHandler {
         playerColors.put(uuid, loadedColors.get(colorID));
     }
 
-    public void loadPlayerColor(Player p) {
+    public static void loadPlayerColor(Player p) {
         loadPlayerColor(p.getUniqueId());
     }
 
-    public void removePlayerColor(UUID uuid) {
+    public static void removePlayerColor(UUID uuid) {
         playerColors.remove(uuid);
     }
 
-    public void removePlayerColor(Player p) {
+    public static void removePlayerColor(Player p) {
         removePlayerColor(p.getUniqueId());
     }
 
-    public void loadColors() {
+    public static void loadColors() {
         Result<Record3<Integer, String, String>> result =  DatabaseQueries.loadAllColors();
         int index = 0;
         for (Record3 record : result) {
@@ -45,7 +45,7 @@ public class NameColorHandler {
         }
     }
 
-    public void addColor(String color, String perm) {
+    public static void addColor(String color, String perm) {
         DatabaseQueries.saveColor(color, perm);
         int nextID = Collections.max(loadedColors.keySet()) + 1;
         loadedColors.put(nextID, new NameColor(color, perm));
