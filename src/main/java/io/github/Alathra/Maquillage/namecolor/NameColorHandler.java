@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class NameColorHandler {
 
-    public static HashMap<UUID, NameColor> playerColors;
+    public static HashMap<UUID, Integer> playerColors;
     public static HashMap<Integer, NameColor> loadedColors;
 
     public static void loadPlayerColor(UUID uuid) {
@@ -20,7 +20,7 @@ public class NameColorHandler {
         if (record == null)
             return;
         int colorID = record.component1();
-        playerColors.put(uuid, loadedColors.get(colorID));
+        playerColors.put(uuid, colorID);
     }
 
     public static void loadPlayerColor(Player p) {
@@ -60,7 +60,7 @@ public class NameColorHandler {
     }
 
     public static String getPlayerColor (UUID uuid) {
-        return playerColors.get(uuid).getColor();
+        return loadedColors.get(playerColors.get(uuid)).getColor();
     }
 
     public static String getPlayerColor (Player p) {
@@ -72,7 +72,7 @@ public class NameColorHandler {
     }
 
     public static void setPlayerColor (UUID uuid, int colorID) {
-        playerColors.put(uuid, getNameColorByID(colorID));
+        playerColors.put(uuid, colorID);
         DatabaseQueries.savePlayerColor(uuid, colorID);
     }
 

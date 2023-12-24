@@ -1,7 +1,6 @@
 package io.github.Alathra.Maquillage.tag;
 
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
-import io.github.Alathra.Maquillage.tag.Tag;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record3;
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 public class TagHandler {
 
-    public static HashMap<UUID, Tag> playerTags;
+    public static HashMap<UUID, Integer> playerTags;
     public static HashMap<Integer, Tag> loadedTags;
 
     public static void loadPlayerTag(UUID uuid) {
@@ -21,7 +20,7 @@ public class TagHandler {
         if (record == null)
             return;
         int colorID = record.component1();
-        playerTags.put(uuid, loadedTags.get(colorID));
+        playerTags.put(uuid, colorID);
     }
 
     public static void loadPlayerTag(Player p) {
@@ -61,7 +60,7 @@ public class TagHandler {
     }
 
     public static String getPlayerTag (UUID uuid) {
-        return playerTags.get(uuid).getTag();
+        return loadedTags.get(playerTags.get(uuid)).getTag();
     }
 
     public static String getPlayerTag (Player p) {
@@ -73,7 +72,7 @@ public class TagHandler {
     }
 
     public static void setPlayerTag (UUID uuid, int tagID) {
-        playerTags.put(uuid, getTagByID(tagID));
+        playerTags.put(uuid, tagID);
         DatabaseQueries.savePlayerColor(uuid, tagID);
     }
 
