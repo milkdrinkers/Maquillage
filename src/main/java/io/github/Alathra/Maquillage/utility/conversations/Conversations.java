@@ -1,4 +1,4 @@
-package io.github.Alathra.Maquillage.utility;
+package io.github.Alathra.Maquillage.utility.conversations;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationPrefix;

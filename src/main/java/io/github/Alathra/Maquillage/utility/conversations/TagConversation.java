@@ -1,4 +1,4 @@
-package io.github.Alathra.Maquillage.utility;
+package io.github.Alathra.Maquillage.utility.conversations;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import org.bukkit.conversations.*;
@@ -6,20 +6,20 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ColorConversation {
+public class TagConversation {
 
-    static String color;
+    static String tag;
     static String permission;
 
-    public static Prompt newColorPrompt = new StringPrompt() {
+    public static Prompt newTagPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired color.";
+            return "Input the desired tag.";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            color = input;
+            tag = input;
             return permissionPrompt;
         }
     };
@@ -51,13 +51,11 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             if (conversable instanceof Player) {
                 Player player = (Player) conversable;
-                String colorName = color + player.getName();
-                player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + "?").build());
+                player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the permission node " + permission + "?").build());
                 return "YES/NO?";
             }
-            conversable.sendRawMessage("Do you want to save the tag" + ColorParser.of(color).build() + " with the permission node " + permission + "?");
+            conversable.sendRawMessage("Do you want to save the tag" + ColorParser.of(tag).build() + " with the permission node " + permission + "?");
             return "YES/NO?";
         }
     };
-
 }

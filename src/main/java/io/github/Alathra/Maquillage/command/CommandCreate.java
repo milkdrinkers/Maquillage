@@ -1,15 +1,12 @@
 package io.github.Alathra.Maquillage.command;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.jorel.commandapi.CommandAPICommand;
 import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.utility.Cfg;
-import io.github.Alathra.Maquillage.utility.ColorConversation;
-import io.github.Alathra.Maquillage.utility.Conversations;
-import io.github.Alathra.Maquillage.utility.TagConversation;
+import io.github.Alathra.Maquillage.utility.conversations.ColorConversation;
+import io.github.Alathra.Maquillage.utility.conversations.Conversations;
+import io.github.Alathra.Maquillage.utility.conversations.TagConversation;
 import org.bukkit.conversations.*;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 public class CommandCreate {
 
