@@ -1,18 +1,20 @@
 package io.github.Alathra.Maquillage.command;
 
+import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.jorel.commandapi.CommandAPICommand;
 import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.utility.Cfg;
 import io.github.Alathra.Maquillage.utility.ColorConversation;
+import io.github.Alathra.Maquillage.utility.Conversations;
 import io.github.Alathra.Maquillage.utility.TagConversation;
-import org.bukkit.conversations.Conversable;
-import org.bukkit.conversations.Conversation;
-import org.bukkit.conversations.ConversationFactory;
+import org.bukkit.conversations.*;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandCreate {
 
     Plugin plugin = Maquillage.getInstance();
-    ConversationFactory factory = new ConversationFactory(plugin);
+    ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
 
     // TODO: save tags and colors to DB
     public CommandCreate() {
