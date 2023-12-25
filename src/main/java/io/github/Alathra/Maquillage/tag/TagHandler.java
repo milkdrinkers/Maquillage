@@ -46,9 +46,8 @@ public class TagHandler {
     }
 
     public static void addTag(String tag, String perm) {
-        DatabaseQueries.saveTag(tag, perm);
-        int nextID = Collections.max(loadedTags.keySet()) + 1;
-        loadedTags.put(nextID, new Tag(tag, perm));
+        int ID = DatabaseQueries.saveTag(tag, perm);
+        loadedTags.put(ID, new Tag(tag, perm));
     }
 
     public static boolean doesPlayerHaveTag (UUID uuid) {

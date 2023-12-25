@@ -46,9 +46,8 @@ public class NameColorHandler {
     }
 
     public static void addColor(String color, String perm) {
-        DatabaseQueries.saveColor(color, perm);
-        int nextID = Collections.max(loadedColors.keySet()) + 1;
-        loadedColors.put(nextID, new NameColor(color, perm));
+        int ID = DatabaseQueries.saveColor(color, perm);
+        loadedColors.put(ID, new NameColor(color, perm));
     }
 
     public static boolean doesPlayerHaveColor (UUID uuid) {

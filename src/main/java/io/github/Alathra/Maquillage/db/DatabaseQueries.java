@@ -23,34 +23,42 @@ import static io.github.Alathra.Maquillage.db.schema.Tables.COLORS_PLAYERS;
 public abstract class DatabaseQueries {
 
     // Saves a new tag.
-    public static void saveTag(String tag, String perm) {
+    public static int saveTag(String tag, String perm) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
-            context
+            Record1<Integer> record = context
                 .insertInto(TAGS)
                 .set(TAGS.TAG, tag)
                 .set(TAGS.PERM, perm)
-                .execute();
+                .returningResult(TAGS.ID)
+                .fetch();
+
+            return record.component1();
+
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
         }
     }
 
     // Saves a new color.
-    public static void saveColor(String color, String perm) {
+    public static int saveColor(String color, String perm) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
-            context
+            Record1<Integer> record = context
                 .insertInto(COLORS)
                 .set(COLORS.COLOR, color)
                 .set(COLORS.PERM, perm)
-                .execute();
+                .returningResult(COLORS.ID)
+                .fetch();
+
+            return record.component1();
+
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
         }
