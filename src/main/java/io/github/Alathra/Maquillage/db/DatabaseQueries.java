@@ -22,8 +22,14 @@ import static io.github.Alathra.Maquillage.db.schema.Tables.COLORS_PLAYERS;
  */
 public abstract class DatabaseQueries {
 
-    // Saves a new tag.
-    public static int saveTag(String tag, String perm) {
+    /**
+     * Saves a new tag.
+     *
+     * @param tag  the tag
+     * @param perm the perm
+     * @return the id of the tag or -1 if saving failed
+     */
+    public static int saveTag(String tag, String perm) { // TODO Pass Tag object instead
         try (
             Connection con = DB.getConnection()
         ) {
@@ -34,17 +40,26 @@ public abstract class DatabaseQueries {
                 .set(TAGS.TAG, tag)
                 .set(TAGS.PERM, perm)
                 .returningResult(TAGS.ID)
-                .fetch();
+                .fetchOne();
+
+            if (record == null)
+                throw new SQLException("Failed to save new tag. The returned tag id was null!");
 
             return record.component1();
-
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
+            return -1;
         }
     }
 
-    // Saves a new color.
-    public static int saveColor(String color, String perm) {
+    /**
+     * Saves a new color.
+     *
+     * @param color the color
+     * @param perm  the perm
+     * @return the id of the color or -1 if saving failed
+     */
+    public static int saveColor(String color, String perm) {  // TODO Pass NameColor object instead
         try (
             Connection con = DB.getConnection()
         ) {
@@ -55,12 +70,16 @@ public abstract class DatabaseQueries {
                 .set(COLORS.COLOR, color)
                 .set(COLORS.PERM, perm)
                 .returningResult(COLORS.ID)
-                .fetch();
+                .fetchOne();
+
+            if (record == null)
+                throw new SQLException("Failed to save new color. The returned color id was null!");
 
             return record.component1();
 
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
+            return -1;
         }
     }
 
