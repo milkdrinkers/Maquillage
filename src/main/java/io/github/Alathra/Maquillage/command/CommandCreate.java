@@ -22,7 +22,7 @@ public class CommandCreate {
                 new CommandAPICommand("color")
                     .withAliases("colour")
                     .withPermission("maquillage.create.color")
-                    .executes((sender, args) -> {
+                    .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(ColorConversation.newColorPrompt);
 
                         Conversation conversation = factory.buildConversation((Conversable) sender);
@@ -31,7 +31,7 @@ public class CommandCreate {
                 new CommandAPICommand("tag")
                     .withAliases("prefix")
                     .withPermission("maquillage.create.tag")
-                    .executes((sender, args) -> {
+                    .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(TagConversation.newTagPrompt);
 
                         Conversation conversation = factory.buildConversation((Conversable) sender);

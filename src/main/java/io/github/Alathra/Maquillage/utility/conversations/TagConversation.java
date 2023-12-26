@@ -38,6 +38,7 @@ public class TagConversation {
     };
 
     static Prompt confirmPrompt = new FixedSetPrompt("YES", "NO") {
+
         @Override
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext context, @NotNull String input) {
             if (input.equals("YES")) {
@@ -49,12 +50,8 @@ public class TagConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
-            if (conversable instanceof Player) {
-                Player player = (Player) conversable;
-                player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the permission node " + permission + "?").build());
-                return "YES/NO?";
-            }
-            conversable.sendRawMessage("Do you want to save the tag" + ColorParser.of(tag).build() + " with the permission node " + permission + "?");
+            Player player = (Player) conversable;
+            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

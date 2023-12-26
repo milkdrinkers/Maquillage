@@ -49,13 +49,9 @@ public class ColorConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
-            if (conversable instanceof Player) {
-                Player player = (Player) conversable;
-                String colorName = color + player.getName();
-                player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + "?").build());
-                return "YES/NO?";
-            }
-            conversable.sendRawMessage("Do you want to save the tag" + ColorParser.of(color).build() + " with the permission node " + permission + "?");
+            Player player = (Player) conversable;
+            String colorName = color + player.getName();
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };
