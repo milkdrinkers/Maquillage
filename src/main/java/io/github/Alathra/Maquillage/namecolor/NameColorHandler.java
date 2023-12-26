@@ -45,9 +45,17 @@ public class NameColorHandler {
         }
     }
 
-    public static void addColor(String color, String perm) {
-        int ID = DatabaseQueries.saveColor(color, perm);
-        loadedColors.put(ID, new NameColor(color, perm));
+    /**
+     * Attempts to save a color to the database, and if successful caches the color
+     *
+     * @param color
+     * @return value of {@link DatabaseQueries#saveColor}
+     */
+    public static int addColor(NameColor color) {
+        int ID = DatabaseQueries.saveColor(color);
+        if (ID != -1)
+            loadedColors.put(ID, color);
+        return ID;
     }
 
     public static boolean doesPlayerHaveColor (UUID uuid) {

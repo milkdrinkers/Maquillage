@@ -1,5 +1,6 @@
 package io.github.Alathra.Maquillage.db;
 
+import io.github.Alathra.Maquillage.namecolor.NameColor;
 import io.github.Alathra.Maquillage.utility.DB;
 import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
@@ -26,10 +27,9 @@ public abstract class DatabaseQueries {
      * Saves a new tag.
      *
      * @param tag  the tag
-     * @param perm the perm
      * @return the id of the tag or -1 if saving failed
      */
-    public static int saveTag(String tag, String perm) { // TODO Pass Tag object instead
+    public static int saveTag(io.github.Alathra.Maquillage.tag.Tag tag) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -37,8 +37,8 @@ public abstract class DatabaseQueries {
 
             Record1<Integer> record = context
                 .insertInto(TAGS)
-                .set(TAGS.TAG, tag)
-                .set(TAGS.PERM, perm)
+                .set(TAGS.TAG, tag.getTag())
+                .set(TAGS.PERM, tag.getPerm())
                 .returningResult(TAGS.ID)
                 .fetchOne();
 
@@ -56,10 +56,9 @@ public abstract class DatabaseQueries {
      * Saves a new color.
      *
      * @param color the color
-     * @param perm  the perm
      * @return the id of the color or -1 if saving failed
      */
-    public static int saveColor(String color, String perm) {  // TODO Pass NameColor object instead
+    public static int saveColor(NameColor color) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -67,8 +66,8 @@ public abstract class DatabaseQueries {
 
             Record1<Integer> record = context
                 .insertInto(COLORS)
-                .set(COLORS.COLOR, color)
-                .set(COLORS.PERM, perm)
+                .set(COLORS.COLOR, color.getColor())
+                .set(COLORS.PERM, color.getPerm())
                 .returningResult(COLORS.ID)
                 .fetchOne();
 

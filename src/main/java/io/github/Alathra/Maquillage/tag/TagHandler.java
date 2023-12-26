@@ -45,9 +45,17 @@ public class TagHandler {
         }
     }
 
-    public static void addTag(String tag, String perm) {
-        int ID = DatabaseQueries.saveTag(tag, perm);
-        loadedTags.put(ID, new Tag(tag, perm));
+    /**
+     * Attempts to save a tag to the database, and if successful caches the tag
+     *
+     * @param tag
+     * @return
+     */
+    public static int addTag(Tag tag) {
+        int ID = DatabaseQueries.saveTag(tag);
+        if (ID != -1)
+            loadedTags.put(ID, tag);
+        return ID;
     }
 
     public static boolean doesPlayerHaveTag (UUID uuid) {
