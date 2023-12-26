@@ -1,6 +1,10 @@
 package io.github.Alathra.Maquillage.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
+import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.PaginatedGui;
+import io.github.Alathra.Maquillage.gui.PopulateBorder;
+import net.kyori.adventure.text.Component;
 
 public class CommandMaquillage {
     // TODO: logic
@@ -12,18 +16,29 @@ public class CommandMaquillage {
                 new CommandAPICommand("tag")
                     .withAliases("prefix")
                     .withPermission("maquillage.set.tag")
-                    .executes((sender, args) -> {
+                    .executesPlayer((sender, args) -> {
+                        PaginatedGui gui = Gui.paginated()
+                            .title(Component.text("Test"))
+                            .rows(6)
+                            .disableItemPlace()
+                            .disableItemSwap()
+                            .disableItemDrop()
+                            .disableItemTake()
+                            .create();
 
+                        PopulateBorder.populateBorder(gui);
+
+                        gui.open(sender);
                     }),
                 new CommandAPICommand("color")
                     .withAliases("colour")
                     .withPermission("maquillage.set.color")
-                    .executes((sender, args) -> {
+                    .executesPlayer((sender, args) -> {
 
                     }),
                 new CommandAPICommand("admin")
                     .withPermission("maquillage.admin")
-                    .executes((sender, args) -> {
+                    .executesPlayer((sender, args) -> {
 
                     })
             )
