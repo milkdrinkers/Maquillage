@@ -119,7 +119,7 @@ tasks {
         reloc("com.github.milkdrinkers.Crate", "crate")
         reloc("com.github.milkdrinkers.colorparser", "colorparser")
         reloc("dev.jorel.commandapi", "commandapi")
-        reloc("com.github.milkdrinkers.triumph-gui", "gui")
+        reloc("dev.triumphteam.gui", "gui")
         reloc("com.zaxxer.hikari", "hikaricp")
 
         mergeServiceFiles {
