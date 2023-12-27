@@ -58,7 +58,7 @@ dependencies {
 //    compileOnly("dev.jorel:commandapi-annotations:9.3.0")
 //    annotationProcessor("dev.jorel:commandapi-annotations:9.3.0")
 
-    implementation("dev.triumphteam:triumph-gui:3.1.7") {
+    implementation("com.github.milkdrinkers:triumph-gui:3.3.0") {
         exclude("net.kyori")
     }
 
@@ -119,7 +119,7 @@ tasks {
         reloc("com.github.milkdrinkers.Crate", "crate")
         reloc("com.github.milkdrinkers.colorparser", "colorparser")
         reloc("dev.jorel.commandapi", "commandapi")
-        reloc("dev.triumphteam.gui", "gui")
+        reloc("com.github.milkdrinkers.triumph-gui", "gui")
         reloc("com.zaxxer.hikari", "hikaricp")
 
         mergeServiceFiles {
