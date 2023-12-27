@@ -4,6 +4,7 @@ import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record3;
+import org.jooq.Record4;
 import org.jooq.Result;
 
 import java.util.Collections;
@@ -50,11 +51,15 @@ public class TagHandler {
     }
 
     public static void loadTags() {
-        Result<Record3<Integer, String, String>> result =  DatabaseQueries.loadAllTags();
+        Result<Record4<Integer, String, String, String>> result =  DatabaseQueries.loadAllTags();
         int index = 0;
-        for (Record3 record : result) {
+        for (Record4 record : result) {
             loadedTags.put((int) result.getValue(index, "ID"),
-                new Tag(result.getValue(index, "TAG").toString(), result.getValue(index, "PERM").toString()));
+                new Tag(
+                    result.getValue(index, "TAG").toString(),
+                    result.getValue(index, "PERM").toString(),
+                    result.getValue(index, "NAME").toString())
+            );
             index ++;
         }
     }

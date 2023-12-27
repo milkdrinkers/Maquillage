@@ -14,6 +14,7 @@ public class TagConversation {
 
     static String tag;
     static String permission;
+    static String name;
 
     public static Prompt newTagPrompt = new StringPrompt() {
         @Override
@@ -37,6 +38,19 @@ public class TagConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             permission = input;
+            return namePrompt;
+        }
+    };
+
+    static Prompt namePrompt = new StringPrompt() {
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext context) {
+            return "Input the display name.";
+        }
+
+        @Override
+        public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
+            name = input;
             return confirmPrompt;
         }
     };
@@ -47,7 +61,7 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHandler.addTag(new Tag(tag, permission));
+                int ID = TagHandler.addTag(new Tag(tag, permission, name));
                 if (ID != -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
                 } else {

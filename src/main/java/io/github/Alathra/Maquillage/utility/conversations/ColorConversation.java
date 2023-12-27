@@ -13,6 +13,7 @@ public class ColorConversation {
 
     static String color;
     static String permission;
+    static String name;
 
     public static Prompt newColorPrompt = new StringPrompt() {
         @Override
@@ -23,7 +24,7 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             color = input;
-            return permissionPrompt;
+            return namePrompt;
         }
     };
 
@@ -36,6 +37,19 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             permission = input;
+            return namePrompt;
+        }
+    };
+
+    static Prompt namePrompt = new StringPrompt() {
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext context) {
+            return "Input the display name.";
+        }
+
+        @Override
+        public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
+            name = input;
             return confirmPrompt;
         }
     };
@@ -46,7 +60,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHandler.addColor(new NameColor(color, permission));
+                int ID = NameColorHandler.addColor(new NameColor(color, permission, name));
                 if (ID != -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {
@@ -63,7 +77,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             String colorName = color + player.getName();
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + " and the display name " + name + "?").build());
             return "YES/NO?";
         }
     };

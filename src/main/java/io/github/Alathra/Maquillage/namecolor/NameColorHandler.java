@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.hsqldb.Database;
 import org.jooq.Record1;
 import org.jooq.Record3;
+import org.jooq.Record4;
 import org.jooq.Result;
 
 import java.util.HashMap;
@@ -50,11 +51,15 @@ public class NameColorHandler {
     }
 
     public static void loadColors() {
-        Result<Record3<Integer, String, String>> result =  DatabaseQueries.loadAllColors();
+        Result<Record4<Integer, String, String, String>> result =  DatabaseQueries.loadAllColors();
         int index = 0;
-        for (Record3 record : result) {
+        for (Record4 record : result) {
             loadedColors.put((int) result.getValue(index, "ID"),
-                new NameColor(result.getValue(index, "COLOR").toString(), result.getValue(index, "PERM").toString()));
+                new NameColor(
+                    result.getValue(index, "COLOR").toString(),
+                    result.getValue(index, "PERM").toString(),
+                    result.getValue(index, "NAME").toString())
+            );
             index ++;
         }
     }

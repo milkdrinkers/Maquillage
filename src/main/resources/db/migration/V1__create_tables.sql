@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS "${tablePrefix}tags" (
     "id" int NOT NULL AUTO_INCREMENT,
     "tag" tinytext NOT NULL,
     "perm" tinytext,
+    "displayname" tinytext,
     PRIMARY KEY ("id")
 )${tableDefaults};
 
@@ -10,6 +11,7 @@ CREATE TABLE IF NOT EXISTS "${tablePrefix}colors" (
     "id" int NOT NULL AUTO_INCREMENT,
     "color" tinytext NOT NULL,
     "perm" tinytext,
+    "displayname" tinytext,
     PRIMARY KEY ("id")
 )${tableDefaults};
 

@@ -39,6 +39,7 @@ public abstract class DatabaseQueries {
                 .insertInto(TAGS)
                 .set(TAGS.TAG, tag.getTag())
                 .set(TAGS.PERM, tag.getPerm())
+                .set(TAGS.DISPLAYNAME, tag.getName())
                 .returningResult(TAGS.ID)
                 .fetchOne();
 
@@ -68,6 +69,7 @@ public abstract class DatabaseQueries {
                 .insertInto(COLORS)
                 .set(COLORS.COLOR, color.getColor())
                 .set(COLORS.PERM, color.getPerm())
+                .set(COLORS.DISPLAYNAME, color.getName())
                 .returningResult(COLORS.ID)
                 .fetchOne();
 
@@ -157,14 +159,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all tags. Should be called on server start and reload.
-    public static @Nullable Result<Record3<@NotNull Integer, @NotNull String, @Nullable String>> loadAllTags() {
+    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllTags() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM)
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME)
                 .from(TAGS)
                 .fetch();
         } catch (SQLException e) {
@@ -174,14 +176,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all colors. Should be called on server start and reload.
-    public static @Nullable Result<Record3<@NotNull Integer, @NotNull String, @Nullable String>> loadAllColors() {
+    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllColors() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM)
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME)
                 .from(COLORS)
                 .fetch();
         } catch (SQLException e) {
