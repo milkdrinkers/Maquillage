@@ -5,6 +5,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,6 +31,10 @@ public class PopulateButtons {
 
         if (type != MaquillageGuiType.ADMIN)
             skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
+
+        // Sets color to white if player does not have a color selected
+        if (!NameColorHandler.doesPlayerHaveColor(p))
+            skullMeta.displayName(p.displayName().color(NamedTextColor.WHITE));
 
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
