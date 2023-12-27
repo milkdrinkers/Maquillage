@@ -2,11 +2,11 @@ package io.github.Alathra.Maquillage.namecolor;
 
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import org.bukkit.entity.Player;
+import org.hsqldb.Database;
 import org.jooq.Record1;
 import org.jooq.Record3;
 import org.jooq.Result;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -33,6 +33,20 @@ public class NameColorHandler {
 
     public static void removePlayerColor(Player p) {
         removePlayerColor(p.getUniqueId());
+    }
+
+    /**
+     * Removes a player's color from cache and DB.
+     *
+     * @param uuid
+     */
+    public static void clearPlayerColor(UUID uuid) {
+        removePlayerColor(uuid);
+        DatabaseQueries.removePlayerColor(uuid);
+    }
+
+    public static void clearPlayerColor(Player p) {
+        clearPlayerColor(p.getUniqueId());
     }
 
     public static void loadColors() {

@@ -116,6 +116,46 @@ public abstract class DatabaseQueries {
         }
     }
 
+    /**
+     * Deletes entry for a player's tag.
+     *
+     * @param uuid
+     */
+    public static void removePlayerTag(UUID uuid) {
+        try (
+            Connection con = DB.getConnection()
+            ) {
+            DSLContext context = DB.getContext(con);
+
+            context
+                .delete(TAGS_PLAYERS)
+                .where(TAGS_PLAYERS.PLAYER.equal(convertUUIDToBytes(uuid)))
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+    }
+
+    /**
+     * Deletes entry for a player's color.
+     *
+     * @param uuid
+     */
+    public static void removePlayerColor(UUID uuid) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context
+                .delete(COLORS_PLAYERS)
+                .where(COLORS_PLAYERS.PLAYER.equal(convertUUIDToBytes(uuid)))
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+    }
+
     // Loads all tags. Should be called on server start and reload.
     public static @Nullable Result<Record3<@NotNull Integer, @NotNull String, @Nullable String>> loadAllTags() {
         try (

@@ -35,6 +35,20 @@ public class TagHandler {
         removePlayerTag(p.getUniqueId());
     }
 
+    /**
+     * Removes a player's tag from cache and DB.
+     *
+     * @param uuid
+     */
+    public static void clearPlayerTag(UUID uuid) {
+        removePlayerTag(uuid);
+        DatabaseQueries.removePlayerTag(uuid);
+    }
+
+    public static void clearPlayerTag(Player p) {
+        clearPlayerTag(p.getUniqueId());
+    }
+
     public static void loadTags() {
         Result<Record3<Integer, String, String>> result =  DatabaseQueries.loadAllTags();
         int index = 0;
