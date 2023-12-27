@@ -3,7 +3,9 @@ package io.github.Alathra.Maquillage.command;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
+import io.github.Alathra.Maquillage.gui.GUIHandler;
 import io.github.Alathra.Maquillage.gui.PopulateBorder;
+import io.github.Alathra.Maquillage.gui.PopulateButtons;
 import net.kyori.adventure.text.Component;
 
 public class CommandMaquillage {
@@ -27,6 +29,7 @@ public class CommandMaquillage {
                             .create();
 
                         PopulateBorder.populateBorder(gui);
+                        PopulateButtons.populateButtons(gui, sender, GUIHandler.MaquillageGuiType.TAG);
 
                         gui.open(sender);
                     }),
