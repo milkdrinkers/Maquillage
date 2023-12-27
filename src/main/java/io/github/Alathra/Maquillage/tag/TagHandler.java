@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class TagHandler {
 
-    public static HashMap<UUID, Integer> playerTags;
-    public static HashMap<Integer, Tag> loadedTags;
+    public static HashMap<UUID, Integer> playerTags = new HashMap<>();
+    public static HashMap<Integer, Tag> loadedTags = new HashMap<>();
 
     public static void loadPlayerTag(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);

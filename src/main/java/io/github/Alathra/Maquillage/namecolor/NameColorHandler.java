@@ -12,8 +12,8 @@ import java.util.UUID;
 
 public class NameColorHandler {
 
-    public static HashMap<UUID, Integer> playerColors;
-    public static HashMap<Integer, NameColor> loadedColors;
+    public static HashMap<UUID, Integer> playerColors = new HashMap<>();
+    public static HashMap<Integer, NameColor> loadedColors = new HashMap<>();
 
     public static void loadPlayerColor(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
