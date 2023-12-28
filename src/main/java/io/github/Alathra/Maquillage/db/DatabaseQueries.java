@@ -39,7 +39,7 @@ public abstract class DatabaseQueries {
                 .insertInto(TAGS)
                 .set(TAGS.TAG, tag.getTag())
                 .set(TAGS.PERM, tag.getPerm())
-                .set(TAGS.DISPLAYNAME, tag.getName())
+                .set(TAGS.NAME, tag.getName())
                 .returningResult(TAGS.ID)
                 .fetchOne();
 
@@ -69,7 +69,7 @@ public abstract class DatabaseQueries {
                 .insertInto(COLORS)
                 .set(COLORS.COLOR, color.getColor())
                 .set(COLORS.PERM, color.getPerm())
-                .set(COLORS.DISPLAYNAME, color.getName())
+                .set(COLORS.NAME, color.getName())
                 .returningResult(COLORS.ID)
                 .fetchOne();
 
@@ -166,7 +166,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME)
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.NAME)
                 .from(TAGS)
                 .fetch();
         } catch (SQLException e) {
@@ -183,7 +183,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME)
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.NAME)
                 .from(COLORS)
                 .fetch();
         } catch (SQLException e) {

@@ -55,8 +55,6 @@ dependencies {
     }
 
     implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
-//    compileOnly("dev.jorel:commandapi-annotations:9.3.0")
-//    annotationProcessor("dev.jorel:commandapi-annotations:9.3.0")
 
     implementation("com.github.milkdrinkers:triumph-gui:3.3.0") {
         exclude("net.kyori")
@@ -79,11 +77,6 @@ dependencies {
 }
 
 tasks {
-    // NOTE: Use when developing plugins using Mojang mappings
-//    assemble {
-//        dependsOn(reobfJar)
-//    }
-
     build {
         dependsOn(shadowJar)
     }
