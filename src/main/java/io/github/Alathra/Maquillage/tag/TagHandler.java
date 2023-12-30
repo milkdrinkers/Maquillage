@@ -65,15 +65,38 @@ public class TagHandler {
     }
 
     /**
-     * Attempts to save a tag to the database, and if successful caches the tag
+     * Attempts to save a tag to the database
      *
      * @param tag
-     * @return
+     * @param perm
+     * @param name
+     * @return value of {@link DatabaseQueries#saveTag}
      */
-    public static int addTag(Tag tag) {
-        int ID = DatabaseQueries.saveTag(tag);
+    public static int addTagToDB(String tag, String perm, String name) {
+        return DatabaseQueries.saveTag(tag, perm, name);
+    }
+
+    /**
+     * Caches a tag
+     *
+     * @param tag
+     */
+    public static void addTagToCache(Tag tag) {
+        loadedTags.put(tag.getID(), tag);
+    }
+
+    /**
+     * Attempts to save a tag to DB and, if successful, caches the tag
+     *
+     * @param tag
+     * @param perm
+     * @param name
+     * @return value of {@link TagHandler#addTagToDB}
+     */
+    public static int addTag(String tag, String perm, String name) {
+        int ID = addTagToDB(tag, perm, name);
         if (ID != -1)
-            loadedTags.put(ID, tag);
+            addTagToCache(new Tag(tag, perm, name, ID));
         return ID;
     }
 

@@ -1,6 +1,9 @@
 package io.github.Alathra.Maquillage.namecolor;
 
+import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -64,15 +67,38 @@ public class NameColorHandler {
     }
 
     /**
-     * Attempts to save a color to the database, and if successful caches the color
+     * Attempts to save a color to the database
      *
      * @param color
+     * @param perm
+     * @param name
      * @return value of {@link DatabaseQueries#saveColor}
      */
-    public static int addColorToDB(NameColor color) {
-        int ID = DatabaseQueries.saveColor(color);
+    public static int addColorToDB(String color, String perm, String name) {
+        return DatabaseQueries.saveColor(color, perm, name);
+    }
+
+    /**
+     * Caches a color
+     *
+     * @param color
+     */
+    public static void addColorToCache(NameColor color) {
+        loadedColors.put(color.getID(), color);
+    }
+
+    /**
+     * Attempts to save a color to DB and, if successful, caches the color
+     * 
+     * @param color
+     * @param perm
+     * @param name
+     * @return value of {@link NameColorHandler#addColorToDB}
+     */
+    public static int addColor(String color, String perm, String name) {
+        int ID = addColorToDB(color, perm, name);
         if (ID != -1)
-            loadedColors.put(ID, color);
+            addColorToCache(new NameColor(color, perm, name, ID));
         return ID;
     }
 
@@ -130,9 +156,22 @@ public class NameColorHandler {
     public static void setPlayerColor (UUID uuid, int colorID) {
         playerColors.put(uuid, colorID);
         DatabaseQueries.savePlayerColor(uuid, colorID);
+
+        Player p = Bukkit.getPlayer(uuid);
+        Component name = ColorParser.of(getNameColorByID(colorID).getColor() + p.displayName()).build();
+        p.displayName(name);
+        p.playerListName(name);
     }
 
     public static void setPlayerColor (Player p, int colorID) {
         setPlayerColor(p.getUniqueId(), colorID);
+    }
+
+    public static void setPlayerColor (UUID uuid, NameColor color) {
+        setPlayerColor(uuid, color.getID());
+    }
+
+    public static void setPlayerColor (Player p, NameColor color) {
+        setPlayerColor(p.getUniqueId(), color);
     }
 }

@@ -29,7 +29,7 @@ public abstract class DatabaseQueries {
      * @param tag  the tag
      * @return the id of the tag or -1 if saving failed
      */
-    public static int saveTag(io.github.Alathra.Maquillage.tag.Tag tag) {
+    public static int saveTag(String tag, String perm, String name) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -37,9 +37,9 @@ public abstract class DatabaseQueries {
 
             Record1<Integer> record = context
                 .insertInto(TAGS)
-                .set(TAGS.TAG, tag.getTag())
-                .set(TAGS.PERM, tag.getPerm())
-                .set(TAGS.NAME, tag.getName())
+                .set(TAGS.TAG, tag)
+                .set(TAGS.PERM, perm)
+                .set(TAGS.NAME, name)
                 .returningResult(TAGS.ID)
                 .fetchOne();
 
@@ -59,7 +59,7 @@ public abstract class DatabaseQueries {
      * @param color the color
      * @return the id of the color or -1 if saving failed
      */
-    public static int saveColor(NameColor color) {
+    public static int saveColor(String color, String perm, String name) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -67,9 +67,9 @@ public abstract class DatabaseQueries {
 
             Record1<Integer> record = context
                 .insertInto(COLORS)
-                .set(COLORS.COLOR, color.getColor())
-                .set(COLORS.PERM, color.getPerm())
-                .set(COLORS.NAME, color.getName())
+                .set(COLORS.COLOR, color)
+                .set(COLORS.PERM, perm)
+                .set(COLORS.NAME, name)
                 .returningResult(COLORS.ID)
                 .fetchOne();
 

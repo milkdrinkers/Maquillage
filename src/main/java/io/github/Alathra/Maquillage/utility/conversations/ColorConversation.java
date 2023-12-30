@@ -59,8 +59,8 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHandler.addColorToDB(new NameColor(color, permission, name));
-                if (ID != -1) {
+                int ID = NameColorHandler.addColor(color, permission, name);
+                if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {
                     player.sendMessage(ColorParser.of("<green>The color was successfully saved!").build());
