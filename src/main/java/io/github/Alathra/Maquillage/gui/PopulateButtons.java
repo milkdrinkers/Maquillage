@@ -12,10 +12,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import io.github.Alathra.Maquillage.gui.GUIHandler.MaquillageGuiType;
+import io.github.Alathra.Maquillage.gui.GuiHandler.MaquillageGuiType;
 
 import java.util.Collections;
-import java.util.Objects;
 
 public class PopulateButtons {
 
