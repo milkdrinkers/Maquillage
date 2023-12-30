@@ -6,6 +6,8 @@ import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.gui.GUIHandler;
 import io.github.Alathra.Maquillage.gui.PopulateBorder;
 import io.github.Alathra.Maquillage.gui.PopulateButtons;
+import io.github.Alathra.Maquillage.gui.PopulateContent;
+import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import net.kyori.adventure.text.Component;
 
 public class CommandMaquillage {
@@ -30,6 +32,7 @@ public class CommandMaquillage {
 
                         PopulateBorder.populateBorder(gui);
                         PopulateButtons.populateButtons(gui, sender, GUIHandler.MaquillageGuiType.TAG);
+                        PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, sender);
 
                         gui.open(sender);
                     }),
@@ -37,6 +40,21 @@ public class CommandMaquillage {
                     .withAliases("colour")
                     .withPermission("maquillage.set.color")
                     .executesPlayer((sender, args) -> {
+
+                        PaginatedGui gui = Gui.paginated()
+                            .title(Component.text("Test"))
+                            .rows(6)
+                            .disableItemPlace()
+                            .disableItemSwap()
+                            .disableItemDrop()
+                            .disableItemTake()
+                            .create();
+
+                        PopulateBorder.populateBorder(gui);
+                        PopulateButtons.populateButtons(gui, sender, GUIHandler.MaquillageGuiType.COLOR);
+                        PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, sender);
+
+                        gui.open(sender);
 
                     }),
                 new CommandAPICommand("admin")
