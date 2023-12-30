@@ -8,6 +8,7 @@ import io.github.Alathra.Maquillage.gui.PopulateBorder;
 import io.github.Alathra.Maquillage.gui.PopulateButtons;
 import io.github.Alathra.Maquillage.gui.PopulateContent;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.kyori.adventure.text.Component;
 
 public class CommandMaquillage {
@@ -32,7 +33,7 @@ public class CommandMaquillage {
 
                         PopulateBorder.populateBorder(gui);
                         PopulateButtons.populateButtons(gui, sender, GUIHandler.MaquillageGuiType.TAG);
-                        PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, sender);
+                        PopulateContent.populateTagContent(gui, TagHandler.loadedTags, sender);
 
                         gui.open(sender);
                     }),

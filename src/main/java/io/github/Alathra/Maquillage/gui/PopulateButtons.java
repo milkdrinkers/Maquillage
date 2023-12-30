@@ -53,7 +53,10 @@ public class PopulateButtons {
                 }
                 case TAG ->  {
                     TagHandler.clearPlayerTag(p);
-                    // TODO: reload content
+                    gui.clearPageItems();
+                    PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
+                    populateButtons(gui, p, MaquillageGuiType.TAG);
+                    gui.update();
                 }
             }
         }));

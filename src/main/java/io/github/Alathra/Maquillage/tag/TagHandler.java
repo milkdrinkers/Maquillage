@@ -1,7 +1,9 @@
 package io.github.Alathra.Maquillage.tag;
 
+import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -146,13 +148,19 @@ public class TagHandler {
         return loadedTags.get(tagID);
     }
 
-    public static void setPlayerTag (UUID uuid, int tagID) {
+    public static void setPlayerTag (Player p, Tag tag) {
+        UUID uuid = p.getUniqueId();
+        int tagID = tag.getID();
         playerTags.put(uuid, tagID);
-        DatabaseQueries.savePlayerColor(uuid, tagID);
+//        DatabaseQueries.savePlayerTag(uuid, tagID);
+
+        Component name = ColorParser.of(tag.getTag() + p.getName()).build();
+        p.displayName(name);
+        p.playerListName(name);
     }
 
     public static void setPlayerTag (Player p, int tagID) {
-        setPlayerTag(p.getUniqueId(), tagID);
+        setPlayerTag(p, getTagByID(tagID));
     }
 
 }

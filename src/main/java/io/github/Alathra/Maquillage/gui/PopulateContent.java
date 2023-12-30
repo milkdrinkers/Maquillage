@@ -5,6 +5,8 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.tag.Tag;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -24,6 +26,10 @@ public class PopulateContent {
     static ItemMeta colorItemMeta = colorItem.getItemMeta();
     static ItemStack selectedColorItem = new ItemStack(Material.LIME_DYE);
     static ItemMeta selectedColorItemMeta = selectedColorItem.getItemMeta();
+    static ItemStack tagItem = new ItemStack(Material.NAME_TAG);
+    static ItemMeta tagItemMeta = tagItem.getItemMeta();
+    static ItemStack selectedTagItem = new ItemStack(Material.ENCHANTED_BOOK);
+    static ItemMeta selectedTagItemMeta = selectedTagItem.getItemMeta();
 
     public static void populateColorContent(PaginatedGui gui, HashMap<Integer, NameColor> colors, Player p) {
         List<NameColor> colorList;
@@ -43,9 +49,26 @@ public class PopulateContent {
         }
     }
 
+    public static void populateTagContent(PaginatedGui gui, HashMap<Integer, Tag> tags, Player p) {
+        List<Tag> tagList;
+        if (TagHandler.doesPlayerHaveTag(p)) {
+            int selectedTag = TagHandler.getPlayerTagID(p);
+            addSelectedTagItem(gui, tags.get(selectedTag), p);
+
+            tagList = tags.values().stream()
+                .filter(tag -> tag.hasPerm(p))
+                .filter(tag -> tag.getID() != selectedTag).toList();
+        } else {
+            tagList = tags.values().stream()
+                .filter(tag -> tag.hasPerm(p)).toList();
+        }
+        for (Tag tag : tagList) {
+            addTagItem(gui, tag, p);
+        }
+    }
+
     private static void addColorItem(PaginatedGui gui, NameColor color, Player p) {
         colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
-        // TODO: fix lore text
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name in the color
         loreList.add(ColorParser.of(color.getColor() + p.getName()).build());
@@ -66,9 +89,31 @@ public class PopulateContent {
         selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
         selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(color.getColor() + p.getName()).build()));
         selectedColorItem.setItemMeta(selectedColorItemMeta);
-        gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> {
+        gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
+    }
+
+    private static void addTagItem(PaginatedGui gui, Tag tag, Player p) {
+        tagItemMeta.displayName(ColorParser.of((tag.getName())).build());
+        List<Component> loreList = new ArrayList<>();
+        // Add a component to the list that contains the player's name with the tag
+        loreList.add(ColorParser.of(tag.getTag()).build().append(p.displayName()));
+        // Add a component to the list that describes action if clicked
+        loreList.add(ColorParser.of("<grey>Click this to select the tag.").build());
+        tagItemMeta.lore(loreList);
+        tagItem.setItemMeta(tagItemMeta);
+        gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
+            TagHandler.setPlayerTag(p, tag);
+            gui.clearPageItems();
+            populateTagContent(gui, TagHandler.loadedTags, p);
             gui.update();
         }));
+    }
+
+    public static void addSelectedTagItem(PaginatedGui gui, Tag tag, Player p) {
+        selectedTagItemMeta.displayName(ColorParser.of(tag.getName()).build());
+        selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + p.displayName()).build()));
+        selectedTagItem.setItemMeta(selectedTagItemMeta);
+        gui.addItem(ItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
     }
 
 }
