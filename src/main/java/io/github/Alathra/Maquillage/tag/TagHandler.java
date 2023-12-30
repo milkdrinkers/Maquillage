@@ -1,13 +1,12 @@
 package io.github.Alathra.Maquillage.tag;
 
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.namecolor.NameColor;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
-import org.jooq.Record3;
 import org.jooq.Record4;
 import org.jooq.Result;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -58,7 +57,8 @@ public class TagHandler {
                 new Tag(
                     result.getValue(index, "TAG").toString(),
                     result.getValue(index, "PERM").toString(),
-                    result.getValue(index, "NAME").toString())
+                    result.getValue(index, "NAME").toString(),
+                    (Integer) result.getValue(index, "ID"))
             );
             index ++;
         }
@@ -85,12 +85,38 @@ public class TagHandler {
         return doesPlayerHaveTag(p.getUniqueId());
     }
 
-    public static String getPlayerTag (UUID uuid) {
+    public static String getPlayerTagString(UUID uuid) {
         return loadedTags.get(playerTags.get(uuid)).getTag();
     }
 
-    public static String getPlayerTag (Player p) {
+    public static String getPlayerTagString(Player p) {
+        return getPlayerTagString(p.getUniqueId());
+    }
+
+    /**
+     *
+     * @param uuid
+     * @return the player's selected Tag object
+     */
+    public static Tag getPlayerTag(UUID uuid) {
+        return loadedTags.get(playerTags.get(uuid));
+    }
+
+    public static Tag getPlayerTag(Player p) {
         return getPlayerTag(p.getUniqueId());
+    }
+
+    /**
+     *
+     * @param uuid
+     * @return the color ID for the player's selected color
+     */
+    public static int getPlayerTagID(UUID uuid) {
+        return playerTags.get(uuid);
+    }
+
+    public static int getPlayerTagID(Player p) {
+        return getPlayerTagID(p.getUniqueId());
     }
 
     public static Tag getTagByID (int tagID) {

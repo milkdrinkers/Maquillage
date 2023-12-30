@@ -2,9 +2,7 @@ package io.github.Alathra.Maquillage.namecolor;
 
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import org.bukkit.entity.Player;
-import org.hsqldb.Database;
 import org.jooq.Record1;
-import org.jooq.Record3;
 import org.jooq.Record4;
 import org.jooq.Result;
 
@@ -58,7 +56,8 @@ public class NameColorHandler {
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
                     result.getValue(index, "PERM").toString(),
-                    result.getValue(index, "NAME").toString())
+                    result.getValue(index, "NAME").toString(),
+                        (Integer) result.getValue(index, "ID"))
             );
             index ++;
         }
@@ -70,7 +69,7 @@ public class NameColorHandler {
      * @param color
      * @return value of {@link DatabaseQueries#saveColor}
      */
-    public static int addColor(NameColor color) {
+    public static int addColorToDB(NameColor color) {
         int ID = DatabaseQueries.saveColor(color);
         if (ID != -1)
             loadedColors.put(ID, color);
@@ -85,12 +84,43 @@ public class NameColorHandler {
         return doesPlayerHaveColor(p.getUniqueId());
     }
 
-    public static String getPlayerColor (UUID uuid) {
+    /**
+     *
+     * @param uuid
+     * @return Color as a string that can be parsed by Adventure
+     */
+    public static String getPlayerColorString(UUID uuid) {
         return loadedColors.get(playerColors.get(uuid)).getColor();
     }
 
-    public static String getPlayerColor (Player p) {
+    public static String getPlayerColorString(Player p) {
+        return getPlayerColorString(p.getUniqueId());
+    }
+
+    /**
+     *
+     * @param uuid
+     * @return the player's selected NameColor object
+     */
+    public static NameColor getPlayerColor(UUID uuid) {
+        return loadedColors.get(playerColors.get(uuid));
+    }
+
+    public static NameColor getPlayerColor(Player p) {
         return getPlayerColor(p.getUniqueId());
+    }
+
+    /**
+     *
+     * @param uuid
+     * @return the color ID for the player's selected color
+     */
+    public static int getPlayerColorID(UUID uuid) {
+        return playerColors.get(uuid);
+    }
+
+    public static int getPlayerColorID(Player p) {
+        return getPlayerColorID(p.getUniqueId());
     }
 
     public static NameColor getNameColorByID (int colorID) {

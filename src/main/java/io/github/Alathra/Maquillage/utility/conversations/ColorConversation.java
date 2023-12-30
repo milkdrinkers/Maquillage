@@ -1,7 +1,6 @@
 package io.github.Alathra.Maquillage.utility.conversations;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import org.bukkit.conversations.*;
@@ -60,7 +59,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHandler.addColor(new NameColor(color, permission, name));
+                int ID = NameColorHandler.addColorToDB(new NameColor(color, permission, name));
                 if (ID != -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {

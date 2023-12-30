@@ -3,8 +3,8 @@ package io.github.Alathra.Maquillage.gui;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
+import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +21,11 @@ public class PopulateContent {
     static ItemMeta selectedColorItemMeta = selectedColorItem.getItemMeta();
 
     public static void populateColorContent(PaginatedGui gui, HashMap<Integer, NameColor> colors, Player p) {
-        // TODO logic to add colors that should show for player
+        int selectedColor = NameColorHandler.getPlayerColorID(p);
+        addSelectedColorItem(gui, colors.get(selectedColor), p);
+        colors.remove(selectedColor);
+
+        colors.values().stream().filter(color -> color.hasPerm(p)).filter(color -> color.);
     }
 
     private static void addColorItem(PaginatedGui gui, NameColor color, Player p) {
