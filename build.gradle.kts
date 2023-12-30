@@ -229,9 +229,9 @@ task("generateSources") {
     sourceSets {
         get("main").java.srcDir(dir)
     }
-
-    // Enable build caching
-    outputs.cacheIf { true }
+//
+//    // Enable build caching
+//    outputs.cacheIf { true }
 }
 
 buildscript {
