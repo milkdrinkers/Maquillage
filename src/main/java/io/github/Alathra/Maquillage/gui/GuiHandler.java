@@ -48,12 +48,32 @@ public class GuiHandler {
             case TAG -> {
                 PopulateBorder.populateBorder(gui);
                 PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
-                PopulateButtons.populateButtons(gui, p, type);
+                PopulateButtons.populateButtons(type, gui, p);
             }
             case COLOR -> {
                 PopulateBorder.populateBorder(gui);
                 PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
-                PopulateButtons.populateButtons(gui, p, type);
+                PopulateButtons.populateButtons(type, gui, p);
+            }
+        }
+    }
+
+    public static void reloadGui(MaquillageGuiType type, PaginatedGui gui, Player p) {
+        switch (type) {
+            case ADMIN -> {
+                return;
+            }
+            case TAG -> {
+                gui.clearPageItems();
+                PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
+                PopulateButtons.populateButtons(type, gui, p);
+                gui.update();
+            }
+            case COLOR -> {
+                gui.clearPageItems();
+                PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
+                PopulateButtons.populateButtons(type, gui, p);
+                gui.update();
             }
         }
     }

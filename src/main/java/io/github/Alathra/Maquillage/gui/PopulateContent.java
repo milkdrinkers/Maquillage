@@ -79,9 +79,7 @@ public class PopulateContent {
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
             NameColorHandler.setPlayerColor(p, color);
             // TODO: test with multiple pages
-            gui.clearPageItems();
-            populateColorContent(gui, NameColorHandler.loadedColors, p);
-            gui.update();
+            GuiHandler.populateGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
         }));
     }
 
@@ -103,9 +101,7 @@ public class PopulateContent {
         tagItem.setItemMeta(tagItemMeta);
         gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
             TagHandler.setPlayerTag(p, tag);
-            gui.clearPageItems();
-            populateTagContent(gui, TagHandler.loadedTags, p);
-            gui.update();
+            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
         }));
     }
 

@@ -18,13 +18,13 @@ import java.util.Collections;
 
 public class PopulateButtons {
 
-    public static void populateButtons (PaginatedGui gui, Player p, MaquillageGuiType type) {
-        headButton(gui, p, type);
+    public static void populateButtons (MaquillageGuiType type, PaginatedGui gui, Player p) {
+        headButton(type, gui, p);
         if (gui.getPagesNum() > 1)
             arrowButtons(gui);
     }
 
-    private static void headButton (PaginatedGui gui, Player p, MaquillageGuiType type) {
+    private static void headButton (MaquillageGuiType type, PaginatedGui gui, Player p) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
@@ -45,17 +45,11 @@ public class PopulateButtons {
             switch (type) {
                 case COLOR -> {
                     NameColorHandler.clearPlayerColor(p);
-                    gui.clearPageItems();
-                    PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
-                    populateButtons(gui, p, MaquillageGuiType.COLOR);
-                    gui.update();
+                    GuiHandler.reloadGui(type, gui, p);
                 }
                 case TAG ->  {
                     TagHandler.clearPlayerTag(p);
-                    gui.clearPageItems();
-                    PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
-                    populateButtons(gui, p, MaquillageGuiType.TAG);
-                    gui.update();
+                    GuiHandler.reloadGui(type, gui, p);
                 }
             }
         }));
