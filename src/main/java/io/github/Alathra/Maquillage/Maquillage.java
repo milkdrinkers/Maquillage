@@ -26,6 +26,7 @@ public class Maquillage extends JavaPlugin {
         databaseHandler = new DatabaseHandler(instance);
         commandHandler = new CommandHandler(instance);
         listenerHandler = new ListenerHandler(instance);
+        vaultHook = new VaultHook(instance);
 
         configHandler.onLoad();
         databaseHandler.onLoad();

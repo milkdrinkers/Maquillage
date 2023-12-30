@@ -157,7 +157,7 @@ bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
 
     // Misc properties
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
-    depend = listOf()
+    depend = listOf("Vault")
     softDepend = listOf()
 }
 
