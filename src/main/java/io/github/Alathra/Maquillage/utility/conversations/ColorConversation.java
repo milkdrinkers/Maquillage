@@ -27,19 +27,6 @@ public class ColorConversation {
         }
     };
 
-    static Prompt permissionPrompt = new StringPrompt() {
-        @Override
-        public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired permission node.";
-        }
-
-        @Override
-        public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            permission = input;
-            return namePrompt;
-        }
-    };
-
     static Prompt namePrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
@@ -49,6 +36,19 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             name = input;
+            return permissionPrompt;
+        }
+    };
+
+    static Prompt permissionPrompt = new StringPrompt() {
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext context) {
+            return "Input the desired permission node.";
+        }
+
+        @Override
+        public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
+            permission = input;
             return confirmPrompt;
         }
     };
