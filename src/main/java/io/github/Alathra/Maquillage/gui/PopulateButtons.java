@@ -35,6 +35,9 @@ public class PopulateButtons {
         // Sets color to white if player does not have a color selected
         if (!NameColorHandler.doesPlayerHaveColor(p))
             skullMeta.displayName(p.displayName().color(NamedTextColor.WHITE));
+        // Else, sets skull name to player's displayName
+        else
+            skullMeta.displayName(p.displayName());
 
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
@@ -43,9 +46,14 @@ public class PopulateButtons {
             switch (type) {
                 case COLOR -> {
                     NameColorHandler.clearPlayerColor(p);
+                    gui.clearPageItems();
+                    PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
+                    populateButtons(gui, p, MaquillageGuiType.COLOR);
+                    gui.update();
                 }
                 case TAG ->  {
                     TagHandler.clearPlayerTag(p);
+                    // TODO: reload content
                 }
             }
         }));

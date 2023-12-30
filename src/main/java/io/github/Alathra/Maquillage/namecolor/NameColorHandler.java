@@ -45,6 +45,11 @@ public class NameColorHandler {
     public static void clearPlayerColor(UUID uuid) {
         removePlayerColor(uuid);
         DatabaseQueries.removePlayerColor(uuid);
+
+        Player p = Bukkit.getPlayer(uuid);
+        Component name = ColorParser.of("<white>" + p.getName()).build();
+        p.displayName(name);
+        p.playerListName(name);
     }
 
     public static void clearPlayerColor(Player p) {
@@ -153,25 +158,18 @@ public class NameColorHandler {
         return loadedColors.get(colorID);
     }
 
-    public static void setPlayerColor (UUID uuid, int colorID) {
+    public static void setPlayerColor (Player p, NameColor color) {
+        UUID uuid = p.getUniqueId();
+        int colorID = color.getID();
         playerColors.put(uuid, colorID);
-        DatabaseQueries.savePlayerColor(uuid, colorID);
+//        DatabaseQueries.savePlayerColor(uuid, colorID);
 
-        Player p = Bukkit.getPlayer(uuid);
-        Component name = ColorParser.of(getNameColorByID(colorID).getColor() + p.displayName()).build();
+        Component name = ColorParser.of(color.getColor() + p.getName()).build();
         p.displayName(name);
         p.playerListName(name);
     }
 
     public static void setPlayerColor (Player p, int colorID) {
-        setPlayerColor(p.getUniqueId(), colorID);
-    }
-
-    public static void setPlayerColor (UUID uuid, NameColor color) {
-        setPlayerColor(uuid, color.getID());
-    }
-
-    public static void setPlayerColor (Player p, NameColor color) {
-        setPlayerColor(p.getUniqueId(), color);
+        setPlayerColor(p, getNameColorByID(colorID));
     }
 }
