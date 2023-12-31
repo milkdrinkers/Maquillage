@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS ${tablePrefix}tags (
     id INT NOT NULL AUTO_INCREMENT,
     tag TINYTEXT NOT NULL,
     perm TINYTEXT,
-    "name" TINYTEXT,
+    displayname TINYTEXT,
     PRIMARY KEY (id)
 )${tableDefaults};
 
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS ${tablePrefix}colors (
     id INT NOT NULL AUTO_INCREMENT,
     color TINYTEXT NOT NULL,
     perm TINYTEXT,
-    "name" TINYTEXT,
+    displayname TINYTEXT,
     PRIMARY KEY (id)
 )${tableDefaults};
 

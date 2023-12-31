@@ -5,6 +5,7 @@ import io.github.Alathra.Maquillage.command.CommandHandler;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
 import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
+import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -33,6 +34,8 @@ public class Maquillage extends JavaPlugin {
         commandHandler.onLoad();
         listenerHandler.onLoad();
         vaultHook.onLoad();
+
+        NameColorHandler.loadColors();
     }
 
     public void onEnable() {

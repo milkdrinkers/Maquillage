@@ -64,7 +64,7 @@ public class NameColorHandler {
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
                     result.getValue(index, "PERM").toString(),
-                    result.getValue(index, "NAME").toString(),
+                    result.getValue(index, "DISPLAYNAME").toString(),
                         (Integer) result.getValue(index, "ID"))
             );
             index ++;
@@ -162,7 +162,7 @@ public class NameColorHandler {
         UUID uuid = p.getUniqueId();
         int colorID = color.getID();
         playerColors.put(uuid, colorID);
-//        DatabaseQueries.savePlayerColor(uuid, colorID);
+        DatabaseQueries.savePlayerColor(uuid, colorID);
 
         Component name = ColorParser.of(color.getColor() + p.getName()).build();
         p.displayName(name);
