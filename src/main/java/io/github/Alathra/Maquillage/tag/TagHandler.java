@@ -59,7 +59,7 @@ public class TagHandler {
                 new Tag(
                     result.getValue(index, "TAG").toString(),
                     result.getValue(index, "PERM").toString(),
-                    result.getValue(index, "NAME").toString(),
+                    result.getValue(index, "DISPLAYNAME").toString(),
                     (Integer) result.getValue(index, "ID"))
             );
             index ++;
@@ -152,7 +152,7 @@ public class TagHandler {
         UUID uuid = p.getUniqueId();
         int tagID = tag.getID();
         playerTags.put(uuid, tagID);
-//        DatabaseQueries.savePlayerTag(uuid, tagID);
+        DatabaseQueries.savePlayerTag(uuid, tagID);
 
         Component name = ColorParser.of(tag.getTag() + p.getName()).build();
         p.displayName(name);
