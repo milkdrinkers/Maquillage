@@ -7,6 +7,7 @@ import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -46,6 +47,15 @@ public class Maquillage extends JavaPlugin {
         commandHandler.onEnable();
         listenerHandler.onEnable();
         vaultHook.onEnable();
+
+        if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
+            Bukkit.getLogger().warning("Vault is required for this plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
+            Bukkit.getLogger().warning("PlaceholderAPI is required for this plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
     }
 
     public void onDisable() {

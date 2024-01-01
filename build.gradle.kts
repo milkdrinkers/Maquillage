@@ -39,6 +39,8 @@ repositories {
             includeGroup("com.github.MilkBowl")
         }
     }
+
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
@@ -61,6 +63,7 @@ dependencies {
     }
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
+    compileOnly("me.clip:placeholderapi:2.11.5")
 
     // Database Dependencies
     implementation("com.zaxxer:HikariCP:5.1.0")
@@ -157,7 +160,7 @@ bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
 
     // Misc properties
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
-    depend = listOf("Vault")
+    depend = listOf("Vault", "PlaceholderAPI")
     softDepend = listOf()
 }
 
