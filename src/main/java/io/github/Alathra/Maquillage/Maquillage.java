@@ -6,6 +6,7 @@ import io.github.Alathra.Maquillage.config.ConfigHandler;
 import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.placeholders.PlaceholderHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ public class Maquillage extends JavaPlugin {
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
     private static VaultHook vaultHook;
+    private PlaceholderHandler placeholderHandler;
 
     public static Maquillage getInstance() {
         return instance;
@@ -30,12 +32,14 @@ public class Maquillage extends JavaPlugin {
         commandHandler = new CommandHandler(instance);
         listenerHandler = new ListenerHandler(instance);
         vaultHook = new VaultHook(instance);
+        placeholderHandler = new PlaceholderHandler(instance);
 
         configHandler.onLoad();
         databaseHandler.onLoad();
         commandHandler.onLoad();
         listenerHandler.onLoad();
         vaultHook.onLoad();
+        placeholderHandler.onLoad();
 
         NameColorHandler.loadColors();
         TagHandler.loadTags();
@@ -46,16 +50,18 @@ public class Maquillage extends JavaPlugin {
         databaseHandler.onEnable();
         commandHandler.onEnable();
         listenerHandler.onEnable();
-        vaultHook.onEnable();
 
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             Bukkit.getLogger().warning("Vault is required for this plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        vaultHook.onEnable();
+
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
             Bukkit.getLogger().warning("PlaceholderAPI is required for this plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
+        placeholderHandler.onEnable();
     }
 
     public void onDisable() {
@@ -64,6 +70,7 @@ public class Maquillage extends JavaPlugin {
         commandHandler.onDisable();
         listenerHandler.onDisable();
         vaultHook.onDisable();
+        placeholderHandler.onDisable();
     }
 
     @NotNull
