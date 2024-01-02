@@ -14,23 +14,18 @@ public class TagPlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public @NotNull String getName() {
-        return "tag";
-    }
-
-    @Override
     public @Nullable String getRequiredPlugin() {
         return "Maquillage";
     }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "maquillage";
+        return "maquillage_tag";
     }
 
     @Override
     public @NotNull String getAuthor() {
-        return "rooooo-b";
+        return "rooooose-b";
     }
 
     @Override

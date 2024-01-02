@@ -14,23 +14,18 @@ public class NameColorPlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public @NotNull String getName() {
-        return "name_color";
-    }
-
-    @Override
     public @Nullable String getRequiredPlugin() {
         return "Maquillage";
     }
 
     @Override
     public @NotNull String getIdentifier() {
-        return "maquillage";
+        return "maquillage_namecolor";
     }
 
     @Override
     public @NotNull String getAuthor() {
-        return "rooooo-b";
+        return "rooooose-b";
     }
 
     @Override
