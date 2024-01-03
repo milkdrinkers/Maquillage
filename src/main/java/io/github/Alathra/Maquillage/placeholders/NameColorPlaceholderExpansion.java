@@ -1,7 +1,9 @@
 package io.github.Alathra.Maquillage.placeholders;
 
 import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,5 +33,10 @@ public class NameColorPlaceholderExpansion extends PlaceholderExpansion {
     @Override
     public @NotNull String getVersion() {
         return "1.0.0";
+    }
+
+    @Override
+    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
+        return NameColorHandler.getPlayerColorString(player.getPlayer()) + player.getName();
     }
 }

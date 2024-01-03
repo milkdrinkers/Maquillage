@@ -1,7 +1,7 @@
 # Database Settings
 db:
   type: "h2" # Available types: "h2", "mysql", "mariadb"
-  prefix: "example_" # The table prefix
+  prefix: "maquillage_" # The table prefix
   host: "127.0.0.1"
   port: 3306
   database: "database_name"
