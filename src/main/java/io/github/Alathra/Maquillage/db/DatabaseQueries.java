@@ -201,6 +201,7 @@ public abstract class DatabaseQueries {
 
             return context
                 .select(TAGS_PLAYERS.TAG)
+                .from(TAGS_PLAYERS)
                 .where(TAGS_PLAYERS.PLAYER.equal(uuid))
                 .fetchOne();
         } catch (SQLException e) {
@@ -226,6 +227,7 @@ public abstract class DatabaseQueries {
 
             return context
                 .select(COLORS_PLAYERS.COLOR)
+                .from(COLORS_PLAYERS)
                 .where(COLORS_PLAYERS.PLAYER.equal(uuid))
                 .fetchOne();
         } catch (SQLException e) {
