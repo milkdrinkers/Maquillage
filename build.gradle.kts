@@ -1,8 +1,6 @@
-import org.jooq.codegen.GenerationTool
-import org.jooq.meta.jaxb.Configuration
-import org.jooq.meta.jaxb.Database
-import org.jooq.meta.jaxb.Generator
-import org.jooq.meta.jaxb.Jdbc
+import org.flywaydb.gradle.task.FlywayMigrateTask
+import org.jooq.codegen.gradle.CodegenTask
+import org.jooq.meta.jaxb.Logging
 import java.time.Instant
 
 plugins {
@@ -13,6 +11,7 @@ plugins {
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
 //    id("io.papermc.paperweight.userdev") version "1.5.9" // Used to develop internal plugins using Mojang mappings, See https://github.com/PaperMC/paperweight
     id("org.flywaydb.flyway") version "10.4.1" // Database migrations
+    id("org.jooq.jooq-codegen-gradle") version "3.19.1"
 
     eclipse
     idea
@@ -71,6 +70,7 @@ dependencies {
     library("org.flywaydb:flyway-mysql:10.4.1")
     library("org.flywaydb:flyway-database-hsqldb:10.4.1")
     library("org.jooq:jooq:3.19.1")
+    jooqCodegen("com.h2database:h2:2.2.224")
 
     // JDBC Drivers
     library("org.hsqldb:hsqldb:2.7.2")
@@ -91,9 +91,6 @@ tasks {
         // See https://openjdk.java.net/jeps/247 for more information.
         options.release.set(17)
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
-        
-        // Generate jOOQ sources before compilation
-        dependsOn(project.tasks.named("generateSources"))
     }
 
     javadoc {
@@ -187,64 +184,62 @@ flyway {
     )
 }
 
-task("generateSources") {
-    this.group = "jooq"
-    val dir = layout.buildDirectory.dir("generated-src/jooq").get()
 
-    // Ensure database schema has been prepared by Flyway before generating the jOOQ sources
-    dependsOn.add(tasks.flywayMigrate)
+jooq {
+    configuration {
+        logging = Logging.ERROR
+        jdbc {
+            driver = "org.h2.Driver"
+            url = flyway.url
+            user = flyway.user
+            password = flyway.password
+        }
+        generator {
+            database {
+                name = "org.jooq.meta.h2.H2Database"
+                includes = ".*"
+                excludes = "(flyway_schema_history)|(?i:information_schema\\..*)|(?i:system_lobs\\..*)"  // Exclude db specific files
+                inputSchema = "PUBLIC"
+                schemaVersionProvider = "SELECT :schema_name || '_' || MAX(\"version\") FROM \"flyway_schema_history\"" // Grab version from Flyway
+            }
+            target {
+                packageName = "${mainPackage}.db.schema"
+                directory = layout.buildDirectory.dir("generated-src/jooq").get().toString()
+                withClean(true)
+            }
+        }
+    }
+}
+
+tasks.withType<FlywayMigrateTask>().configureEach { // Declare Flyway migration scripts as inputs
+    inputs.files(
+        fileTree("src/main/resources/db/migration"),
+        fileTree("src/main/java/${mainPackage}/db/flyway/migration")
+    ).withPropertyName("flyway-migration-files").withPathSensitivity(PathSensitivity.RELATIVE)
+
+    outputs.files(
+        fileTree("${project.layout.buildDirectory.get()}/generated/flyway"),
+    ).withPropertyName("flyway-files")
+}
+
+tasks.withType<CodegenTask>().configureEach {
+    dependsOn.add(tasks.flywayMigrate) // Ensure database schema has been prepared by Flyway before generating the jOOQ sources
 
     // Declare Flyway migration scripts as inputs on the jOOQ task
-    inputs.files(fileTree("src/main/resources/db/migration"), fileTree("src/main/java/${mainPackage}/db/flyway/migration"))
-        .withPropertyName("migration files")
-        .withPathSensitivity(PathSensitivity.RELATIVE)
-
-    // jOOQ Generation Task
-    doLast {
-        GenerationTool.generate(Configuration()
-            .withLogging(org.jooq.meta.jaxb.Logging.WARN)
-            .withJdbc(Jdbc()
-                .withDriver("org.h2.Driver")
-                .withUrl(flyway.url)
-                .withUser(flyway.user)
-                .withPassword(flyway.password)
-            )
-            .withGenerator(Generator()
-                .withName("org.jooq.codegen.DefaultGenerator")
-                .withDatabase(Database()
-                    .withName("org.jooq.meta.h2.H2Database")
-                    .withIncludes(".*")
-                    .withExcludes("(flyway_schema_history)|(?i:information_schema\\..*)|(?i:system_lobs\\..*)") // Exclude db specific files
-                    .withInputSchema("PUBLIC")
-                    .withSchemaVersionProvider("SELECT :schema_name || '_' || MAX(\"version\") FROM \"flyway_schema_history\"") // Grab version from Flyway
-                )
-                .withTarget(org.jooq.meta.jaxb.Target()
-                    .withPackageName("${mainPackage}.db.schema")
-                    .withDirectory(dir.toString())
-                    .withClean(true)
-                )
-            )
-        )
-    }
+    inputs.files(
+        fileTree("src/main/resources/db/migration"),
+        fileTree("src/main/java/${mainPackage}/db/flyway/migration")
+    ).withPropertyName("flyway-migration-files").withPathSensitivity(PathSensitivity.RELATIVE)
 
     // Declare outputs
-    outputs.dir(dir)
-        .withPropertyName("jooq generated sources")
+    val dir = layout.buildDirectory.dir("generated-src/jooq").get()
+    outputs.dir(dir).withPropertyName("jooq-generated-sources")
     sourceSets {
         get("main").java.srcDir(dir)
     }
-//
-//    // Enable build caching
-//    outputs.cacheIf { true }
-}
 
-buildscript {
-    dependencies {
-        classpath("org.jooq:jooq:3.19.1")
-        classpath("org.jooq:jooq-meta:3.19.1")
-        classpath("org.jooq:jooq-codegen:3.19.1")
-        classpath("com.h2database:h2:2.2.224")
-    }
+    // Enable build caching
+    outputs.cacheIf { true }
 }
 
 // Apply custom version arg
