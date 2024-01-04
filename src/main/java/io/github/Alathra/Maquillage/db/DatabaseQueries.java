@@ -1,22 +1,21 @@
 package io.github.Alathra.Maquillage.db;
 
-import io.github.Alathra.Maquillage.namecolor.NameColor;
 import io.github.Alathra.Maquillage.utility.DB;
 import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Record1;
+import org.jooq.Record4;
+import org.jooq.Result;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.UUID;
 
-import static io.github.Alathra.Maquillage.db.schema.Tables.TAGS;
-import static io.github.Alathra.Maquillage.db.schema.Tables.TAGS_PLAYERS;
-import static io.github.Alathra.Maquillage.db.schema.Tables.COLORS;
-import static io.github.Alathra.Maquillage.db.schema.Tables.COLORS_PLAYERS;
+import static io.github.Alathra.Maquillage.db.schema.Tables.*;
 
 /**
  * A holder class for all SQL queries
@@ -36,10 +35,12 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(TAGS)
-                .set(TAGS.TAG, tag)
-                .set(TAGS.PERM, perm)
-                .set(TAGS.DISPLAYNAME, name)
+                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME)
+                .values(
+                    tag,
+                    perm,
+                    name
+                )
                 .returningResult(TAGS.ID)
                 .fetchOne();
 
@@ -66,10 +67,12 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(COLORS)
-                .set(COLORS.COLOR, color)
-                .set(COLORS.PERM, perm)
-                .set(COLORS.DISPLAYNAME, name)
+                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME)
+                .values(
+                    color,
+                    perm,
+                    name
+                )
                 .returningResult(COLORS.ID)
                 .fetchOne();
 
@@ -92,7 +95,12 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             context
-                .insertInto(TAGS_PLAYERS)
+                .insertInto(TAGS_PLAYERS, TAGS_PLAYERS.PLAYER, TAGS_PLAYERS.TAG)
+                .values(
+                    convertUUIDToBytes(uuid),
+                    tag
+                )
+                .onDuplicateKeyUpdate()
                 .set(TAGS_PLAYERS.PLAYER, convertUUIDToBytes(uuid))
                 .set(TAGS_PLAYERS.TAG, tag)
                 .execute();
@@ -109,7 +117,12 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             context
-                .insertInto(COLORS_PLAYERS)
+                .insertInto(COLORS_PLAYERS, COLORS_PLAYERS.PLAYER, COLORS_PLAYERS.COLOR)
+                .values(
+                    convertUUIDToBytes(uuid),
+                    color
+                )
+                .onDuplicateKeyUpdate()
                 .set(COLORS_PLAYERS.PLAYER, convertUUIDToBytes(uuid))
                 .set(COLORS_PLAYERS.COLOR, color)
                 .execute();
