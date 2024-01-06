@@ -2,16 +2,17 @@ package io.github.Alathra.Maquillage.placeholders;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class NameColorPlaceholderExpansion extends PlaceholderExpansion {
+public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
 
     private final Maquillage plugin;
 
-    public NameColorPlaceholderExpansion(Maquillage plugin) {
+    public MaquillagePlaceholderExpansion(Maquillage plugin) {
         this.plugin = plugin;
     }
 
@@ -22,7 +23,7 @@ public class NameColorPlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "maquillage_namecolor";
+        return "maquillage";
     }
 
     @Override
@@ -36,7 +37,16 @@ public class NameColorPlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onRequest(OfflinePlayer player, @NotNull String params) {
-        return NameColorHandler.getPlayerColorString(player.getPlayer()) + player.getName();
+    public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
+        if (params.equals("namecolor"))
+            return NameColorHandler.getPlayerColorString(player) + player.getName();
+
+        if (params.equals("namecolor_essentialsnick"))
+            return NameColorHandler.getPlayerColorString(player) + " %essentials_nickname_stripped%";
+
+        if (params.equals("tag"))
+            return TagHandler.getPlayerTagString(player);
+
+        return "Error";
     }
 }

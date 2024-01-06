@@ -18,9 +18,7 @@ public class PlaceholderHandler implements Reloadable {
 
     @Override
     public void onEnable() {
-        new NameColorPlaceholderExpansion(plugin).register();
-        new TagPlaceholderExpansion(plugin).register();
-
+        new MaquillagePlaceholderExpansion(plugin).register();
     }
 
     @Override
