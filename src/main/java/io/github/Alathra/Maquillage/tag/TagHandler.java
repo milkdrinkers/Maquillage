@@ -111,7 +111,10 @@ public class TagHandler {
     }
 
     public static String getPlayerTagString(UUID uuid) {
-        return loadedTags.get(playerTags.get(uuid)).getTag();
+        String playerTagString = loadedTags.get(playerTags.get(uuid)).getTag();
+        if (playerTagString == null)
+            return "";
+        return playerTagString;
     }
 
     public static String getPlayerTagString(Player p) {

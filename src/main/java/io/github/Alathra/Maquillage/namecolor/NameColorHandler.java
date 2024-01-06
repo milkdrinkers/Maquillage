@@ -121,7 +121,10 @@ public class NameColorHandler {
      * @return Color as a string that can be parsed by Adventure
      */
     public static String getPlayerColorString(UUID uuid) {
-        return loadedColors.get(playerColors.get(uuid)).getColor();
+        String playerColorString = loadedColors.get(playerColors.get(uuid)).getColor();
+        if (playerColorString == null)
+            return "<white>";
+        return playerColorString;
     }
 
     public static String getPlayerColorString(Player p) {
