@@ -45,13 +45,13 @@ public class EditColorNameConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = NameColorHandler.updateColor(color.getColor(), color.getPerm(), updatedName, color.getIdentifier(), color.getID());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
+                    player.sendMessage(ColorParser.of("<green>The color name was successfully updated!").build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color name was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color was not updated.").build());
+            player.sendMessage(ColorParser.of("<red>The color name was not updated.").build());
             return Prompt.END_OF_CONVERSATION;
         }
 
