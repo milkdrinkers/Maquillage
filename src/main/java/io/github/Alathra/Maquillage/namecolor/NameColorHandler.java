@@ -118,6 +118,18 @@ public class NameColorHandler {
         return ID;
     }
 
+    public static boolean updateDBColor(String color, String perm, String name, String identifier, int ID) {
+        return DatabaseQueries.updateColor(color, perm, name, identifier, ID);
+    }
+
+    public static boolean updateColor(String color, String perm, String name, String identifier, int ID) {
+        boolean success = updateDBColor(color, perm, name, identifier, ID);
+        if (!success)
+            return false;
+        addColorToCache(new NameColor(color, perm, name, identifier, ID));
+        return true;
+    }
+
     public static boolean doesPlayerHaveColor (UUID uuid) {
         return playerColors.containsKey(uuid);
     }

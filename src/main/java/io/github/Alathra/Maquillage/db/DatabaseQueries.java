@@ -52,6 +52,27 @@ public abstract class DatabaseQueries {
         }
     }
 
+    public static boolean updateTag(String tag, String perm, String name, String identifier, int ID) {
+        try (
+            Connection con = DB.getConnection()
+            ) {
+            DSLContext context = DB.getContext(con);
+
+            context.update(TAGS)
+                .set(TAGS.TAG, tag)
+                .set(TAGS.PERM, perm)
+                .set(TAGS.DISPLAYNAME, name)
+                .set(TAGS.IDENTIFIER, identifier)
+                .where(TAGS.ID.eq(ID))
+                .execute();
+            return true;
+
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+            return false;
+        }
+    }
+
     /**
      * Saves a new color.
      *
@@ -83,6 +104,27 @@ public abstract class DatabaseQueries {
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
             return -1;
+        }
+    }
+
+    public static boolean updateColor(String color, String perm, String name, String identifier, int ID) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context.update(COLORS)
+                .set(COLORS.COLOR, color)
+                .set(COLORS.PERM, perm)
+                .set(COLORS.DISPLAYNAME, name)
+                .set(COLORS.IDENTIFIER, identifier)
+                .where(COLORS.ID.eq(ID))
+                .execute();
+            return true;
+
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+            return false;
         }
     }
 
