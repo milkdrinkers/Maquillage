@@ -66,6 +66,10 @@ public class TagHandler {
         }
     }
 
+    public static void clearTags() {
+        loadedTags.clear();
+    }
+
     /**
      * Attempts to save a tag to the database
      *

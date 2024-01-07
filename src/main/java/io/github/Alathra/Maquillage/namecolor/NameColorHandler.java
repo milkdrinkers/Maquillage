@@ -71,6 +71,10 @@ public class NameColorHandler {
         }
     }
 
+    public static void clearColors() {
+        loadedColors.clear();
+    }
+
     /**
      * Attempts to save a color to the database
      *

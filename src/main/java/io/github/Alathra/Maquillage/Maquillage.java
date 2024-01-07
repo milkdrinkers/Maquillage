@@ -40,9 +40,6 @@ public class Maquillage extends JavaPlugin {
         listenerHandler.onLoad();
         vaultHook.onLoad();
         placeholderHandler.onLoad();
-
-        NameColorHandler.loadColors();
-        TagHandler.loadTags();
     }
 
     public void onEnable() {
@@ -62,6 +59,9 @@ public class Maquillage extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         placeholderHandler.onEnable();
+
+        NameColorHandler.loadColors();
+        TagHandler.loadTags();
     }
 
     public void onDisable() {
@@ -71,6 +71,9 @@ public class Maquillage extends JavaPlugin {
         listenerHandler.onDisable();
         vaultHook.onDisable();
         placeholderHandler.onDisable();
+
+        NameColorHandler.clearColors();
+        TagHandler.clearTags();
     }
 
     @NotNull
