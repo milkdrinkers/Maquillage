@@ -11,12 +11,14 @@ import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 public class TagHandler {
 
     public static HashMap<UUID, Integer> playerTags = new HashMap<>();
     public static HashMap<Integer, Tag> loadedTags = new HashMap<>();
+    public static HashMap<String, Integer> tagIdentifiers = new HashMap<>();
 
     public static void loadPlayerTag(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
@@ -56,14 +58,17 @@ public class TagHandler {
         Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllTags();
         int index = 0;
         for (Record5 record : result) {
-            loadedTags.put((int) result.getValue(index, "ID"),
+            int ID = (int) result.getValue(index, "ID");
+            String identifier = result.getValue(index, "IDENTIFIER").toString();
+            loadedTags.put(ID,
                 new Tag(
                     result.getValue(index, "TAG").toString(),
                     result.getValue(index, "PERM").toString(),
                     result.getValue(index, "DISPLAYNAME").toString(),
-                    result.getValue(index, "IDENTIFIER").toString(),
-                    (Integer) result.getValue(index, "ID"))
+                    identifier,
+                    ID)
             );
+            tagIdentifiers.put(identifier, ID);
             index ++;
         }
     }
@@ -91,6 +96,7 @@ public class TagHandler {
      */
     public static void addTagToCache(Tag tag) {
         loadedTags.put(tag.getID(), tag);
+        tagIdentifiers.put(tag.getIdentifier(), tag.getID());
     }
 
     /**
@@ -155,6 +161,10 @@ public class TagHandler {
 
     public static Tag getTagByID (int tagID) {
         return loadedTags.get(tagID);
+    }
+
+    public static Tag getTagByIDString (String identifier) {
+        return getTagByID(tagIdentifiers.get(identifier));
     }
 
     public static void setPlayerTag (Player p, Tag tag) {

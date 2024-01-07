@@ -17,6 +17,7 @@ public class NameColorHandler {
 
     public static HashMap<UUID, Integer> playerColors = new HashMap<>();
     public static HashMap<Integer, NameColor> loadedColors = new HashMap<>();
+    public static HashMap<String, Integer> colorIdentifiers = new HashMap<>();
 
     public static void loadPlayerColor(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
@@ -61,14 +62,17 @@ public class NameColorHandler {
         Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllColors();
         int index = 0;
         for (Record5 record : result) {
+            int ID = (int) result.getValue(index, "ID");
+            String identifier = result.getValue(index, "IDENTIFIER").toString();
             loadedColors.put((int) result.getValue(index, "ID"),
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
                     result.getValue(index, "PERM").toString(),
                     result.getValue(index, "DISPLAYNAME").toString(),
-                    result.getValue(index, "IDENTIFIER").toString(),
-                    (Integer) result.getValue(index, "ID"))
+                    identifier,
+                    ID)
             );
+            colorIdentifiers.put(identifier, ID);
             index ++;
         }
     }
@@ -96,6 +100,7 @@ public class NameColorHandler {
      */
     public static void addColorToCache(NameColor color) {
         loadedColors.put(color.getID(), color);
+        colorIdentifiers.put(color.getIdentifier(), color.getID());
     }
 
     /**
@@ -165,6 +170,10 @@ public class NameColorHandler {
 
     public static NameColor getNameColorByID (int colorID) {
         return loadedColors.get(colorID);
+    }
+
+    public static NameColor getNameColorByIDString (String identifier) {
+        return getNameColorByID(colorIdentifiers.get(identifier));
     }
 
     public static void setPlayerColor (Player p, NameColor color) {
