@@ -4,7 +4,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
-import io.github.Alathra.Maquillage.utility.conversations.EditColorColorConversation;
+import io.github.Alathra.Maquillage.utility.conversations.color.EditColorColorConversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 

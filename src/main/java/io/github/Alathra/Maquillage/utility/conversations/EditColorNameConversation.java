@@ -1,4 +1,0 @@
-package io.github.Alathra.Maquillage.utility.conversations;
-
-public class EditColorNameConversation {
-}

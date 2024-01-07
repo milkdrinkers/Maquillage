@@ -2,9 +2,9 @@ package io.github.Alathra.Maquillage.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.utility.conversations.ColorConversation;
+import io.github.Alathra.Maquillage.utility.conversations.color.ColorConversation;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
-import io.github.Alathra.Maquillage.utility.conversations.TagConversation;
+import io.github.Alathra.Maquillage.utility.conversations.tag.TagConversation;
 import org.bukkit.conversations.*;
 import org.bukkit.plugin.Plugin;
 
