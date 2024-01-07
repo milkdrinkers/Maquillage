@@ -28,8 +28,7 @@ public class PopulateButtons {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
-        if (type != MaquillageGuiType.ADMIN)
-            skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
+        skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
 
         // Sets color to white if player does not have a color selected
         if (!NameColorHandler.doesPlayerHaveColor(p))

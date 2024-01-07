@@ -11,17 +11,12 @@ public class GuiHandler {
 
     public enum MaquillageGuiType {
         COLOR,
-        TAG,
-        ADMIN
+        TAG
     }
 
     public static PaginatedGui buildGui(MaquillageGuiType type) {
         PaginatedGui gui;
         switch (type) {
-            case ADMIN -> {
-                // TODO: add admin gui
-                return null;
-            }
             case TAG, COLOR -> {
                 // TODO: make title configurable
                 gui = Gui.paginated()
@@ -42,9 +37,6 @@ public class GuiHandler {
 
     public static void populateGui(MaquillageGuiType type, PaginatedGui gui, Player p) {
         switch (type) {
-            case ADMIN -> {
-                return;
-            }
             case TAG -> {
                 PopulateBorder.populateBorder(gui);
                 PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
@@ -60,9 +52,6 @@ public class GuiHandler {
 
     public static void reloadGui(MaquillageGuiType type, PaginatedGui gui, Player p) {
         switch (type) {
-            case ADMIN -> {
-                return;
-            }
             case TAG -> {
                 gui.clearPageItems();
                 PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);

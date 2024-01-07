@@ -31,11 +31,6 @@ public class CommandMaquillage {
                         PaginatedGui gui = GuiHandler.buildGui(GuiHandler.MaquillageGuiType.COLOR);
                         GuiHandler.populateGui(GuiHandler.MaquillageGuiType.COLOR, gui, sender);
                         gui.open(sender);
-                    }),
-                new CommandAPICommand("admin")
-                    .withPermission("maquillage.admin")
-                    .executesPlayer((sender, args) -> {
-
                     })
             )
             .register();
