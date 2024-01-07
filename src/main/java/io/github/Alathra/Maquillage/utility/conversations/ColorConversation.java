@@ -13,6 +13,7 @@ public class ColorConversation {
     static String color;
     static String permission;
     static String name;
+    static String identifier;
 
     public static Prompt newColorPrompt = new StringPrompt() {
         @Override
@@ -36,6 +37,19 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             name = input;
+            return identifierPrompt;
+        }
+    };
+
+    static Prompt identifierPrompt = new StringPrompt() {
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
+            return "Input the identifier.";
+        }
+
+        @Override
+        public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
+            identifier = input;
             return permissionPrompt;
         }
     };
@@ -59,7 +73,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHandler.addColor(color, permission, name);
+                int ID = NameColorHandler.addColor(color, permission, name, identifier);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {
@@ -76,7 +90,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             String colorName = color + player.getName();
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the permission node " + permission + " and the display name " + name + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the display name " + name + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

@@ -7,12 +7,14 @@ public class Tag {
     private String tag;
     private String perm;
     private String name;
+    private String identifier;
     private int ID;
 
-    public Tag(String tag, String perm, String name, int ID) {
+    public Tag(String tag, String perm, String name, String identifier, int ID) {
         this.tag = tag;
         this.perm = perm;
         this.name = name;
+        this.identifier = identifier;
         this.ID = ID;
     }
 
@@ -43,6 +45,15 @@ public class Tag {
 
     public boolean hasPerm(Player p) {
         return Maquillage.getVaultHook().getVault().has(p, this.getPerm());
+    }
+
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     public int getID() {

@@ -5,10 +5,7 @@ import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jooq.DSLContext;
-import org.jooq.Record1;
-import org.jooq.Record4;
-import org.jooq.Result;
+import org.jooq.*;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -28,18 +25,19 @@ public abstract class DatabaseQueries {
      * @param tag  the tag
      * @return the id of the tag or -1 if saving failed
      */
-    public static int saveTag(String tag, String perm, String name) {
+    public static int saveTag(String tag, String perm, String name, String identifier) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME)
+                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
                 .values(
                     tag,
                     perm,
-                    name
+                    name,
+                    identifier
                 )
                 .returningResult(TAGS.ID)
                 .fetchOne();
@@ -60,18 +58,19 @@ public abstract class DatabaseQueries {
      * @param color the color
      * @return the id of the color or -1 if saving failed
      */
-    public static int saveColor(String color, String perm, String name) {
+    public static int saveColor(String color, String perm, String name, String identifier) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME)
+                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
                 .values(
                     color,
                     perm,
-                    name
+                    name,
+                    identifier
                 )
                 .returningResult(COLORS.ID)
                 .fetchOne();
@@ -172,14 +171,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all tags. Should be called on server start and reload.
-    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllTags() {
+    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllTags() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME)
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
                 .from(TAGS)
                 .fetch();
         } catch (SQLException e) {
@@ -189,14 +188,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all colors. Should be called on server start and reload.
-    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllColors() {
+    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllColors() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME)
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
                 .from(COLORS)
                 .fetch();
         } catch (SQLException e) {

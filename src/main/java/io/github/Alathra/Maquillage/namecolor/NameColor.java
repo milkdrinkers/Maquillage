@@ -7,12 +7,14 @@ public class NameColor {
     private String color;
     private String perm;
     private String name;
+    private String identifier;
     private int ID;
 
-    public NameColor(String color, String perm, String name, int ID) {
+    public NameColor(String color, String perm, String name, String identifier, int ID) {
         this.color = color;
         this.perm = perm;
         this.name = name;
+        this.identifier = identifier;
         this.ID = ID;
     }
 

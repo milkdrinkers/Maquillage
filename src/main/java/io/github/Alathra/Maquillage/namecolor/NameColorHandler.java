@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record4;
+import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
@@ -57,15 +58,16 @@ public class NameColorHandler {
     }
 
     public static void loadColors() {
-        Result<Record4<Integer, String, String, String>> result =  DatabaseQueries.loadAllColors();
+        Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllColors();
         int index = 0;
-        for (Record4 record : result) {
+        for (Record5 record : result) {
             loadedColors.put((int) result.getValue(index, "ID"),
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
                     result.getValue(index, "PERM").toString(),
                     result.getValue(index, "DISPLAYNAME").toString(),
-                        (Integer) result.getValue(index, "ID"))
+                    result.getValue(index, "IDENTIFIER").toString(),
+                    (Integer) result.getValue(index, "ID"))
             );
             index ++;
         }
@@ -83,8 +85,8 @@ public class NameColorHandler {
      * @param name
      * @return value of {@link DatabaseQueries#saveColor}
      */
-    public static int addColorToDB(String color, String perm, String name) {
-        return DatabaseQueries.saveColor(color, perm, name);
+    public static int addColorToDB(String color, String perm, String name, String identifier) {
+        return DatabaseQueries.saveColor(color, perm, name, identifier);
     }
 
     /**
@@ -104,10 +106,10 @@ public class NameColorHandler {
      * @param name
      * @return value of {@link NameColorHandler#addColorToDB}
      */
-    public static int addColor(String color, String perm, String name) {
-        int ID = addColorToDB(color, perm, name);
+    public static int addColor(String color, String perm, String name, String identifier) {
+        int ID = addColorToDB(color, perm, name, identifier);
         if (ID != -1)
-            addColorToCache(new NameColor(color, perm, name, ID));
+            addColorToCache(new NameColor(color, perm, name, identifier, ID));
         return ID;
     }
 

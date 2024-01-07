@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record4;
+import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
@@ -52,14 +53,15 @@ public class TagHandler {
     }
 
     public static void loadTags() {
-        Result<Record4<Integer, String, String, String>> result =  DatabaseQueries.loadAllTags();
+        Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllTags();
         int index = 0;
-        for (Record4 record : result) {
+        for (Record5 record : result) {
             loadedTags.put((int) result.getValue(index, "ID"),
                 new Tag(
                     result.getValue(index, "TAG").toString(),
                     result.getValue(index, "PERM").toString(),
                     result.getValue(index, "DISPLAYNAME").toString(),
+                    result.getValue(index, "IDENTIFIER").toString(),
                     (Integer) result.getValue(index, "ID"))
             );
             index ++;
@@ -78,8 +80,8 @@ public class TagHandler {
      * @param name
      * @return value of {@link DatabaseQueries#saveTag}
      */
-    public static int addTagToDB(String tag, String perm, String name) {
-        return DatabaseQueries.saveTag(tag, perm, name);
+    public static int addTagToDB(String tag, String perm, String name, String identifier) {
+        return DatabaseQueries.saveTag(tag, perm, name, identifier);
     }
 
     /**
@@ -99,10 +101,10 @@ public class TagHandler {
      * @param name
      * @return value of {@link TagHandler#addTagToDB}
      */
-    public static int addTag(String tag, String perm, String name) {
-        int ID = addTagToDB(tag, perm, name);
+    public static int addTag(String tag, String perm, String name, String identifier) {
+        int ID = addTagToDB(tag, perm, name, identifier);
         if (ID != -1)
-            addTagToCache(new Tag(tag, perm, name, ID));
+            addTagToCache(new Tag(tag, perm, name, identifier, ID));
         return ID;
     }
 

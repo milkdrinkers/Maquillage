@@ -3,6 +3,7 @@ CREATE TABLE IF NOT EXISTS ${tablePrefix}tags (
     tag TINYTEXT NOT NULL,
     perm TINYTEXT,
     displayname TINYTEXT,
+    identifier TINYTEXT,
     PRIMARY KEY (id)
 )${tableDefaults};
 
@@ -11,6 +12,7 @@ CREATE TABLE IF NOT EXISTS ${tablePrefix}colors (
     color TINYTEXT NOT NULL,
     perm TINYTEXT,
     displayname TINYTEXT,
+    identifier TINYTEXT,
     PRIMARY KEY (id)
 )${tableDefaults};
 
