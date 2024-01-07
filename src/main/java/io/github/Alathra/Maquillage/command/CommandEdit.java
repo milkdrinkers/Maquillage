@@ -5,6 +5,9 @@ import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorColorConversation;
+import io.github.Alathra.Maquillage.utility.conversations.color.EditColorNameConversation;
+import io.github.Alathra.Maquillage.utility.conversations.color.EditColorPermConversation;
+import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
@@ -25,14 +28,23 @@ public class CommandEdit {
                         new CommandAPICommand("color")
                             .executesPlayer((sender, args) -> {
                                 factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHandler.getNameColorByIDString(args.get(0).toString())));
+
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             }),
                         new CommandAPICommand("name")
                             .executesPlayer((sender, args) -> {
+                                factory.withFirstPrompt(EditColorNameConversation.editNamePrompt(NameColorHandler.getNameColorByIDString(args.get(0).toString())));
 
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             }),
                         new CommandAPICommand("permission")
                             .executesPlayer((sender, args) -> {
+                                factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHandler.getNameColorByIDString(args.get(0).toString())));
 
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             })
                     ),
                 new CommandAPICommand("tag")
