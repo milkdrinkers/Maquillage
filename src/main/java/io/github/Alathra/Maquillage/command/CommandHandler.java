@@ -27,6 +27,7 @@ public class CommandHandler implements Reloadable {
         // Register commands here
         new CommandCreate();
         new CommandMaquillage();
+        new CommandEdit();
     }
 
     @Override
