@@ -16,6 +16,7 @@ public class CommandCreate {
     public CommandCreate() {
         new CommandAPICommand("maquillagecreate")
             .withAliases("mcreate", "maqcreate")
+            .withPermission("maquillage.create")
             .withShortDescription("Creates a new Maquillage color or tag.")
             .withSubcommands(
                 new CommandAPICommand("color")
