@@ -20,7 +20,6 @@ public class CommandCreate {
             .withShortDescription("Creates a new Maquillage color or tag.")
             .withSubcommands(
                 new CommandAPICommand("color")
-                    .withAliases("colour")
                     .withPermission("maquillage.create.color")
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(ColorConversation.newColorPrompt);
@@ -29,7 +28,6 @@ public class CommandCreate {
                         conversation.begin();
                     }),
                 new CommandAPICommand("tag")
-                    .withAliases("prefix")
                     .withPermission("maquillage.create.tag")
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(TagConversation.newTagPrompt);
