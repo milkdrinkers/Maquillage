@@ -46,6 +46,14 @@ public class NameColor {
         return Maquillage.getVaultHook().getVault().has(p, this.getPerm());
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
     public int getID() {
         return ID;
     }
