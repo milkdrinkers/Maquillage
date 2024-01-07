@@ -51,6 +51,11 @@ public class TagConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
+            if (TagHandler.tagIdentifiers.containsKey(input)) {
+                Player player = (Player) conversationContext.getForWhom();
+                player.sendMessage(ColorParser.of("<red>This identifier is already in use. Identifiers have to be unique").build());
+                return identifierPrompt;
+            }
             identifier = input;
             return permissionPrompt;
         }

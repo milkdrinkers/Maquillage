@@ -12,7 +12,7 @@ public class CommandCreate {
 
     Plugin plugin = Maquillage.getInstance();
     ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
-    //TODO: duplication check for identifier strings
+
     public CommandCreate() {
         new CommandAPICommand("maquillagecreate")
             .withAliases("mcreate", "maqcreate")
