@@ -7,8 +7,11 @@ public class PlaceholderHandler implements Reloadable {
 
     private final Maquillage plugin;
 
+    private final MaquillagePlaceholderExpansion expansion;
+
     public PlaceholderHandler(Maquillage plugin) {
         this.plugin = plugin;
+        this.expansion = new MaquillagePlaceholderExpansion(plugin);
     }
 
     @Override
@@ -18,11 +21,11 @@ public class PlaceholderHandler implements Reloadable {
 
     @Override
     public void onEnable() {
-        new MaquillagePlaceholderExpansion(plugin).register();
+        expansion.register();
     }
 
     @Override
     public void onDisable() {
-
+        expansion.unregister();
     }
 }
