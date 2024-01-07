@@ -27,7 +27,7 @@ public class EditTagNameConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current name for " + tag.getTag() + player.getName() + " is " + currentName).build());
+            player.sendMessage(ColorParser.of("The current name for " + tag.getTag() + player.getName() + "<white> is " + currentName).build());
             return "What do you want the new name to be?";
         }
 
