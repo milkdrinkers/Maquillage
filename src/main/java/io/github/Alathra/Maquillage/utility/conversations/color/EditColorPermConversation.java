@@ -18,8 +18,8 @@ public class EditColorPermConversation {
     static NameColor color;
 
     public static Prompt editPermPrompt(NameColor color) {
-        EditColorNameConversation.color = color;
-        EditColorNameConversation.currentName = color.getName();
+        EditColorPermConversation.color = color;
+        EditColorPermConversation.currentPerm = color.getName();
         return editPermStringPrompt;
     }
 
@@ -28,7 +28,7 @@ public class EditColorPermConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of("The current permission node for " + color.getColor() + player.getName() + " is " + currentPerm).build());
-            return "What do you want the new name to be?";
+            return "What do you want the new permission node to be?";
         }
 
         @Override
