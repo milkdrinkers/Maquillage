@@ -11,6 +11,7 @@ import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class NameColorHandler {
@@ -186,6 +187,10 @@ public class NameColorHandler {
 
     public static NameColor getNameColorByIDString (String identifier) {
         return getNameColorByID(colorIdentifiers.get(identifier));
+    }
+
+    public static List<String> getAllIdentifiers() {
+        return colorIdentifiers.keySet().stream().toList();
     }
 
     public static void setPlayerColor (Player p, NameColor color) {

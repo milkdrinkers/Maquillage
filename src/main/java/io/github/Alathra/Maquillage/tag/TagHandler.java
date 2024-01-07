@@ -12,6 +12,7 @@ import org.jooq.Result;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.UUID;
 
 public class TagHandler {
@@ -177,6 +178,10 @@ public class TagHandler {
 
     public static Tag getTagByIDString (String identifier) {
         return getTagByID(tagIdentifiers.get(identifier));
+    }
+
+    public static List<String> getAllIdentifiers() {
+        return tagIdentifiers.keySet().stream().toList();
     }
 
     public static void setPlayerTag (Player p, Tag tag) {
