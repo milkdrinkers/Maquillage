@@ -40,7 +40,7 @@ public class EditColorColorConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHandler.updateColor(color.getColor(), color.getPerm(), color.getName(), updatedColor, color.getID());
+                boolean success = NameColorHandler.updateColor(updatedColor, color.getPerm(), color.getName(), color.getIdentifier(), color.getID());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
                 } else {
