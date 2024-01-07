@@ -11,7 +11,6 @@ import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import net.kyori.adventure.text.Component;
 
 public class CommandMaquillage {
-    // TODO: logic
     public CommandMaquillage() {
         new CommandAPICommand("maquillage")
             .withAliases("maq")

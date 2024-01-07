@@ -13,7 +13,6 @@ public class CommandCreate {
     Plugin plugin = Maquillage.getInstance();
     ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
 
-    // TODO: save tags and colors to DB
     public CommandCreate() {
         new CommandAPICommand("maquillagecreate")
             .withAliases("mcreate", "maqcreate")
