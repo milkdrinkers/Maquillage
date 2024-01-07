@@ -1,4 +1,65 @@
 package io.github.Alathra.Maquillage.utility.conversations.tag;
 
+import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.Alathra.Maquillage.tag.Tag;
+import io.github.Alathra.Maquillage.tag.TagHandler;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.FixedSetPrompt;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 public class EditTagPermConversation {
+
+    static String currentPerm;
+    static String updatedPerm;
+    static Tag tag;
+
+    public static Prompt editPermPrompt(Tag tag) {
+        EditTagPermConversation.tag = tag;
+        EditTagPermConversation.currentPerm = tag.getName();
+        return editPermStringPrompt;
+    }
+
+    static Prompt editPermStringPrompt = new StringPrompt() {
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
+            Player player = (Player) conversationContext.getForWhom();
+            player.sendMessage(ColorParser.of("The current permission node for " + tag.getTag() + " is " + currentPerm).build());
+            return "What do you want the new permission node to be?";
+        }
+
+        @Override
+        public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
+            updatedPerm = s;
+            return confirmPrompt;
+        }
+    };
+
+    static Prompt confirmPrompt = new FixedSetPrompt("YES", "NO", "yes", "no", "Yes", "No") {
+        @Override
+        protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
+            Player player = (Player) conversationContext.getForWhom();
+            if (s.equalsIgnoreCase("YES")) {
+                boolean success = TagHandler.updateTag(tag.getTag(), updatedPerm, tag.getName(), tag.getIdentifier(), tag.getID());
+                if (success) {
+                    player.sendMessage(ColorParser.of("<green>The permission node was successfully updated!").build());
+                } else {
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The permission node was not updated.").build());
+                }
+                return Prompt.END_OF_CONVERSATION;
+            }
+            player.sendMessage(ColorParser.of("<red>The permission node was not updated.").build());
+            return Prompt.END_OF_CONVERSATION;
+        }
+
+        @Override
+        public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
+            Player player = (Player) conversationContext.getForWhom();
+            player.sendMessage(ColorParser.of("Do you want to update the permission node for " + tag.getTag() + "<white> to " + updatedPerm + "?").build());
+            return "YES/NO?";
+        }
+    };
 }

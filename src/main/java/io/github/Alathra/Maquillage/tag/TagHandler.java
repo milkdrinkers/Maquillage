@@ -114,6 +114,18 @@ public class TagHandler {
         return ID;
     }
 
+    public static boolean updateDBTag(String tag, String perm, String name, String identifier, int ID) {
+        return DatabaseQueries.updateTag(tag, perm, name, identifier, ID);
+    }
+
+    public static boolean updateTag(String tag, String perm, String name, String identifier, int ID) {
+        boolean success = updateDBTag(tag, perm, name, identifier, ID);
+        if (!success)
+            return false;
+        addTagToCache(new Tag(tag, perm, name, identifier, ID));
+        return true;
+    }
+
     public static boolean doesPlayerHaveTag (UUID uuid) {
         return playerTags.containsKey(uuid);
     }

@@ -3,10 +3,14 @@ package io.github.Alathra.Maquillage.command;
 import dev.jorel.commandapi.CommandAPICommand;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorColorConversation;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorNameConversation;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorPermConversation;
+import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagNameConversation;
+import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagPermConversation;
+import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagTagConversation;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
@@ -52,15 +56,24 @@ public class CommandEdit {
                     .withSubcommands(
                         new CommandAPICommand("tag")
                             .executesPlayer((sender, args) -> {
+                                factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHandler.getTagByIDString(args.get(0).toString())));
 
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             }),
                         new CommandAPICommand("name")
                             .executesPlayer((sender, args) -> {
+                                factory.withFirstPrompt(EditTagNameConversation.editNamePrompt(TagHandler.getTagByIDString(args.get(0).toString())));
 
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             }),
                         new CommandAPICommand("permission")
                             .executesPlayer((sender, args) -> {
+                                factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHandler.getTagByIDString(args.get(0).toString())));
 
+                                Conversation conversation = factory.buildConversation(sender);
+                                conversation.begin();
                             })
                     )
             )
