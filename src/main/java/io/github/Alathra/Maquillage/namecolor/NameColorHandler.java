@@ -131,6 +131,23 @@ public class NameColorHandler {
         return true;
     }
 
+    public static boolean removeColorFromDB(NameColor color) {
+        return DatabaseQueries.removeColor(color.getID());
+    }
+
+    public static void uncacheColor(NameColor color) {
+        loadedColors.remove(color.getID());
+        colorIdentifiers.remove(color.getIdentifier());
+    }
+
+    public static boolean removeColor(NameColor color) {
+        boolean success = removeColorFromDB(color);
+        if (!success)
+            return false;
+        uncacheColor(color);
+        return true;
+    }
+
     public static boolean doesPlayerHaveColor (UUID uuid) {
         return playerColors.containsKey(uuid);
     }
@@ -191,6 +208,10 @@ public class NameColorHandler {
 
     public static List<String> getAllIdentifiers() {
         return colorIdentifiers.keySet().stream().toList();
+    }
+
+    public static boolean doesIdentifierExist(String identifier) {
+        return colorIdentifiers.containsKey(identifier);
     }
 
     public static void setPlayerColor (Player p, NameColor color) {

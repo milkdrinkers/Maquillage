@@ -73,6 +73,23 @@ public abstract class DatabaseQueries {
         }
     }
 
+    public static boolean removeTag(int ID) {
+        try (
+            Connection con = DB.getConnection();
+            ) {
+            DSLContext context = DB.getContext(con);
+
+            context.deleteFrom(TAGS)
+                .where(TAGS.ID.eq(ID))
+                .execute();
+            return true;
+
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+            return false;
+        }
+    }
+
     /**
      * Saves a new color.
      *
@@ -118,6 +135,23 @@ public abstract class DatabaseQueries {
                 .set(COLORS.PERM, perm)
                 .set(COLORS.DISPLAYNAME, name)
                 .set(COLORS.IDENTIFIER, identifier)
+                .where(COLORS.ID.eq(ID))
+                .execute();
+            return true;
+
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+            return false;
+        }
+    }
+
+    public static boolean removeColor(int ID) {
+        try (
+            Connection con = DB.getConnection();
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context.deleteFrom(COLORS)
                 .where(COLORS.ID.eq(ID))
                 .execute();
             return true;

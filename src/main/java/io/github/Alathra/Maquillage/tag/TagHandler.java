@@ -127,6 +127,23 @@ public class TagHandler {
         return true;
     }
 
+    public static boolean removeTagFromDB(Tag tag) {
+        return DatabaseQueries.removeTag(tag.getID());
+    }
+
+    public static void uncacheTag(Tag tag) {
+        loadedTags.remove(tag.getID());
+        tagIdentifiers.remove(tag.getIdentifier());
+    }
+
+    public static boolean removeTag(Tag tag) {
+        boolean success = removeTagFromDB(tag);
+        if (!success)
+            return false;
+        uncacheTag(tag);
+        return true;
+    }
+
     public static boolean doesPlayerHaveTag (UUID uuid) {
         return playerTags.containsKey(uuid);
     }
@@ -182,6 +199,10 @@ public class TagHandler {
 
     public static List<String> getAllIdentifiers() {
         return tagIdentifiers.keySet().stream().toList();
+    }
+
+    public static boolean doesIdentifierExist(String identifier) {
+        return tagIdentifiers.containsKey(identifier);
     }
 
     public static void setPlayerTag (Player p, Tag tag) {
