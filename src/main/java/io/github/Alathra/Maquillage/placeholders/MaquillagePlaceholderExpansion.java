@@ -38,14 +38,23 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
 
     @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
-        if (params.equals("namecolor"))
-            return NameColorHandler.getPlayerColorString(player) + player.getName();
+        if (params.equals("namecolor")) {
+            if (NameColorHandler.doesPlayerHaveColor(player))
+                return NameColorHandler.getPlayerColorString(player) + player.getName();
+            return player.getName();
+        }
 
-        if (params.equals("namecolor_essentialsnick"))
-            return NameColorHandler.getPlayerColorString(player) + " %essentials_nickname_stripped%";
+        if (params.equals("namecolor_essentialsnick")) {
+            if (NameColorHandler.doesPlayerHaveColor(player))
+                return NameColorHandler.getPlayerColorString(player) + "%essentials_nickname_stripped%";
+            return "%essentials_nickname_stripped%";
+        }
 
-        if (params.equals("tag"))
-            return TagHandler.getPlayerTagString(player);
+        if (params.equals("tag")) {
+            if (TagHandler.doesPlayerHaveTag(player))
+                return TagHandler.getPlayerTagString(player);
+            return "";
+        }
 
         return "Error";
     }
