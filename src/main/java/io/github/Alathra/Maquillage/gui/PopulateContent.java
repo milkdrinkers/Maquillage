@@ -79,7 +79,7 @@ public class PopulateContent {
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
             NameColorHandler.setPlayerColor(p, color);
             // TODO: test with multiple pages
-            GuiHandler.populateGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
+            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
         }));
     }
 
