@@ -94,7 +94,7 @@ public class PopulateContent {
         tagItemMeta.displayName(ColorParser.of((tag.getName())).build());
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name with the tag
-        loreList.add(ColorParser.of(tag.getTag()).build().append(p.displayName()));
+        loreList.add(ColorParser.of(tag.getTag() + "<white>" + p.getName()).build());
         // Add a component to the list that describes action if clicked
         loreList.add(ColorParser.of("<grey>Click this to select the tag.").build());
         tagItemMeta.lore(loreList);
@@ -107,7 +107,7 @@ public class PopulateContent {
 
     public static void addSelectedTagItem(PaginatedGui gui, Tag tag, Player p) {
         selectedTagItemMeta.displayName(ColorParser.of(tag.getName()).build());
-        selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + p.displayName()).build()));
+        selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + "<white>" + p.getName()).build()));
         selectedTagItem.setItemMeta(selectedTagItemMeta);
         gui.addItem(ItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
     }
