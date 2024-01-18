@@ -17,7 +17,6 @@ public class CommandMaquillage {
             .withShortDescription("The main command for the plugin Maquillage.")
             .withSubcommands(
                 new CommandAPICommand("tag")
-                    .withAliases("prefix")
                     .withPermission("maquillage.set.tag")
                     .executesPlayer((sender, args) -> {
                         PaginatedGui gui = GuiHandler.buildGui(GuiHandler.MaquillageGuiType.TAG);
@@ -25,7 +24,6 @@ public class CommandMaquillage {
                         gui.open(sender);
                     }),
                 new CommandAPICommand("color")
-                    .withAliases("colour")
                     .withPermission("maquillage.set.color")
                     .executesPlayer((sender, args) -> {
                         PaginatedGui gui = GuiHandler.buildGui(GuiHandler.MaquillageGuiType.COLOR);
