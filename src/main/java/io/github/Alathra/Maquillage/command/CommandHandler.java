@@ -28,7 +28,7 @@ public class CommandHandler implements Reloadable {
         new CommandCreate();
         new CommandMaquillage();
         new CommandEdit();
-        // TODO: add remove command
+        new CommandDelete();
     }
 
     @Override
