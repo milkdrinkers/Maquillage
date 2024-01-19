@@ -44,8 +44,11 @@ public class PopulateContent {
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p)).toList();
         }
-        for (NameColor color : colorList) {
-            addColorItem(gui, color, p);
+
+        if(!colorList.isEmpty()) {
+            for (NameColor color : colorList) {
+                addColorItem(gui, color, p);
+            }
         }
     }
 
@@ -62,8 +65,11 @@ public class PopulateContent {
             tagList = tags.values().stream()
                 .filter(tag -> tag.hasPerm(p)).toList();
         }
-        for (Tag tag : tagList) {
-            addTagItem(gui, tag, p);
+
+        if (!tagList.isEmpty()) {
+            for (Tag tag : tagList) {
+                addTagItem(gui, tag, p);
+            }
         }
     }
 
