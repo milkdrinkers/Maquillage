@@ -52,7 +52,7 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
 
         if (params.equals("tag")) {
             if (TagHandler.doesPlayerHaveTag(player))
-                return TagHandler.getPlayerTagString(player);
+                return TagHandler.getPlayerTagString(player) + " ";
             return "";
         }
 
