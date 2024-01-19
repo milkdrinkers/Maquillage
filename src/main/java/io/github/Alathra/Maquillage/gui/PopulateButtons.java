@@ -25,7 +25,7 @@ public class PopulateButtons {
     }
 
     private static void headButton (MaquillageGuiType type, PaginatedGui gui, Player p) {
-        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
         skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
