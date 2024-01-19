@@ -106,7 +106,7 @@ public class PopulateContent {
     }
 
     public static void addSelectedTagItem(PaginatedGui gui, Tag tag, Player p) {
-        selectedTagItemMeta.displayName(ColorParser.of(tag.getName()).build());
+        selectedTagItemMeta.displayName(ColorParser.of("<white>" + tag.getName()).build());
         selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + "<white>" + p.getName()).build()));
         selectedTagItem.setItemMeta(selectedTagItemMeta);
         gui.addItem(ItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
