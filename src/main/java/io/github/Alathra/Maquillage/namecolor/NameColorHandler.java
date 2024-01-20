@@ -10,6 +10,7 @@ import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +54,10 @@ public class NameColorHandler {
         Component name = ColorParser.of("<white>" + p.getName()).build();
         p.displayName(name);
         p.playerListName(name);
+    }
+
+    public static void clearAllPlayerColorsWithID(int ID) {
+        playerColors.values().removeAll(Collections.singleton(ID));
     }
 
     public static void clearPlayerColor(Player p) {

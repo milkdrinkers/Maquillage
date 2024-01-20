@@ -27,6 +27,8 @@ public class DeleteColorConversation {
                 boolean success = NameColorHandler.removeColor(color);
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully deleted!").build());
+
+                    NameColorHandler.clearAllPlayerColorsWithID(color.getID());
                 } else {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not deleted.").build());
                 }

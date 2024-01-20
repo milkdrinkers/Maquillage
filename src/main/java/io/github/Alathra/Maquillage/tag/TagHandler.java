@@ -10,10 +10,7 @@ import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TagHandler {
 
@@ -53,6 +50,10 @@ public class TagHandler {
 
     public static void clearPlayerTag(Player p) {
         clearPlayerTag(p.getUniqueId());
+    }
+
+    public static void clearALlPlayerTagsWithID(int ID) {
+        playerTags.values().removeAll(Collections.singleton(ID));
     }
 
     public static void loadTags() {

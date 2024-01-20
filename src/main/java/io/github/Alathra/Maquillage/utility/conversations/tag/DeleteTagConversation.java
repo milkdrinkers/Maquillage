@@ -27,6 +27,8 @@ public class DeleteTagConversation {
                 boolean success = TagHandler.removeTag(tag);
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The tag was successfully deleted!").build());
+
+                    TagHandler.clearALlPlayerTagsWithID(tag.getID());
                 } else {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not deleted.").build());
                 }
