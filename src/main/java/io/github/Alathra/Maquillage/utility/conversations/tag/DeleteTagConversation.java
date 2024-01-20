@@ -39,7 +39,7 @@ public class DeleteTagConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Are you sure you want to delete this tag: " + tag.getTag() + "<white?").build());
+            player.sendMessage(ColorParser.of("Are you sure you want to delete this tag: " + tag.getTag() + "<white>?").build());
             player.sendMessage(ColorParser.of("<red>This action is permanent.").build());
             return "YES/NO";
         }
