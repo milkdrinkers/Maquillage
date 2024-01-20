@@ -211,10 +211,6 @@ public class TagHandler {
         int tagID = tag.getID();
         playerTags.put(uuid, tagID);
         DatabaseQueries.savePlayerTag(uuid, tagID);
-
-        Component name = ColorParser.of(tag.getTag() + p.getName()).build();
-        p.displayName(name);
-        p.playerListName(name);
     }
 
     public static void setPlayerTag (Player p, int tagID) {

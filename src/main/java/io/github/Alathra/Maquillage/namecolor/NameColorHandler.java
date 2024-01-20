@@ -224,10 +224,6 @@ public class NameColorHandler {
         int colorID = color.getID();
         playerColors.put(uuid, colorID);
         DatabaseQueries.savePlayerColor(uuid, colorID);
-
-        Component name = ColorParser.of(color.getColor() + p.getName()).build();
-        p.displayName(name);
-        p.playerListName(name);
     }
 
     public static void setPlayerColor (Player p, int colorID) {
