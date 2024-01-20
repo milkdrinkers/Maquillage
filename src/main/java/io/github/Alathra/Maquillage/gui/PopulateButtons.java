@@ -30,12 +30,15 @@ public class PopulateButtons {
 
         skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
 
-        // Sets color to white if player does not have a color selected
-        if (!NameColorHandler.doesPlayerHaveColor(p))
-            skullMeta.displayName(p.displayName().color(NamedTextColor.WHITE));
-        // Else, sets skull name to player's displayName
-        else
-            skullMeta.displayName(p.displayName());
+        // Sets head name to match selected tag and color
+        String tag = "";
+        String color = "<white>";
+        if (TagHandler.doesPlayerHaveTag(p))
+            tag = TagHandler.getPlayerTagString(p) + " ";
+        if (NameColorHandler.doesPlayerHaveColor(p))
+            color = NameColorHandler.getPlayerColorString(p);
+
+        skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build());
 
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
