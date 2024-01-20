@@ -77,7 +77,10 @@ public class PopulateContent {
         colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name in the color
-        loreList.add(ColorParser.of(color.getColor() + p.getName()).build());
+        String tag = "";
+        if (TagHandler.doesPlayerHaveTag(p))
+            tag = TagHandler.getPlayerTagString(p) + "<white> ";
+        loreList.add(ColorParser.of(tag + color.getColor() + p.getName()).build());
         // Add a component to the list that describes action if clicked
         loreList.add(ColorParser.of("<grey>Click this to select the color.").build());
         colorItemMeta.lore(loreList);
@@ -91,7 +94,10 @@ public class PopulateContent {
 
     private static void addSelectedColorItem(PaginatedGui gui, NameColor color, Player p) {
         selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
-        selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(color.getColor() + p.getName()).build()));
+        String tag = "";
+        if (TagHandler.doesPlayerHaveTag(p))
+            tag = TagHandler.getPlayerTagString(p) + "<white> ";
+        selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build()));
         selectedColorItem.setItemMeta(selectedColorItemMeta);
         gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
     }
