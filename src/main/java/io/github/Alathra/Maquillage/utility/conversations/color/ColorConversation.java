@@ -14,6 +14,8 @@ public class ColorConversation {
     static String permission;
     static String name;
     static String identifier;
+    static boolean colorIsGradient;
+    static boolean colorIsRainbow;
 
     public static Prompt newColorPrompt = new StringPrompt() {
         @Override
@@ -24,6 +26,16 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             color = input;
+            if (input.startsWith("<gradient")) {
+                colorIsGradient = true;
+                colorIsRainbow = false;
+            } else if (input.startsWith("<rainbow")) {
+                colorIsGradient = false;
+                colorIsRainbow = true;
+            } else {
+                colorIsGradient = false;
+                colorIsRainbow = false;
+            }
             return namePrompt;
         }
     };
@@ -95,7 +107,15 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             String colorName = color + player.getName();
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + "<white> with the display name " + name + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
+
+            // Adds ending to correctly display rainbows and gradients.
+            String correctGradients = "";
+            if (colorIsGradient)
+                correctGradients = "</gradient>";
+            if (colorIsRainbow)
+                correctGradients = "</rainbow>";
+
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the display name " + name + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };
