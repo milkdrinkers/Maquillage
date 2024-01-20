@@ -19,7 +19,7 @@ public class TagHandler {
     public static HashMap<String, Integer> tagIdentifiers = new HashMap<>();
 
     public static void loadPlayerTag(UUID uuid) {
-        Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
+        Record1<Integer> record = DatabaseQueries.loadPlayerTag(uuid);
         if (record == null)
             return;
         int colorID = record.component1();
