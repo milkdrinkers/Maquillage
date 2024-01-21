@@ -41,13 +41,13 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
         if (params.equals("namecolor")) {
             if (NameColorHandler.doesPlayerHaveColor(player))
                 return NameColorHandler.getPlayerColorString(player) + player.getName();
-            return player.getName();
+            return "<white>" + player.getName();
         }
 
         if (params.equals("namecolor_essentialsnick")) {
             if (NameColorHandler.doesPlayerHaveColor(player))
                 return NameColorHandler.getPlayerColorString(player) + "%essentials_nickname_stripped%";
-            return "%essentials_nickname_stripped%";
+            return "<white>%essentials_nickname_stripped%";
         }
 
         if (params.equals("tag")) {
