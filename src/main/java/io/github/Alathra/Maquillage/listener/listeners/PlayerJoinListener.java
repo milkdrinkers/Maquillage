@@ -13,6 +13,9 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(AsyncPlayerPreLoginEvent e) {
+        if (!e.getLoginResult().equals(AsyncPlayerPreLoginEvent.Result.ALLOWED))
+            return;
+        
         UUID uuid = e.getUniqueId();
         NameColorHandler.loadPlayerColor(uuid);
         TagHandler.loadPlayerTag(uuid);
