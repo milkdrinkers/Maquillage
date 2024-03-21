@@ -1,21 +1,21 @@
 package io.github.Alathra.Maquillage.listener.listeners;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+
+import java.util.UUID;
 
 public class PlayerJoinListener implements Listener {
 
-    @EventHandler
-    public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        NameColorHandler.loadPlayerColor(p);
-        TagHandler.loadPlayerTag(p);
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerJoinEvent(AsyncPlayerPreLoginEvent e) {
+        UUID uuid = e.getUniqueId();
+        NameColorHandler.loadPlayerColor(uuid);
+        TagHandler.loadPlayerTag(uuid);
     }
 
 }
