@@ -10,12 +10,11 @@ import org.bukkit.plugin.Plugin;
 
 public class CommandCreate {
 
-    Plugin plugin = Maquillage.getInstance();
-    ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static Plugin plugin = Maquillage.getInstance();
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
 
-    public CommandCreate() {
-        new CommandAPICommand("maquillagecreate")
-            .withAliases("mcreate", "maqcreate")
+    public static CommandAPICommand registerCommandCreate() {
+        return new CommandAPICommand("create")
             .withPermission("maquillage.create")
             .withShortDescription("Creates a new Maquillage color or tag.")
             .withSubcommands(
@@ -35,8 +34,7 @@ public class CommandCreate {
                         Conversation conversation = factory.buildConversation((Conversable) sender);
                         conversation.begin();
                     })
-            )
-            .register();
+            );
     }
 
 }

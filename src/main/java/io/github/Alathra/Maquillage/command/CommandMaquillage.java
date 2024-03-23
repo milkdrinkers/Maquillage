@@ -29,7 +29,10 @@ public class CommandMaquillage {
                         PaginatedGui gui = GuiHandler.buildGui(GuiHandler.MaquillageGuiType.COLOR);
                         GuiHandler.populateGui(GuiHandler.MaquillageGuiType.COLOR, gui, sender);
                         gui.open(sender);
-                    })
+                    }),
+                CommandCreate.registerCommandCreate(),
+                CommandDelete.registerCommandDelete(),
+                CommandEdit.registerCommandEdit()
             )
             .register();
     }

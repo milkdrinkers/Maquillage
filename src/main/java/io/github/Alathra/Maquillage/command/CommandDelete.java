@@ -17,12 +17,11 @@ import org.bukkit.plugin.Plugin;
 
 public class CommandDelete {
 
-    Plugin plugin = Maquillage.getInstance();
-    ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static Plugin plugin = Maquillage.getInstance();
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
 
-    public CommandDelete() {
-        new CommandAPICommand("maquillagedelete")
-            .withAliases("mdelete", "maqdelete")
+    public static CommandAPICommand registerCommandDelete() {
+        return new CommandAPICommand("delete")
             .withPermission("maquillage.delete")
             .withShortDescription("Deletes a Maquillage color or tag.")
             .withSubcommands(
@@ -64,8 +63,7 @@ public class CommandDelete {
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     })
-            )
-            .register();
+            );
     }
 
 }

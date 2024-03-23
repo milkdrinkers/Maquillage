@@ -20,12 +20,11 @@ import org.bukkit.plugin.Plugin;
 
 public class CommandEdit {
 
-    Plugin plugin = Maquillage.getInstance();
-    ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static Plugin plugin = Maquillage.getInstance();
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
 
-    public CommandEdit() {
-        new CommandAPICommand("maquillageedit")
-            .withAliases("medit", "maqedit")
+    public static CommandAPICommand registerCommandEdit() {
+        return new CommandAPICommand("edit")
             .withPermission("maquillage.edit")
             .withShortDescription("Edits a Maquillage color or tag.")
             .withSubcommands(
@@ -135,8 +134,7 @@ public class CommandEdit {
                                 sender.sendMessage(TagHandler.getAllIdentifiers().toString());
                             })
                     )
-            )
-            .register();
+            );
     }
 
 }
