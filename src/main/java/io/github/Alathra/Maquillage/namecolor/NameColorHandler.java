@@ -2,6 +2,8 @@ package io.github.Alathra.Maquillage.namecolor;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -224,6 +226,8 @@ public class NameColorHandler {
         int colorID = color.getID();
         playerColors.put(uuid, colorID);
         DatabaseQueries.savePlayerColor(uuid, colorID);
+
+        UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
     }
 
     public static void setPlayerColor (Player p, int colorID) {

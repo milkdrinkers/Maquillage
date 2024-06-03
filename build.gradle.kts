@@ -40,6 +40,8 @@ repositories {
     }
 
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    maven("https://repo.essentialsx.net/releases/")
 }
 
 dependencies {
@@ -54,6 +56,8 @@ dependencies {
     implementation("com.github.milkdrinkers:colorparser:2.0.0") {
         exclude("net.kyori")
     }
+
+    compileOnly("net.essentialsx:EssentialsX:2.19.0")
 
     implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
 

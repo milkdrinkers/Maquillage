@@ -1,5 +1,6 @@
 package io.github.Alathra.Maquillage;
 
+import com.earth2me.essentials.Essentials;
 import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.command.CommandHandler;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
@@ -20,6 +21,8 @@ public class Maquillage extends JavaPlugin {
     private ListenerHandler listenerHandler;
     private static VaultHook vaultHook;
     private PlaceholderHandler placeholderHandler;
+
+    private static Essentials essentials;
 
     public static Maquillage getInstance() {
         return instance;
@@ -60,6 +63,12 @@ public class Maquillage extends JavaPlugin {
         }
         placeholderHandler.onEnable();
 
+        if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
+            Bukkit.getLogger().warning("Essentials is required for this plugin.");
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
+
         NameColorHandler.loadColors();
         TagHandler.loadTags();
     }
@@ -88,5 +97,9 @@ public class Maquillage extends JavaPlugin {
 
     public static VaultHook getVaultHook() {
         return vaultHook;
+    }
+
+    public static Essentials getEssentials() {
+        return essentials;
     }
 }
