@@ -98,6 +98,8 @@ public class PopulateContent {
         if (TagHandler.doesPlayerHaveTag(p))
             tag = TagHandler.getPlayerTagString(p) + "<white> ";
         selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build()));
+        selectedColorItemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        selectedColorItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         selectedColorItem.setItemMeta(selectedColorItemMeta);
         gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
     }
