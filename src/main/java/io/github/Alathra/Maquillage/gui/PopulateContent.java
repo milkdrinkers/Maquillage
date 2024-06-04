@@ -17,10 +17,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class PopulateContent {
 
@@ -41,16 +38,23 @@ public class PopulateContent {
 
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p))
-                .filter(color -> color.getID() != selectedColor).toList();
+                .sorted(Comparator.comparing(NameColor::getName))
+                .toList();
+
+            if (!colorList.isEmpty()) {
+                for (NameColor color : colorList) {
+                    if (color.getID() == selectedColor) {
+                        addSelectedColorItem(gui, color, p);
+                    } else {
+                        addColorItem(gui, color, p);
+                    }
+                }
+            }
         } else {
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p)).toList();
-        }
 
-        if(!colorList.isEmpty()) {
-            for (NameColor color : colorList) {
-                addColorItem(gui, color, p);
-            }
+            if (!colorList.isEmpty()) for (NameColor color : colorList) addColorItem(gui, color, p);
         }
     }
 
@@ -58,20 +62,26 @@ public class PopulateContent {
         List<Tag> tagList;
         if (TagHandler.doesPlayerHaveTag(p)) {
             int selectedTag = TagHandler.getPlayerTagID(p);
-            addSelectedTagItem(gui, tags.get(selectedTag), p);
 
             tagList = tags.values().stream()
                 .filter(tag -> tag.hasPerm(p))
-                .filter(tag -> tag.getID() != selectedTag).toList();
+                .sorted(Comparator.comparing(Tag::getName))
+                .toList();
+
+            if (!tagList.isEmpty()) {
+                for (Tag tag : tagList) {
+                    if (tag.getID() == selectedTag) {
+                        addSelectedTagItem(gui, tag, p);
+                    } else {
+                        addTagItem(gui, tag, p);
+                    }
+                }
+            }
         } else {
             tagList = tags.values().stream()
                 .filter(tag -> tag.hasPerm(p)).toList();
-        }
 
-        if (!tagList.isEmpty()) {
-            for (Tag tag : tagList) {
-                addTagItem(gui, tag, p);
-            }
+            if (!tagList.isEmpty()) for (Tag tag : tagList) addTagItem(gui, tag, p);
         }
     }
 
