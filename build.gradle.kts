@@ -88,6 +88,10 @@ tasks {
         dependsOn(shadowJar)
     }
 
+    jooqCodegen {
+        dependsOn(flywayMigrate)
+    }
+
     compileJava {
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
 
@@ -95,6 +99,8 @@ tasks {
         // See https://openjdk.java.net/jeps/247 for more information.
         options.release.set(17)
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
+
+        dependsOn(jooqCodegen)
     }
 
     javadoc {
