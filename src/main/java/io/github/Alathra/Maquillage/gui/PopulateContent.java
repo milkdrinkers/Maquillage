@@ -9,6 +9,8 @@ import io.github.Alathra.Maquillage.tag.Tag;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
@@ -86,9 +88,14 @@ public class PopulateContent {
         colorItemMeta.lore(loreList);
         colorItem.setItemMeta(colorItemMeta);
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
-            NameColorHandler.setPlayerColor(p, color);
+            boolean onCooldown = NameColorHandler.setPlayerColor(p, color);
             // TODO: test with multiple pages
-            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
+            if (onCooldown) {
+                p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+            } else {
+                p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+                GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
+            }
         }));
     }
 
@@ -117,8 +124,14 @@ public class PopulateContent {
         tagItemMeta.lore(loreList);
         tagItem.setItemMeta(tagItemMeta);
         gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
-            TagHandler.setPlayerTag(p, tag);
-            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
+            boolean onCooldown = TagHandler.setPlayerTag(p, tag);
+
+            if (onCooldown) {
+                p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+            } else {
+                p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+                GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
+            }
         }));
     }
 

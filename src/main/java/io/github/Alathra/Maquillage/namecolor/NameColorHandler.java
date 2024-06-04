@@ -2,6 +2,7 @@ package io.github.Alathra.Maquillage.namecolor;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
 import net.kyori.adventure.text.Component;
@@ -221,13 +222,17 @@ public class NameColorHandler {
         return colorIdentifiers.containsKey(identifier);
     }
 
-    public static void setPlayerColor (Player p, NameColor color) {
+    public static boolean setPlayerColor (Player p, NameColor color) {
         UUID uuid = p.getUniqueId();
+
+        if (GuiCooldown.hasCooldown(uuid)) return false;
+
         int colorID = color.getID();
         playerColors.put(uuid, colorID);
         DatabaseQueries.savePlayerColor(uuid, colorID);
 
         UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
+        return true;
     }
 
     public static void setPlayerColor (Player p, int colorID) {
