@@ -34,8 +34,6 @@ public class PopulateContent {
         List<NameColor> colorList;
         if (NameColorHandler.doesPlayerHaveColor(p)) {
             int selectedColor = NameColorHandler.getPlayerColorID(p);
-            addSelectedColorItem(gui, colors.get(selectedColor), p);
-
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p))
                 .sorted(Comparator.comparing(NameColor::getName))
