@@ -48,9 +48,9 @@ public class UpdateDisplayName {
 
         Component newName;
         if (nickname != null)
-            newName = ColorParser.of(TagHandler.getPlayerTag(player).getTag() + " <white>" + nickname).build();
+            newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + nickname).build();
         else
-            newName = ColorParser.of(TagHandler.getPlayerTag(player) + " <white>" + player.getName()).build();
+            newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + player.getName()).build();
 
         player.displayName(newName);
     }
@@ -63,9 +63,9 @@ public class UpdateDisplayName {
 
         Component newName;
         if (nickname != null)
-            newName = ColorParser.of(NameColorHandler.getPlayerColor(player).getColor() + nickname).build();
+            newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + nickname).build();
         else
-            newName = ColorParser.of(NameColorHandler.getPlayerColor(player).getColor() + player.getName()).build();
+            newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + player.getName()).build();
 
         player.displayName(newName);
     }
