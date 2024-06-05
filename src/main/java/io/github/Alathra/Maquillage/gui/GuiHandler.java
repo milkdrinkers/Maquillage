@@ -51,19 +51,9 @@ public class GuiHandler {
     }
 
     public static void reloadGui(MaquillageGuiType type, PaginatedGui gui, Player p) {
-        switch (type) {
-            case TAG -> {
-                gui.clearPageItems();
-                PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
-                PopulateButtons.populateButtons(type, gui, p);
-                gui.update();
-            }
-            case COLOR -> {
-                gui.clearPageItems();
-                PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
-                PopulateButtons.populateButtons(type, gui, p);
-                gui.update();
-            }
-        }
+        gui.close(p);
+        PaginatedGui newGui = buildGui(type);
+        populateGui(type, newGui, p);
+        newGui.open(p);
     }
 }

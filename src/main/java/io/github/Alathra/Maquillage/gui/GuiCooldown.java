@@ -16,7 +16,8 @@ public class GuiCooldown {
 
     public static boolean hasCooldown(UUID uuid) {
         Instant cooldown = cooldowns.get(uuid);
-        return cooldown != null && Instant.now().isBefore(cooldown);
+        if (cooldown == null) return false;
+        return Instant.now().isAfter(cooldown);
     }
 
     public static boolean hasCooldown(Player p) {

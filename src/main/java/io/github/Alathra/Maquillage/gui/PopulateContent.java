@@ -100,7 +100,7 @@ public class PopulateContent {
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
             boolean onCooldown = NameColorHandler.setPlayerColor(p, color);
             // TODO: test with multiple pages
-            if (onCooldown) {
+            if (!onCooldown) {
                 p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
             } else {
                 p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
@@ -136,7 +136,7 @@ public class PopulateContent {
         gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
             boolean onCooldown = TagHandler.setPlayerTag(p, tag);
 
-            if (onCooldown) {
+            if (!onCooldown) {
                 p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
             } else {
                 p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
