@@ -232,6 +232,7 @@ public class NameColorHandler {
         DatabaseQueries.savePlayerColor(uuid, colorID);
 
         UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
+        GuiCooldown.setCooldown(uuid);
         return true;
     }
 
