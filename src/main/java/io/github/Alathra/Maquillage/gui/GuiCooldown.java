@@ -17,12 +17,11 @@ public class GuiCooldown {
     public static boolean hasCooldown(UUID uuid) {
         Instant cooldown = cooldowns.get(uuid);
         if (cooldown == null) return false;
-        return Instant.now().isAfter(cooldown);
+        return Instant.now().isBefore(cooldown);
     }
 
     public static boolean hasCooldown(Player p) {
-        Instant cooldown = cooldowns.get(p.getUniqueId());
-        return cooldown != null && Instant.now().isBefore(cooldown);
+        return hasCooldown(p.getUniqueId());
     }
 
     public static void setCooldown(UUID uuid) {
