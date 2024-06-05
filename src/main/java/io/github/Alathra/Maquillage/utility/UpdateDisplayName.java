@@ -4,7 +4,9 @@ import com.earth2me.essentials.Essentials;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
+import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.Tag;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.ess3.api.IUser;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -38,4 +40,33 @@ public class UpdateDisplayName {
         player.displayName(newName);
     }
 
+    public static void clearPlayerNameColor(Player player) {
+        Essentials essentials = Maquillage.getEssentials();
+
+        IUser user = essentials.getUser(player);
+        String nickname = user.getFormattedNickname();
+
+        Component newName;
+        if (nickname != null)
+            newName = ColorParser.of(TagHandler.getPlayerTag(player).getTag() + " <white>" + nickname).build();
+        else
+            newName = ColorParser.of(TagHandler.getPlayerTag(player) + " <white>" + player.getName()).build();
+
+        player.displayName(newName);
+    }
+
+    public static void clearPlayerTag(Player player) {
+        Essentials essentials = Maquillage.getEssentials();
+
+        IUser user = essentials.getUser(player);
+        String nickname = user.getFormattedNickname();
+
+        Component newName;
+        if (nickname != null)
+            newName = ColorParser.of(NameColorHandler.getPlayerColor(player).getColor() + nickname).build();
+        else
+            newName = ColorParser.of(NameColorHandler.getPlayerColor(player).getColor() + player.getName()).build();
+
+        player.displayName(newName);
+    }
 }
