@@ -5,6 +5,7 @@ import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,10 +48,12 @@ public class PopulateButtons {
             switch (type) {
                 case COLOR -> {
                     NameColorHandler.clearPlayerColor(p);
+                    UpdateDisplayName.clearPlayerNameColor(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
                 case TAG ->  {
                     TagHandler.clearPlayerTag(p);
+                    UpdateDisplayName.clearPlayerTag(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
             }

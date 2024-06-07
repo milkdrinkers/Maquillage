@@ -9,16 +9,15 @@ import io.github.Alathra.Maquillage.tag.Tag;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
+import org.bukkit.Sound;
+import org.bukkit.SoundCategory;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class PopulateContent {
 
@@ -35,20 +34,25 @@ public class PopulateContent {
         List<NameColor> colorList;
         if (NameColorHandler.doesPlayerHaveColor(p)) {
             int selectedColor = NameColorHandler.getPlayerColorID(p);
-            addSelectedColorItem(gui, colors.get(selectedColor), p);
-
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p))
-                .filter(color -> color.getID() != selectedColor).toList();
+                .sorted(Comparator.comparing(NameColor::getName))
+                .toList();
+
+            if (!colorList.isEmpty()) {
+                for (NameColor color : colorList) {
+                    if (color.getID() == selectedColor) {
+                        addSelectedColorItem(gui, color, p);
+                    } else {
+                        addColorItem(gui, color, p);
+                    }
+                }
+            }
         } else {
             colorList = colors.values().stream()
                 .filter(color -> color.hasPerm(p)).toList();
-        }
 
-        if(!colorList.isEmpty()) {
-            for (NameColor color : colorList) {
-                addColorItem(gui, color, p);
-            }
+            if (!colorList.isEmpty()) for (NameColor color : colorList) addColorItem(gui, color, p);
         }
     }
 
@@ -56,20 +60,26 @@ public class PopulateContent {
         List<Tag> tagList;
         if (TagHandler.doesPlayerHaveTag(p)) {
             int selectedTag = TagHandler.getPlayerTagID(p);
-            addSelectedTagItem(gui, tags.get(selectedTag), p);
 
             tagList = tags.values().stream()
                 .filter(tag -> tag.hasPerm(p))
-                .filter(tag -> tag.getID() != selectedTag).toList();
+                .sorted(Comparator.comparing(Tag::getName))
+                .toList();
+
+            if (!tagList.isEmpty()) {
+                for (Tag tag : tagList) {
+                    if (tag.getID() == selectedTag) {
+                        addSelectedTagItem(gui, tag, p);
+                    } else {
+                        addTagItem(gui, tag, p);
+                    }
+                }
+            }
         } else {
             tagList = tags.values().stream()
                 .filter(tag -> tag.hasPerm(p)).toList();
-        }
 
-        if (!tagList.isEmpty()) {
-            for (Tag tag : tagList) {
-                addTagItem(gui, tag, p);
-            }
+            if (!tagList.isEmpty()) for (Tag tag : tagList) addTagItem(gui, tag, p);
         }
     }
 
@@ -86,9 +96,14 @@ public class PopulateContent {
         colorItemMeta.lore(loreList);
         colorItem.setItemMeta(colorItemMeta);
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
-            NameColorHandler.setPlayerColor(p, color);
+            boolean onCooldown = NameColorHandler.setPlayerColor(p, color);
             // TODO: test with multiple pages
-            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
+            if (!onCooldown) {
+                p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+            } else {
+                p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+                GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
+            }
         }));
     }
 
@@ -98,6 +113,8 @@ public class PopulateContent {
         if (TagHandler.doesPlayerHaveTag(p))
             tag = TagHandler.getPlayerTagString(p) + "<white> ";
         selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build()));
+        selectedColorItemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        selectedColorItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         selectedColorItem.setItemMeta(selectedColorItemMeta);
         gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
     }
@@ -115,8 +132,14 @@ public class PopulateContent {
         tagItemMeta.lore(loreList);
         tagItem.setItemMeta(tagItemMeta);
         gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
-            TagHandler.setPlayerTag(p, tag);
-            GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
+            boolean onCooldown = TagHandler.setPlayerTag(p, tag);
+
+            if (!onCooldown) {
+                p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+            } else {
+                p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.AMBIENT, 1, 1);
+                GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
+            }
         }));
     }
 
