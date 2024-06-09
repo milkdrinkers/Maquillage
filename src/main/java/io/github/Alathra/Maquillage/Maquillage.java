@@ -4,6 +4,7 @@ import com.earth2me.essentials.Essentials;
 import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.command.CommandHandler;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
+import io.github.Alathra.Maquillage.hooks.EssentialsHook;
 import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
@@ -20,9 +21,8 @@ public class Maquillage extends JavaPlugin {
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
     private static VaultHook vaultHook;
+    private static EssentialsHook essentialsHook;
     private PlaceholderHandler placeholderHandler;
-
-    private static Essentials essentials;
 
     public static Maquillage getInstance() {
         return instance;
@@ -35,6 +35,7 @@ public class Maquillage extends JavaPlugin {
         commandHandler = new CommandHandler(instance);
         listenerHandler = new ListenerHandler(instance);
         vaultHook = new VaultHook(instance);
+        essentialsHook = new EssentialsHook();
         placeholderHandler = new PlaceholderHandler(instance);
 
         configHandler.onLoad();
@@ -42,6 +43,7 @@ public class Maquillage extends JavaPlugin {
         commandHandler.onLoad();
         listenerHandler.onLoad();
         vaultHook.onLoad();
+        essentialsHook.onLoad();
         placeholderHandler.onLoad();
     }
 
@@ -56,6 +58,7 @@ public class Maquillage extends JavaPlugin {
             Bukkit.getPluginManager().disablePlugin(this);
         }
         vaultHook.onEnable();
+        essentialsHook.onEnable();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
             Bukkit.getLogger().warning("PlaceholderAPI is required for this plugin.");
@@ -67,7 +70,6 @@ public class Maquillage extends JavaPlugin {
             Bukkit.getLogger().warning("Essentials is required for this plugin.");
             Bukkit.getPluginManager().disablePlugin(this);
         }
-        essentials = (Essentials) Bukkit.getPluginManager().getPlugin("Essentials");
 
         NameColorHandler.loadColors();
         TagHandler.loadTags();
@@ -79,6 +81,7 @@ public class Maquillage extends JavaPlugin {
         commandHandler.onDisable();
         listenerHandler.onDisable();
         vaultHook.onDisable();
+        essentialsHook.onDisable();
         placeholderHandler.onDisable();
 
         NameColorHandler.clearColors();
@@ -99,7 +102,7 @@ public class Maquillage extends JavaPlugin {
         return vaultHook;
     }
 
-    public static Essentials getEssentials() {
-        return essentials;
+    public static EssentialsHook getEssentialsHook() {
+        return essentialsHook;
     }
 }

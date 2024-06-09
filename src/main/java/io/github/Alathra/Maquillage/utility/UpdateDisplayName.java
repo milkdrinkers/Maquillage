@@ -14,15 +14,20 @@ import org.bukkit.entity.Player;
 public class UpdateDisplayName {
 
     public static void updateDisplayName(Player player, Tag tag, NameColor color) {
-        Essentials essentials = Maquillage.getEssentials();
+        Component newName = null;
 
-        IUser user = essentials.getUser(player);
-        String nickname = user.getFormattedNickname();
+        // Use essentials nickname if essentials is loaded
+        if (Maquillage.getEssentialsHook().isHookLoaded()) {
+            Essentials essentials = Maquillage.getEssentialsHook().getHook();
+            IUser user = essentials.getUser(player);
+            String nickname = user.getFormattedNickname();
 
-        Component newName;
-        if (nickname != null)
-            newName = ColorParser.of(tag.getTag() + " " + color.getColor() + nickname).build();
-        else
+            if (nickname != null)
+                newName = ColorParser.of(tag.getTag() + " " + color.getColor() + nickname).build();
+        }
+
+        // Fallback to player name if essentials is not loaded or the nickname was empty
+        if (newName == null)
             newName = ColorParser.of(tag.getTag() + " " + color.getColor() + player.getName()).build();
 
         player.displayName(newName);
@@ -41,30 +46,40 @@ public class UpdateDisplayName {
     }
 
     public static void clearPlayerNameColor(Player player) {
-        Essentials essentials = Maquillage.getEssentials();
+        Component newName = null;
 
-        IUser user = essentials.getUser(player);
-        String nickname = user.getFormattedNickname();
+        // Use essentials nickname if essentials is loaded
+        if (Maquillage.getEssentialsHook().isHookLoaded()) {
+            Essentials essentials = Maquillage.getEssentialsHook().getHook();
+            IUser user = essentials.getUser(player);
+            String nickname = user.getFormattedNickname();
 
-        Component newName;
-        if (nickname != null)
-            newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + nickname).build();
-        else
+            if (nickname != null)
+                newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + nickname).build();
+        }
+
+        // Fallback to player name if essentials is not loaded or the nickname was empty
+        if (newName == null)
             newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + player.getName()).build();
 
         player.displayName(newName);
     }
 
     public static void clearPlayerTag(Player player) {
-        Essentials essentials = Maquillage.getEssentials();
+        Component newName = null;
 
-        IUser user = essentials.getUser(player);
-        String nickname = user.getFormattedNickname();
+        // Use essentials nickname if essentials is loaded
+        if (Maquillage.getEssentialsHook().isHookLoaded()) {
+            Essentials essentials = Maquillage.getEssentialsHook().getHook();
+            IUser user = essentials.getUser(player);
+            String nickname = user.getFormattedNickname();
 
-        Component newName;
-        if (nickname != null)
-            newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + nickname).build();
-        else
+            if (nickname != null)
+                newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + nickname).build();
+        }
+
+        // Fallback to player name if essentials is not loaded or the nickname was empty
+        if (newName == null)
             newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + player.getName()).build();
 
         player.displayName(newName);

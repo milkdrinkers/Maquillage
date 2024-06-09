@@ -25,7 +25,8 @@ public class ListenerHandler implements Reloadable {
         // Register listeners here
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
-        plugin.getServer().getPluginManager().registerEvents(new EssentialsNicknameListener(), plugin);
+        if (Maquillage.getEssentialsHook().isHookLoaded())
+            plugin.getServer().getPluginManager().registerEvents(new EssentialsNicknameListener(), plugin);
     }
 
     @Override

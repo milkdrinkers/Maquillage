@@ -1,11 +1,9 @@
 package io.github.Alathra.Maquillage.listener.listeners;
 
-import com.earth2me.essentials.EssentialsPlayerListener;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
 import net.ess3.api.events.NickChangeEvent;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
