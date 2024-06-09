@@ -9,7 +9,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1" // Shades and relocates dependencies, See https://imperceptiblethoughts.com/shadow/introduction/
     id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
-//    id("io.papermc.paperweight.userdev") version "1.5.9" // Used to develop internal plugins using Mojang mappings, See https://github.com/PaperMC/paperweight
     id("org.flywaydb.flyway") version "10.13.0" // Database migrations
     id("org.jooq.jooq-codegen-gradle") version "3.19.9"
 
@@ -32,6 +31,8 @@ repositories {
     maven("https://papermc.io/repo/repository/maven-public/")
     maven("https://mvn-repo.arim.space/lesser-gpl3/")
 
+    maven("https://maven.athyrium.eu/releases")
+
     maven("https://jitpack.io/") {
         content {
             includeGroup("com.github.milkdrinkers")
@@ -52,8 +53,8 @@ dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     implementation("space.arim.morepaperlib:morepaperlib:latest.release")
 
-    implementation("com.github.milkdrinkers:crate:1.1.0")
-    implementation("com.github.milkdrinkers:colorparser:2.0.0") {
+    implementation("com.github.milkdrinkers:crate:1.2.1")
+    implementation("com.github.milkdrinkers:colorparser:2.0.3") {
         exclude("net.kyori")
     }
 
@@ -104,7 +105,13 @@ tasks {
     }
 
     javadoc {
+        isFailOnError = false
+        exclude("${mainPackage.replace(".", "/")}/db/schema/**") // Exclude generated jOOQ sources from javadocs
+        val options = options as StandardJavadocDocletOptions
         options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
+        options.overview = "src/main/javadoc/overview.html"
+        options.tags("apiNote:a:API Note:", "implNote:a:Implementation Note:", "implSpec:a:Implementation Requirements:")
+        options.use()
     }
 
     processResources {
@@ -134,7 +141,7 @@ tasks {
 
     runServer {
         // Configure the Minecraft version for our task.
-        minecraftVersion("1.20.2")
+        minecraftVersion("1.20.4")
 
         // IntelliJ IDEA debugger setup: https://docs.papermc.io/paper/dev/debugging#using-a-remote-debugger
         jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true", "-DIReallyKnowWhatIAmDoingISwear")
@@ -176,6 +183,7 @@ flyway {
     url = "jdbc:h2:${project.layout.buildDirectory.get()}/generated/flyway/db;AUTO_SERVER=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;IGNORECASE=TRUE"
     user = "sa"
     password = ""
+    schemas = listOf("PUBLIC").toTypedArray()
     placeholders = mapOf( // Substitute placeholders for flyway
         "tablePrefix" to "",
         "columnSuffix" to " VIRTUAL",
@@ -219,37 +227,6 @@ jooq {
             }
         }
     }
-}
-
-tasks.withType<FlywayMigrateTask>().configureEach { // Declare Flyway migration scripts as inputs
-    inputs.files(
-        fileTree("src/main/resources/db/migration"),
-        fileTree("src/main/java/${mainPackage}/db/flyway/migration")
-    ).withPropertyName("flyway-migration-files").withPathSensitivity(PathSensitivity.RELATIVE)
-
-    outputs.files(
-        fileTree("${project.layout.buildDirectory.get()}/generated/flyway"),
-    ).withPropertyName("flyway-files")
-}
-
-tasks.withType<CodegenTask>().configureEach {
-    dependsOn.add(tasks.flywayMigrate) // Ensure database schema has been prepared by Flyway before generating the jOOQ sources
-
-    // Declare Flyway migration scripts as inputs on the jOOQ task
-    inputs.files(
-        fileTree("src/main/resources/db/migration"),
-        fileTree("src/main/java/${mainPackage}/db/flyway/migration")
-    ).withPropertyName("flyway-migration-files").withPathSensitivity(PathSensitivity.RELATIVE)
-
-    // Declare outputs
-    val dir = layout.buildDirectory.dir("generated-src/jooq").get()
-    outputs.dir(dir).withPropertyName("jooq-generated-sources")
-    sourceSets {
-        get("main").java.srcDir(dir)
-    }
-
-    // Enable build caching
-    outputs.cacheIf { true }
 }
 
 // Apply custom version arg
