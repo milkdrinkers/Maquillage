@@ -1,6 +1,7 @@
 package io.github.Alathra.Maquillage;
 
 import com.earth2me.essentials.Essentials;
+import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.command.CommandHandler;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
@@ -10,6 +11,7 @@ import io.github.Alathra.Maquillage.hooks.VaultHook;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.placeholders.PlaceholderHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -54,14 +56,14 @@ public class Maquillage extends JavaPlugin {
         listenerHandler.onEnable();
 
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
-            Bukkit.getLogger().warning("Vault is required for this plugin.");
+            Logger.get().warn(ColorParser.of("Vault is required for this plugin.").build());
             Bukkit.getPluginManager().disablePlugin(this);
         }
         vaultHook.onEnable();
         essentialsHook.onEnable();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") == null) {
-            Bukkit.getLogger().warning("PlaceholderAPI is required for this plugin.");
+            Logger.get().warn(ColorParser.of("PlaceholderAPI is required for this plugin.").build());
             Bukkit.getPluginManager().disablePlugin(this);
         }
         placeholderHandler.onEnable();
