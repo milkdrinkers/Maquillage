@@ -66,11 +66,6 @@ public class Maquillage extends JavaPlugin {
         }
         placeholderHandler.onEnable();
 
-        if (Bukkit.getPluginManager().getPlugin("Essentials") == null) {
-            Bukkit.getLogger().warning("Essentials is required for this plugin.");
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-
         NameColorHandler.loadColors();
         TagHandler.loadTags();
     }
