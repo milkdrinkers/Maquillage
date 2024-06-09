@@ -44,7 +44,7 @@ public class Tag {
     }
 
     public boolean hasPerm(Player p) {
-        return Maquillage.getVaultHook().getVault().has(p, this.getPerm());
+        return Maquillage.getVaultHook().getPermissions().has(p, this.getPerm());
     }
 
 
