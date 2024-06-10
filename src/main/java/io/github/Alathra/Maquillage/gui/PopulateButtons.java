@@ -29,7 +29,7 @@ public class PopulateButtons {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
-        skullMeta.lore(Collections.singletonList(ColorParser.of("<dark_red>Clicking this will clear your " + type.toString().toLowerCase()).build()));
+        skullMeta.lore(Collections.singletonList(ColorParser.of("<red>Click to clear your " + type.toString().toLowerCase()).build()));
 
         // Sets head name to match selected tag and color
         String tag = "";

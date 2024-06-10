@@ -15,19 +15,17 @@ public class GuiHandler {
     }
 
     public static PaginatedGui buildGui(MaquillageGuiType type) {
-        PaginatedGui gui;
         switch (type) {
             case TAG, COLOR -> {
                 // TODO: make title configurable
-                gui = Gui.paginated()
-                    .title(ColorParser.of("<dark_grey>[<gradient:#ffff80:#00ff00>Maquillage</gradient><dark_grey>]<white> Select your " + type.toString().toLowerCase()).build())
+                return Gui.paginated()
+                    .title(ColorParser.of("<white>Select your " + type.toString().toLowerCase()).build())
                     .rows(6)
                     .disableItemPlace()
                     .disableItemSwap()
                     .disableItemDrop()
                     .disableItemTake()
                     .create();
-                return gui;
             }
             default ->  {
                 return null;
