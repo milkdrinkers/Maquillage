@@ -1,5 +1,3 @@
-import org.flywaydb.gradle.task.FlywayMigrateTask
-import org.jooq.codegen.gradle.CodegenTask
 import org.jooq.meta.jaxb.Logging
 import java.time.Instant
 
@@ -9,7 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1" // Shades and relocates dependencies, See https://imperceptiblethoughts.com/shadow/introduction/
     id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
-    id("org.flywaydb.flyway") version "10.13.0" // Database migrations
+    id("org.flywaydb.flyway") version "10.14.0" // Database migrations
     id("org.jooq.jooq-codegen-gradle") version "3.19.9"
 
     eclipse
@@ -33,16 +31,16 @@ repositories {
 
     maven("https://maven.athyrium.eu/releases")
 
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+
+    maven("https://repo.essentialsx.net/releases/")
+
     maven("https://jitpack.io/") {
         content {
             includeGroup("com.github.milkdrinkers")
             includeGroup("com.github.MilkBowl")
         }
     }
-
-    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-
-    maven("https://repo.essentialsx.net/releases/")
 }
 
 dependencies {
@@ -58,7 +56,7 @@ dependencies {
         exclude("net.kyori")
     }
 
-    compileOnly("net.essentialsx:EssentialsX:2.19.0")
+    compileOnly("net.essentialsx:EssentialsX:2.20.1")
 
     implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
 
@@ -67,18 +65,18 @@ dependencies {
     }
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("me.clip:placeholderapi:2.11.5")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     // Database Dependencies
     implementation("com.zaxxer:HikariCP:5.1.0")
-    library("org.flywaydb:flyway-core:10.13.0")
-    library("org.flywaydb:flyway-mysql:10.13.0")
-    library("org.flywaydb:flyway-database-hsqldb:10.13.0")
+    library("org.flywaydb:flyway-core:10.14.0")
+    library("org.flywaydb:flyway-mysql:10.14.0")
+    library("org.flywaydb:flyway-database-hsqldb:10.14.0")
     library("org.jooq:jooq:3.19.9")
     jooqCodegen("com.h2database:h2:2.2.224")
 
     // JDBC Drivers
-    library("org.hsqldb:hsqldb:2.7.2")
+    library("org.hsqldb:hsqldb:2.7.3")
     library("com.h2database:h2:2.2.224")
     library("com.mysql:mysql-connector-j:8.4.0")
     library("org.mariadb.jdbc:mariadb-java-client:3.4.0")
