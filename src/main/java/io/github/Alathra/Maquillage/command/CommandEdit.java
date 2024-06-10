@@ -13,7 +13,6 @@ import io.github.Alathra.Maquillage.utility.conversations.color.EditColorPermCon
 import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagNameConversation;
 import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagPermConversation;
 import io.github.Alathra.Maquillage.utility.conversations.tag.EditTagTagConversation;
-import org.bukkit.Bukkit;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;

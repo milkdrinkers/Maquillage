@@ -29,6 +29,8 @@ public class CommandHandler implements Reloadable {
         new CommandMaquillage();
         new CommandEdit();
         new CommandDelete();
+        CommandName.registerCommandName().withAliases("namecolor").register();
+        CommandTag.registerCommandTag().withAliases("tags").register();
     }
 
     @Override

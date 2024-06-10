@@ -6,7 +6,6 @@ import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -32,15 +31,10 @@ public class PopulateButtons {
         skullMeta.lore(Collections.singletonList(ColorParser.of("<red>Click to clear your " + type.toString().toLowerCase()).build()));
 
         // Sets head name to match selected tag and color
-        String tag = "";
-        String color = "<white>";
-        if (TagHandler.doesPlayerHaveTag(p))
-            tag = TagHandler.getPlayerTagString(p) + " ";
-        if (NameColorHandler.doesPlayerHaveColor(p))
-            color = NameColorHandler.getPlayerColorString(p);
+        String tag = TagHandler.doesPlayerHaveTag(p) ? TagHandler.getPlayerTagString(p) + " " : "";
+        String color = NameColorHandler.doesPlayerHaveColor(p) ? NameColorHandler.getPlayerColorString(p) : "<white>";
 
         skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build());
-
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
 
