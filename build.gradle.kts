@@ -58,7 +58,7 @@ dependencies {
         exclude("net.kyori")
     }
 
-    compileOnly("net.essentialsx:EssentialsX:2.19.0")
+    compileOnly("net.essentialsx:EssentialsX:2.20.1")
 
     implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
 
