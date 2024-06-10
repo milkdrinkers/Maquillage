@@ -61,17 +61,22 @@ public class PopulateButtons {
     }
 
     private static void arrowButtons (PaginatedGui gui) {
-        ItemStack nextPage = new ItemStack(Material.ARROW);
-        ItemMeta nextPageMeta = nextPage.getItemMeta();
-        nextPageMeta.displayName(ColorParser.of("<green>Next page").build());
-        nextPage.setItemMeta(nextPageMeta);
-        gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> gui.next()));
+        boolean lastPage = gui.getNextPageNum() == gui.getCurrentPageNum();
+        if (!lastPage) {
+            ItemStack nextPage = new ItemStack(Material.ARROW);
+            ItemMeta nextPageMeta = nextPage.getItemMeta();
+            nextPageMeta.displayName(ColorParser.of("<green>Next page").build());
+            nextPage.setItemMeta(nextPageMeta);
+            gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> gui.next()));
+        }
 
-        ItemStack prevPage = new ItemStack(Material.ARROW);
-        ItemMeta prevPageMeta = prevPage.getItemMeta();
-        prevPageMeta.displayName(ColorParser.of("<green>Previous page").build());
-        prevPage.setItemMeta(prevPageMeta);
-        gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> gui.previous()));
+        boolean firstPage = gui.getPrevPageNum() == gui.getCurrentPageNum();
+        if (!firstPage) {
+            ItemStack prevPage = new ItemStack(Material.ARROW);
+            ItemMeta prevPageMeta = prevPage.getItemMeta();
+            prevPageMeta.displayName(ColorParser.of("<green>Previous page").build());
+            prevPage.setItemMeta(prevPageMeta);
+            gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> gui.previous()));
+        }
     }
-
 }
