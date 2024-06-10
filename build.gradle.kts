@@ -67,7 +67,7 @@ dependencies {
     }
 
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    compileOnly("me.clip:placeholderapi:2.11.5")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 
     // Database Dependencies
     implementation("com.zaxxer:HikariCP:5.1.0")
