@@ -8,7 +8,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
     id("org.flywaydb.flyway") version "10.14.0" // Database migrations
-    id("org.jooq.jooq-codegen-gradle") version "3.19.9"
+    id("org.jooq.jooq-codegen-gradle") version "3.19.10"
 
     eclipse
     idea
