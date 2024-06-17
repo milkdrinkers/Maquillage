@@ -47,7 +47,7 @@ dependencies {
     compileOnly("org.jetbrains:annotations:24.1.0")
     annotationProcessor("org.jetbrains:annotations:24.1.0")
 
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21-R0.1-SNAPSHOT")
     implementation("space.arim.morepaperlib:morepaperlib:latest.release")
 
     implementation("com.github.milkdrinkers:crate:1.2.1")
