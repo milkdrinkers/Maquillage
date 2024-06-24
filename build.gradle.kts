@@ -57,7 +57,7 @@ dependencies {
 
     compileOnly("net.essentialsx:EssentialsX:2.20.1")
 
-    implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.5.1")
 
     implementation("com.github.milkdrinkers:triumph-gui:3.3.0") {
         exclude("net.kyori")
