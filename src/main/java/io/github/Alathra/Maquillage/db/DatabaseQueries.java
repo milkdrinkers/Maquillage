@@ -302,6 +302,10 @@ public abstract class DatabaseQueries {
         return loadPlayerTag(convertUUIDToBytes(uuid));
     }
 
+    public static @Nullable Record1<Integer> loadPlayerTag(Player p) {
+        return loadPlayerTag(p.getUniqueId());
+    }
+
     public static @Nullable Record1<Integer> loadPlayertag(Player p) {
         return loadPlayerTag(p.getUniqueId());
     }

@@ -1,12 +1,14 @@
 package io.github.Alathra.Maquillage.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import io.github.Alathra.Maquillage.namecolor.NameColor;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
 import org.jooq.Record4;
@@ -21,6 +23,7 @@ public class TagHandler {
     public static HashMap<Integer, Tag> loadedTags = new HashMap<>();
     public static HashMap<String, Integer> tagIdentifiers = new HashMap<>();
 
+    @Deprecated
     public static void loadPlayerTag(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerTag(uuid);
         if (record == null)
@@ -31,6 +34,14 @@ public class TagHandler {
 
     public static void loadPlayerTag(Player p) {
         loadPlayerTag(p.getUniqueId());
+    }
+
+    public static void putPlayerTag(UUID uuid, int id) {
+        playerTags.put(uuid, id);
+    }
+
+    public static void putPlayerTag(Player p, int id) {
+        putPlayerTag(p.getUniqueId(), id);
     }
 
     public static void removePlayerTag(UUID uuid) {
@@ -216,7 +227,7 @@ public class TagHandler {
 
         int tagID = tag.getID();
         playerTags.put(uuid, tagID);
-        DatabaseQueries.savePlayerTag(uuid, tagID);
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerTag(uuid, tagID));
 
         UpdateDisplayName.updateDisplayName(p, tag, NameColorHandler.getPlayerColor(p));
         GuiCooldown.setCooldown(uuid);

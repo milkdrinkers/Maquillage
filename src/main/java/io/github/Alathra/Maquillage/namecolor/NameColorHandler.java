@@ -1,6 +1,7 @@
 package io.github.Alathra.Maquillage.namecolor;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import io.github.Alathra.Maquillage.tag.TagHandler;
@@ -24,6 +25,7 @@ public class NameColorHandler {
     public static HashMap<Integer, NameColor> loadedColors = new HashMap<>();
     public static HashMap<String, Integer> colorIdentifiers = new HashMap<>();
 
+    @Deprecated
     public static void loadPlayerColor(UUID uuid) {
         Record1<Integer> record = DatabaseQueries.loadPlayerColor(uuid);
         if (record == null)
@@ -34,6 +36,14 @@ public class NameColorHandler {
 
     public static void loadPlayerColor(Player p) {
         loadPlayerColor(p.getUniqueId());
+    }
+
+    public static void putPlayerColor(UUID uuid, int id) {
+        playerColors.put(uuid, id);
+    }
+
+    public static void putPlayerColor(Player p, int id) {
+        putPlayerColor(p.getUniqueId(), id);
     }
 
     public static void removePlayerColor(UUID uuid) {
@@ -229,7 +239,7 @@ public class NameColorHandler {
 
         int colorID = color.getID();
         playerColors.put(uuid, colorID);
-        DatabaseQueries.savePlayerColor(uuid, colorID);
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, colorID));
 
         UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
         GuiCooldown.setCooldown(uuid);
