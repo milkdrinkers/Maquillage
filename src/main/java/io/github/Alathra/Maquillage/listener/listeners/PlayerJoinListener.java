@@ -27,7 +27,15 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), NameColorHandler.getPlayerColor(p));
+
+        if (TagHandler.doesPlayerHaveTag(p) && NameColorHandler.doesPlayerHaveColor(p))
+            UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), NameColorHandler.getPlayerColor(p));
+        else if (TagHandler.doesPlayerHaveTag(p) && !NameColorHandler.doesPlayerHaveColor(p))
+            UpdateDisplayName.updateDisplayNameNoColor(p, TagHandler.getPlayerTag(p));
+        else if (!TagHandler.doesPlayerHaveTag(p) && NameColorHandler.doesPlayerHaveColor(p))
+            UpdateDisplayName.updateDisplayNameNoTag(p, NameColorHandler.getPlayerColor(p));
+        else if (!TagHandler.doesPlayerHaveTag(p) && !NameColorHandler.doesPlayerHaveColor(p))
+            return;
     }
 
 }

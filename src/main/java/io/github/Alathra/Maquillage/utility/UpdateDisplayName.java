@@ -84,4 +84,44 @@ public class UpdateDisplayName {
 
         player.displayName(newName);
     }
+
+    public static void updateDisplayNameNoColor(Player player, Tag tag) {
+        Component newName = null;
+
+        // Use essentials nickname if essentials is loaded
+        if (Maquillage.getEssentialsHook().isHookLoaded()) {
+            Essentials essentials = Maquillage.getEssentialsHook().getHook();
+            IUser user = essentials.getUser(player);
+            String nickname = user.getFormattedNickname();
+
+            if (nickname != null)
+                newName = ColorParser.of(tag.getTag() + " <white>"  + nickname).build();
+        }
+
+        // Fallback to player name if essentials is not loaded or the nickname was empty
+        if (newName == null)
+            newName = ColorParser.of(tag.getTag() + " <white>" + player.getName()).build();
+
+        player.displayName(newName);
+    }
+
+    public static void updateDisplayNameNoTag(Player p, NameColor color) {
+        Component newName = null;
+
+        // Use essentials nickname if essentials is loaded
+        if (Maquillage.getEssentialsHook().isHookLoaded()) {
+            Essentials essentials = Maquillage.getEssentialsHook().getHook();
+            IUser user = essentials.getUser(p);
+            String nickname = user.getFormattedNickname();
+
+            if (nickname != null)
+                newName = ColorParser.of(color.getColor()  + nickname).build();
+        }
+
+        // Fallback to player name if essentials is not loaded or the nickname was empty
+        if (newName == null)
+            newName = ColorParser.of(color.getColor() + p.getName()).build();
+
+        p.displayName(newName);
+    }
 }
