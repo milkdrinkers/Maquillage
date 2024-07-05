@@ -241,7 +241,10 @@ public class NameColorHandler {
         playerColors.put(uuid, colorID);
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, colorID));
 
-        UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
+        if (TagHandler.doesPlayerHaveTag(p))
+            UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
+        else
+            UpdateDisplayName.updateDisplayNameNoTag(p, color);
         GuiCooldown.setCooldown(uuid);
         return true;
     }
