@@ -23,7 +23,5 @@ public class PlayerDataLoadedListener implements Listener {
             UpdateDisplayName.updateDisplayNameNoTag(p, NameColorHandler.getPlayerColor(p));
         else if (!TagHandler.doesPlayerHaveTag(p) && !NameColorHandler.doesPlayerHaveColor(p))
             return;
-
-        Logger.get().info("Caught DataLoadedEvent and updated displayname");
     }
 }
