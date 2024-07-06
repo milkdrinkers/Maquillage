@@ -20,8 +20,7 @@ public class PopulateButtons {
 
     public static void populateButtons (MaquillageGuiType type, PaginatedGui gui, Player p) {
         headButton(type, gui, p);
-        if (gui.getPagesNum() > 1)
-            arrowButtons(gui);
+        arrowButtons(gui);
     }
 
     private static void headButton (MaquillageGuiType type, PaginatedGui gui, Player p) {
@@ -55,22 +54,21 @@ public class PopulateButtons {
     }
 
     private static void arrowButtons (PaginatedGui gui) {
-        boolean lastPage = gui.getNextPageNum() == gui.getCurrentPageNum();
-        if (!lastPage) {
-            ItemStack nextPage = new ItemStack(Material.ARROW);
-            ItemMeta nextPageMeta = nextPage.getItemMeta();
-            nextPageMeta.displayName(ColorParser.of("<green>Next page").build());
-            nextPage.setItemMeta(nextPageMeta);
-            gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> gui.next()));
-        }
+        ItemStack nextPage = new ItemStack(Material.ARROW);
+        ItemMeta nextPageMeta = nextPage.getItemMeta();
+        nextPageMeta.displayName(ColorParser.of("<green>Next page").build());
+        nextPage.setItemMeta(nextPageMeta);
+        gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> {
+            gui.next();
+        }));
+        
 
-        boolean firstPage = gui.getPrevPageNum() == gui.getCurrentPageNum();
-        if (!firstPage) {
-            ItemStack prevPage = new ItemStack(Material.ARROW);
-            ItemMeta prevPageMeta = prevPage.getItemMeta();
-            prevPageMeta.displayName(ColorParser.of("<green>Previous page").build());
-            prevPage.setItemMeta(prevPageMeta);
-            gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> gui.previous()));
-        }
+        ItemStack prevPage = new ItemStack(Material.ARROW);
+        ItemMeta prevPageMeta = prevPage.getItemMeta();
+        prevPageMeta.displayName(ColorParser.of("<red>Previous page").build());
+        prevPage.setItemMeta(prevPageMeta);
+        gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> {
+            gui.previous();
+        }));
     }
 }
