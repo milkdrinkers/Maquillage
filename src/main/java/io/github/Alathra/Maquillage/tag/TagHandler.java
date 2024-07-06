@@ -231,7 +231,7 @@ public class TagHandler {
 
         if (NameColorHandler.doesPlayerHaveColor(p))
             UpdateDisplayName.updateDisplayName(p, tag, NameColorHandler.getPlayerColor(p));
-        else 
+        else
             UpdateDisplayName.updateDisplayNameNoColor(p, tag);
         GuiCooldown.setCooldown(uuid);
         return true;

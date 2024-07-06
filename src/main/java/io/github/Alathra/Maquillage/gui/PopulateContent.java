@@ -50,7 +50,9 @@ public class PopulateContent {
             }
         } else {
             colorList = colors.values().stream()
-                .filter(color -> color.hasPerm(p)).toList();
+                .filter(color -> color.hasPerm(p))
+                .sorted(Comparator.comparing(NameColor::getName))
+                .toList();
 
             if (!colorList.isEmpty()) for (NameColor color : colorList) addColorItem(gui, color, p);
         }
@@ -77,7 +79,9 @@ public class PopulateContent {
             }
         } else {
             tagList = tags.values().stream()
-                .filter(tag -> tag.hasPerm(p)).toList();
+                .filter(tag -> tag.hasPerm(p))
+                .sorted(Comparator.comparing(Tag::getName))
+                .toList();
 
             if (!tagList.isEmpty()) for (Tag tag : tagList) addTagItem(gui, tag, p);
         }
