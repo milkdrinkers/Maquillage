@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,7 +34,7 @@ public class PopulateButtons {
         String tag = TagHandler.doesPlayerHaveTag(p) ? TagHandler.getPlayerTagString(p) + " " : "";
         String color = NameColorHandler.doesPlayerHaveColor(p) ? NameColorHandler.getPlayerColorString(p) : "<white>";
 
-        skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build());
+        skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build().decoration(TextDecoration.ITALIC, false));
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
 
@@ -56,7 +57,7 @@ public class PopulateButtons {
     private static void arrowButtons (PaginatedGui gui) {
         ItemStack nextPage = new ItemStack(Material.ARROW);
         ItemMeta nextPageMeta = nextPage.getItemMeta();
-        nextPageMeta.displayName(ColorParser.of("<green>Next page").build());
+        nextPageMeta.displayName(ColorParser.of("<green>Next page").build().decoration(TextDecoration.ITALIC, false));
         nextPage.setItemMeta(nextPageMeta);
         gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> {
             gui.next();
@@ -65,7 +66,7 @@ public class PopulateButtons {
 
         ItemStack prevPage = new ItemStack(Material.ARROW);
         ItemMeta prevPageMeta = prevPage.getItemMeta();
-        prevPageMeta.displayName(ColorParser.of("<red>Previous page").build());
+        prevPageMeta.displayName(ColorParser.of("<red>Previous page").build().decoration(TextDecoration.ITALIC, false));
         prevPage.setItemMeta(prevPageMeta);
         gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> {
             gui.previous();

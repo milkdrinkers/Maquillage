@@ -8,6 +8,7 @@ import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
 import io.github.Alathra.Maquillage.tag.Tag;
 import io.github.Alathra.Maquillage.tag.TagHandler;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -88,18 +89,18 @@ public class PopulateContent {
     }
 
     private static void addColorItem(PaginatedGui gui, NameColor color, Player p) {
-        colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
+        colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build().decoration(TextDecoration.ITALIC, false));
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name in the color
         String tag = TagHandler.doesPlayerHaveTag(p) ? TagHandler.getPlayerTagString(p) + "<white> " : "";
-        loreList.add(ColorParser.of(tag + color.getColor() + p.getName()).build());
+        loreList.add(ColorParser.of(tag + color.getColor() + p.getName()).build().decoration(TextDecoration.ITALIC, false));
         // Add a component to the list that describes action if clicked
         loreList.add(ColorParser.of("<grey>Click this to select the color.").build());
         colorItemMeta.lore(loreList);
         colorItem.setItemMeta(colorItemMeta);
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
             boolean onCooldown = NameColorHandler.setPlayerColor(p, color);
-            // TODO: test with multiple pages
+
             if (!onCooldown) {
                 p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
             } else {
@@ -120,11 +121,11 @@ public class PopulateContent {
     }
 
     private static void addTagItem(PaginatedGui gui, Tag tag, Player p) {
-        tagItemMeta.displayName(ColorParser.of((tag.getName())).build());
+        tagItemMeta.displayName(ColorParser.of((tag.getName())).build().decoration(TextDecoration.ITALIC, false));
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name with the tag
         String color = NameColorHandler.doesPlayerHaveColor(p) ? NameColorHandler.getPlayerColorString(p) : "<white>";
-        loreList.add(ColorParser.of(tag.getTag() + color + " " + p.getName()).build());
+        loreList.add(ColorParser.of(tag.getTag() + color + " " + p.getName()).build().decoration(TextDecoration.ITALIC, false));
         // Add a component to the list that describes action if clicked
         loreList.add(ColorParser.of("<grey>Click this to select the tag.").build());
         tagItemMeta.lore(loreList);
