@@ -48,6 +48,10 @@ public class UpdateDisplayName {
     public static void clearPlayerNameColor(Player player) {
         Component newName = null;
 
+        String tag = "";
+        if (TagHandler.doesPlayerHaveTag(player))
+            tag = TagHandler.getPlayerTagString(player) + " ";
+
         // Use essentials nickname if essentials is loaded
         if (Maquillage.getEssentialsHook().isHookLoaded()) {
             Essentials essentials = Maquillage.getEssentialsHook().getHook();
@@ -55,12 +59,12 @@ public class UpdateDisplayName {
             String nickname = user.getFormattedNickname();
 
             if (nickname != null)
-                newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + nickname).build();
+                newName = ColorParser.of(tag + "<white>" + nickname).build();
         }
 
         // Fallback to player name if essentials is not loaded or the nickname was empty
         if (newName == null)
-            newName = ColorParser.of(TagHandler.getPlayerTagString(player) + " <white>" + player.getName()).build();
+            newName = ColorParser.of(tag + "<white>" + player.getName()).build();
 
         player.displayName(newName);
     }
@@ -68,6 +72,10 @@ public class UpdateDisplayName {
     public static void clearPlayerTag(Player player) {
         Component newName = null;
 
+        String color = "<white>";
+        if (NameColorHandler.doesPlayerHaveColor(player))
+            color = NameColorHandler.getPlayerColorString(player);
+
         // Use essentials nickname if essentials is loaded
         if (Maquillage.getEssentialsHook().isHookLoaded()) {
             Essentials essentials = Maquillage.getEssentialsHook().getHook();
@@ -75,12 +83,12 @@ public class UpdateDisplayName {
             String nickname = user.getFormattedNickname();
 
             if (nickname != null)
-                newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + nickname).build();
+                newName = ColorParser.of(color + nickname).build();
         }
 
         // Fallback to player name if essentials is not loaded or the nickname was empty
         if (newName == null)
-            newName = ColorParser.of(NameColorHandler.getPlayerColorString(player) + player.getName()).build();
+            newName = ColorParser.of(color + player.getName()).build();
 
         player.displayName(newName);
     }
