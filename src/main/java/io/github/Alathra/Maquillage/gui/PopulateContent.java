@@ -111,9 +111,9 @@ public class PopulateContent {
     }
 
     private static void addSelectedColorItem(PaginatedGui gui, NameColor color, Player p) {
-        selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build());
+        selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build().decoration(TextDecoration.ITALIC, false));
         String tag = TagHandler.doesPlayerHaveTag(p) ? TagHandler.getPlayerTagString(p) + "<white> " : "";
-        selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build()));
+        selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
         selectedColorItemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
         selectedColorItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         selectedColorItem.setItemMeta(selectedColorItemMeta);
@@ -143,9 +143,9 @@ public class PopulateContent {
     }
 
     public static void addSelectedTagItem(PaginatedGui gui, Tag tag, Player p) {
-        selectedTagItemMeta.displayName(ColorParser.of("<white>" + tag.getName()).build());
+        selectedTagItemMeta.displayName(ColorParser.of("<white>" + tag.getName()).build().decoration(TextDecoration.ITALIC, false));
         String color = NameColorHandler.doesPlayerHaveColor(p) ? NameColorHandler.getPlayerColorString(p) : "<white>";
-        selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + color + " " + p.getName()).build()));
+        selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + color + " " + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
         selectedTagItem.setItemMeta(selectedTagItemMeta);
         gui.addItem(ItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
     }
