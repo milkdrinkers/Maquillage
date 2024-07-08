@@ -56,6 +56,12 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
             return "";
         }
 
+        if (params.equals("tag_nospace")) {
+            if (TagHandler.doesPlayerHaveTag(player))
+                return TagHandler.getPlayerTagString(player);
+            return "";
+        }
+
         return "Error";
     }
 }
