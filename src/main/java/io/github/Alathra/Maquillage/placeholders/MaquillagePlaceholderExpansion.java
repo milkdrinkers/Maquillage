@@ -49,6 +49,22 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
         }
 
         if (params.equals("namecolor_essentialsnick")) {
+            String newName = null;
+
+            // Use essentials nickname if essentials is loaded
+            if (Maquillage.getEssentialsHook().isHookLoaded()) {
+                Essentials essentials = Maquillage.getEssentialsHook().getHook();
+                IUser user = essentials.getUser(player);
+                String nickname = user.getFormattedNickname();
+
+                if (nickname != null)
+                    newName = nickname;
+            }
+
+            // Fallback to player name if essentials is not loaded or the nickname was empty
+            if (newName == null)
+                newName = player.getName();
+
             if (NameColorHandler.doesPlayerHaveColor(player))
                 return NameColorHandler.getPlayerColorString(player) + newName + "<reset>";
             return newName;
