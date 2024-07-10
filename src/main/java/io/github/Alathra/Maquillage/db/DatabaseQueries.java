@@ -6,10 +6,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
+import org.jooq.Record;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 import static io.github.Alathra.Maquillage.db.schema.Tables.*;
@@ -334,6 +339,90 @@ public abstract class DatabaseQueries {
 
     public static @Nullable Record1<Integer> loadPlayerColor(Player p) {
         return loadPlayerColor(p.getUniqueId());
+    }
+
+    public static @Nullable Record loadColor(int id) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER))
+                .from(COLORS)
+                .where(COLORS.ID.equal(id))
+                .fetchOne();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
+        return null;
+    }
+
+    public static @Nullable Record loadTag(int id) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER))
+                .from(TAGS)
+                .where(TAGS.ID.equal(id))
+                .fetchOne();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
+        return null;
+    }
+
+    public static void saveSyncMessage(String message) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context.insertInto(SYNC, SYNC.MESSAGE, SYNC.TIMESTAMP)
+                .values(
+                    message,
+                    LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC)
+                )
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
+    }
+
+    public static @Nullable Result<Record3<Integer, String, LocalDateTime>> fetchSyncMessages(int latestSyncId) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context.select(SYNC.ID, SYNC.MESSAGE, SYNC.TIMESTAMP)
+                .from(SYNC)
+                .where(SYNC.ID.greaterThan(latestSyncId))
+                .fetch();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
+        return null;
+    }
+
+    public static void cleanUpSyncMessages() {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context.deleteFrom(SYNC)
+                .where(SYNC.TIMESTAMP.lessOrEqual(
+                    LocalDateTime.ofInstant(
+                        Instant.now().minus(120, ChronoUnit.SECONDS),
+                        ZoneOffset.UTC)))
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
     }
 
     public static byte[] convertUUIDToBytes(UUID uuid) {

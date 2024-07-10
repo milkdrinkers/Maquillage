@@ -2,6 +2,7 @@ package io.github.Alathra.Maquillage.tag;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -88,6 +89,18 @@ public class TagHandler {
         }
     }
 
+    public static void loadTag(int id, String tag, String permission, String displayName, String identifier) {
+        loadedTags.put(id, new Tag(
+            tag,
+            permission,
+            displayName,
+            identifier,
+            id
+        ));
+        tagIdentifiers.put(identifier, id);
+        Bukkit.getPluginManager().addPermission(new Permission(permission));
+    }
+
     public static void clearTags() {
         loadedTags.clear();
     }
@@ -126,8 +139,10 @@ public class TagHandler {
      */
     public static int addTag(String tag, String perm, String name, String identifier) {
         int ID = addTagToDB(tag, perm, name, identifier);
-        if (ID != -1)
+        if (ID != -1) {
             addTagToCache(new Tag(tag, perm, name, identifier, ID));
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
+        }
         return ID;
     }
 
@@ -140,6 +155,7 @@ public class TagHandler {
         if (!success)
             return false;
         addTagToCache(new Tag(tag, perm, name, identifier, ID));
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
         return true;
     }
 
@@ -152,11 +168,16 @@ public class TagHandler {
         tagIdentifiers.remove(tag.getIdentifier());
     }
 
+    public static void uncacheTag(int id) {
+        uncacheTag(getTagByID(id));
+    }
+
     public static boolean removeTag(Tag tag) {
         boolean success = removeTagFromDB(tag);
         if (!success)
             return false;
         uncacheTag(tag);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, tag.getID());
         return true;
     }
 
