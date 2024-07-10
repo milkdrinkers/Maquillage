@@ -2,7 +2,6 @@ package io.github.Alathra.Maquillage.listener;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.Reloadable;
-import io.github.Alathra.Maquillage.listener.listeners.EssentialsNicknameListener;
 import io.github.Alathra.Maquillage.listener.listeners.PlayerDataLoadedListener;
 import io.github.Alathra.Maquillage.listener.listeners.PlayerJoinListener;
 import io.github.Alathra.Maquillage.listener.listeners.PlayerQuitListener;
@@ -27,8 +26,6 @@ public class ListenerHandler implements Reloadable {
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerDataLoadedListener(), plugin);
-        if (Maquillage.getEssentialsHook().isHookLoaded())
-            plugin.getServer().getPluginManager().registerEvents(new EssentialsNicknameListener(), plugin);
     }
 
     @Override

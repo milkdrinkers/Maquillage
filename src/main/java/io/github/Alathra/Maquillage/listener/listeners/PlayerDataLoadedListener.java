@@ -13,15 +13,6 @@ public class PlayerDataLoadedListener implements Listener {
 
     @EventHandler
     public static void onPlayerDataLoaded(PlayerDataLoadedEvent e) {
-        Player p = e.getPlayer();
 
-        if (TagHandler.doesPlayerHaveTag(p) && NameColorHandler.doesPlayerHaveColor(p))
-            UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), NameColorHandler.getPlayerColor(p));
-        else if (TagHandler.doesPlayerHaveTag(p) && !NameColorHandler.doesPlayerHaveColor(p))
-            UpdateDisplayName.updateDisplayNameNoColor(p, TagHandler.getPlayerTag(p));
-        else if (!TagHandler.doesPlayerHaveTag(p) && NameColorHandler.doesPlayerHaveColor(p))
-            UpdateDisplayName.updateDisplayNameNoTag(p, NameColorHandler.getPlayerColor(p));
-        else if (!TagHandler.doesPlayerHaveTag(p) && !NameColorHandler.doesPlayerHaveColor(p))
-            return;
     }
 }

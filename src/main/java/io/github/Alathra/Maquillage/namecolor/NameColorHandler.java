@@ -1,16 +1,11 @@
 package io.github.Alathra.Maquillage.namecolor;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
-import io.github.Alathra.Maquillage.tag.TagHandler;
-import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
-import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -62,11 +57,6 @@ public class NameColorHandler {
     public static void clearPlayerColor(UUID uuid) {
         removePlayerColor(uuid);
         DatabaseQueries.removePlayerColor(uuid);
-
-        Player p = Bukkit.getPlayer(uuid);
-        Component name = ColorParser.of("<white>" + p.getName()).build();
-        p.displayName(name);
-        p.playerListName(name);
     }
 
     public static void clearAllPlayerColorsWithID(int ID) {
@@ -241,10 +231,6 @@ public class NameColorHandler {
         playerColors.put(uuid, colorID);
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, colorID));
 
-        if (TagHandler.doesPlayerHaveTag(p))
-            UpdateDisplayName.updateDisplayName(p, TagHandler.getPlayerTag(p), color);
-        else
-            UpdateDisplayName.updateDisplayNameNoTag(p, color);
         GuiCooldown.setCooldown(uuid);
         return true;
     }

@@ -1,17 +1,11 @@
 package io.github.Alathra.Maquillage.tag;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.utility.UpdateDisplayName;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record1;
-import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -229,10 +223,6 @@ public class TagHandler {
         playerTags.put(uuid, tagID);
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerTag(uuid, tagID));
 
-        if (NameColorHandler.doesPlayerHaveColor(p))
-            UpdateDisplayName.updateDisplayName(p, tag, NameColorHandler.getPlayerColor(p));
-        else
-            UpdateDisplayName.updateDisplayNameNoColor(p, tag);
         GuiCooldown.setCooldown(uuid);
         return true;
     }
