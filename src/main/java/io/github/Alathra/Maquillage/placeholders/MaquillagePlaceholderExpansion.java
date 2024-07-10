@@ -48,8 +48,15 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
     @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
         if (params.equals("namecolor")) {
-            if (NameColorHandler.doesPlayerHaveColor(player))
-                return NameColorHandler.getPlayerColorString(player) + player.getName() + "<reset>";
+            if (NameColorHandler.doesPlayerHaveColor(player)) {
+                String colorString = NameColorHandler.getPlayerColorString(player);
+                if (colorString.startsWith("<gradient"))
+                    return colorString + player.getName() + "</gradient>";
+                else if (colorString.startsWith("<rainbow"))
+                    return colorString + player.getName() + "</rainbow>";
+
+                return colorString + player.getName();
+            }
             return player.getName();
         }
 
@@ -70,8 +77,15 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
             if (newName == null)
                 newName = player.getName();
 
-            if (NameColorHandler.doesPlayerHaveColor(player))
-                return NameColorHandler.getPlayerColorString(player) + newName + "<reset>";
+            if (NameColorHandler.doesPlayerHaveColor(player)) {
+                String colorString = NameColorHandler.getPlayerColorString(player);
+                if (colorString.startsWith("<gradient"))
+                    return colorString + newName + "</gradient>";
+                else if (colorString.startsWith("<rainbow"))
+                    return colorString + newName + "</rainbow>";
+
+                return colorString + newName;
+            }
             return newName;
         }
 
