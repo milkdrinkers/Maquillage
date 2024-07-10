@@ -73,8 +73,6 @@ public class TagHandler {
             String identifier = result.getValue(index, "IDENTIFIER").toString();
             String permission = result.getValue(index, "PERM").toString();
 
-            Bukkit.getPluginManager().addPermission(new Permission(permission));
-
             loadedTags.put(ID,
                 new Tag(
                     result.getValue(index, "TAG").toString(),
@@ -84,6 +82,12 @@ public class TagHandler {
                     ID)
             );
             tagIdentifiers.put(identifier, ID);
+
+            // Don't register permission node if it already exists
+            if (Bukkit.getPluginManager().getPermission(permission) == null) {
+                Bukkit.getPluginManager().addPermission(new Permission(permission));
+            }
+
             index ++;
         }
     }
@@ -113,7 +117,10 @@ public class TagHandler {
         loadedTags.put(tag.getID(), tag);
         tagIdentifiers.put(tag.getIdentifier(), tag.getID());
 
-        Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
+        // Don't register permission node if it already exists
+        if (Bukkit.getPluginManager().getPermission(tag.getPerm()) == null) {
+            Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
+        }
     }
 
     /**
@@ -150,6 +157,11 @@ public class TagHandler {
     public static void uncacheTag(Tag tag) {
         loadedTags.remove(tag.getID());
         tagIdentifiers.remove(tag.getIdentifier());
+
+        // Only remove permission node if there are no other tags that use it
+        if (loadedTags.values().stream().noneMatch(t -> t.getPerm().equals(tag.getPerm()))) {
+            Bukkit.getPluginManager().removePermission(tag.getPerm());
+        }
     }
 
     public static boolean removeTag(Tag tag) {
