@@ -5,6 +5,7 @@ import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Result;
@@ -73,10 +74,14 @@ public class NameColorHandler {
         for (Record5 record : result) {
             int ID = (int) result.getValue(index, "ID");
             String identifier = result.getValue(index, "IDENTIFIER").toString();
+            String permission = result.getValue(index, "PERM").toString();
+
+            Bukkit.getPluginManager().addPermission(new Permission(permission));
+
             loadedColors.put((int) result.getValue(index, "ID"),
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
-                    result.getValue(index, "PERM").toString(),
+                    permission,
                     result.getValue(index, "DISPLAYNAME").toString(),
                     identifier,
                     ID)
@@ -110,6 +115,8 @@ public class NameColorHandler {
     public static void addColorToCache(NameColor color) {
         loadedColors.put(color.getID(), color);
         colorIdentifiers.put(color.getIdentifier(), color.getID());
+
+        Bukkit.getPluginManager().addPermission(new Permission(color.getPerm()));
     }
 
     /**

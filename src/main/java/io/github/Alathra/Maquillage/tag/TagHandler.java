@@ -5,6 +5,7 @@ import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
 import org.jooq.Record1;
 import org.jooq.Record5;
 import org.jooq.Result;
@@ -70,10 +71,14 @@ public class TagHandler {
         for (Record5 record : result) {
             int ID = (int) result.getValue(index, "ID");
             String identifier = result.getValue(index, "IDENTIFIER").toString();
+            String permission = result.getValue(index, "PERM").toString();
+
+            Bukkit.getPluginManager().addPermission(new Permission(permission));
+
             loadedTags.put(ID,
                 new Tag(
                     result.getValue(index, "TAG").toString(),
-                    result.getValue(index, "PERM").toString(),
+                    permission,
                     result.getValue(index, "DISPLAYNAME").toString(),
                     identifier,
                     ID)
@@ -107,6 +112,8 @@ public class TagHandler {
     public static void addTagToCache(Tag tag) {
         loadedTags.put(tag.getID(), tag);
         tagIdentifiers.put(tag.getIdentifier(), tag.getID());
+
+        Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
     }
 
     /**
