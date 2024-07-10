@@ -41,6 +41,11 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
         if (params.equals("namecolor")) {
             if (NameColorHandler.doesPlayerHaveColor(player))
