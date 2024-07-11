@@ -91,13 +91,13 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
 
         if (params.equals("tag")) {
             if (TagHandler.doesPlayerHaveTag(player))
-                return TagHandler.getPlayerTagString(player) + "<reset> ";
+                return TagHandler.getPlayerTagString(player) + " ";
             return "";
         }
 
         if (params.equals("tag_nospace")) {
             if (TagHandler.doesPlayerHaveTag(player))
-                return TagHandler.getPlayerTagString(player) + "<reset>";
+                return TagHandler.getPlayerTagString(player);
             return "";
         }
 
