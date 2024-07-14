@@ -392,7 +392,7 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static @Nullable Result<Record3<Integer, String, LocalDateTime>> fetchSyncMessages(int latestSyncId) {
+    public static @Nullable Result<Record3<Integer, String, LocalDateTime>> fetchSyncMessages(final int latestSyncId) {
         try (
             Connection con = DB.getConnection()
         ) {
