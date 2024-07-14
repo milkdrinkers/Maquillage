@@ -115,7 +115,7 @@ public class SyncHandler {
         this.latestSyncId = latestSyncId;
     }
 
-    public void saveSyncMessage(SyncAction action, SyncType type, int id) {
+    public void saveSyncMessage(SyncAction action, SyncType type, final int id) {
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.saveSyncMessage(action.name() + " " + type.name() + " " + id));
     }
 
