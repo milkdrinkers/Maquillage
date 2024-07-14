@@ -4,6 +4,7 @@ import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
+import io.github.Alathra.Maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -84,10 +85,7 @@ public class TagHandler {
             );
             tagIdentifiers.put(identifier, ID);
 
-            // Don't register permission node if it already exists
-            if (Bukkit.getPluginManager().getPermission(permission) == null) {
-                Bukkit.getPluginManager().addPermission(new Permission(permission));
-            }
+            PermissionUtility.registerPermission(permission);
 
             index ++;
         }
@@ -102,7 +100,7 @@ public class TagHandler {
             id
         ));
         tagIdentifiers.put(identifier, id);
-        Bukkit.getPluginManager().addPermission(new Permission(permission));
+        PermissionUtility.registerPermission(permission);
     }
 
     public static void clearTags() {
@@ -130,10 +128,7 @@ public class TagHandler {
         loadedTags.put(tag.getID(), tag);
         tagIdentifiers.put(tag.getIdentifier(), tag.getID());
 
-        // Don't register permission node if it already exists
-        if (Bukkit.getPluginManager().getPermission(tag.getPerm()) == null) {
-            Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
-        }
+        PermissionUtility.registerPermission(tag.getPerm());
     }
 
     /**
@@ -174,10 +169,7 @@ public class TagHandler {
         loadedTags.remove(tag.getID());
         tagIdentifiers.remove(tag.getIdentifier());
 
-        // Only remove permission node if there are no other tags that use it
-        if (loadedTags.values().stream().noneMatch(t -> t.getPerm().equals(tag.getPerm()))) {
-            Bukkit.getPluginManager().removePermission(tag.getPerm());
-        }
+        PermissionUtility.removePermission(tag.getPerm());
     }
 
     public static void uncacheTag(int id) {

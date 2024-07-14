@@ -4,6 +4,7 @@ import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
+import io.github.Alathra.Maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -87,9 +88,7 @@ public class NameColorHandler {
             );
             colorIdentifiers.put(identifier, ID);
 
-            if (Bukkit.getPluginManager().getPermission(permission) == null) {
-                Bukkit.getPluginManager().addPermission(new Permission(permission));
-            }
+            PermissionUtility.registerPermission(permission);
 
             index ++;
         }
@@ -104,7 +103,7 @@ public class NameColorHandler {
             id
         ));
         colorIdentifiers.put(identifier, id);
-        Bukkit.getPluginManager().addPermission(new Permission(permission));
+        PermissionUtility.registerPermission(permission);
     }
 
     public static void clearColors() {
@@ -132,9 +131,7 @@ public class NameColorHandler {
         loadedColors.put(color.getID(), color);
         colorIdentifiers.put(color.getIdentifier(), color.getID());
 
-        if (Bukkit.getPluginManager().getPermission(color.getPerm()) == null) {
-            Bukkit.getPluginManager().addPermission(new Permission(color.getPerm()));
-        }
+        PermissionUtility.registerPermission(color.getPerm());
     }
 
     /**
@@ -175,10 +172,7 @@ public class NameColorHandler {
         loadedColors.remove(color.getID());
         colorIdentifiers.remove(color.getIdentifier());
 
-        // Only remove permission node if there are no other colors that use it
-        if (loadedColors.values().stream().noneMatch(c -> c.getPerm().equals(color.getPerm()))) {
-            Bukkit.getPluginManager().removePermission(color.getPerm());
-        }
+        PermissionUtility.removePermission(color.getPerm());
     }
 
     public static void uncacheColor(int id) {
