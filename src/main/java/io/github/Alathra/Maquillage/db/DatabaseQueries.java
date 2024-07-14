@@ -375,7 +375,7 @@ public abstract class DatabaseQueries {
         return null;
     }
 
-    public static void saveSyncMessage(String message) {
+    public static void saveSyncMessage(final String message) {
         try (
             Connection con = DB.getConnection()
         ) {
