@@ -358,7 +358,7 @@ public abstract class DatabaseQueries {
         return null;
     }
 
-    public static @Nullable Record loadTag(int id) {
+    public static @Nullable Record loadTag(final int id) {
         try (
             Connection con = DB.getConnection()
         ) {
