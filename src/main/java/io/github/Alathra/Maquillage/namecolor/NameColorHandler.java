@@ -77,8 +77,6 @@ public class NameColorHandler {
             String identifier = result.getValue(index, "IDENTIFIER").toString();
             String permission = result.getValue(index, "PERM").toString();
 
-            Bukkit.getPluginManager().addPermission(new Permission(permission));
-
             loadedColors.put((int) result.getValue(index, "ID"),
                 new NameColor(
                     result.getValue(index, "COLOR").toString(),
@@ -88,6 +86,11 @@ public class NameColorHandler {
                     ID)
             );
             colorIdentifiers.put(identifier, ID);
+
+            if (Bukkit.getPluginManager().getPermission(permission) == null) {
+                Bukkit.getPluginManager().addPermission(new Permission(permission));
+            }
+
             index ++;
         }
     }
@@ -129,7 +132,9 @@ public class NameColorHandler {
         loadedColors.put(color.getID(), color);
         colorIdentifiers.put(color.getIdentifier(), color.getID());
 
-        Bukkit.getPluginManager().addPermission(new Permission(color.getPerm()));
+        if (Bukkit.getPluginManager().getPermission(color.getPerm()) == null) {
+            Bukkit.getPluginManager().addPermission(new Permission(color.getPerm()));
+        }
     }
 
     /**
@@ -169,6 +174,11 @@ public class NameColorHandler {
     public static void uncacheColor(NameColor color) {
         loadedColors.remove(color.getID());
         colorIdentifiers.remove(color.getIdentifier());
+
+        // Only remove permission node if there are no other colors that use it
+        if (loadedColors.values().stream().noneMatch(c -> c.getPerm().equals(color.getPerm()))) {
+            Bukkit.getPluginManager().removePermission(color.getPerm());
+        }
     }
 
     public static void uncacheColor(int id) {
