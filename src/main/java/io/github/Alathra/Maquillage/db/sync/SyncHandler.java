@@ -99,7 +99,7 @@ public class SyncHandler {
         return CompletableFuture.supplyAsync(() -> DatabaseQueries.fetchSyncMessages(latestSyncId));
     }
 
-    private CompletableFuture<Record> fetchColor(int id) {
+    private CompletableFuture<Record> fetchColor(final int id) {
         return CompletableFuture.supplyAsync(() -> DatabaseQueries.loadColor(id));
     }
 
