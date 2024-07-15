@@ -1,6 +1,5 @@
 package io.github.Alathra.Maquillage;
 
-import com.earth2me.essentials.Essentials;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.command.CommandHandler;
@@ -8,9 +7,9 @@ import io.github.Alathra.Maquillage.config.ConfigHandler;
 import io.github.Alathra.Maquillage.hooks.EssentialsHook;
 import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import io.github.Alathra.Maquillage.placeholders.PlaceholderHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,8 +67,8 @@ public class Maquillage extends JavaPlugin {
         }
         placeholderHandler.onEnable();
 
-        NameColorHandler.loadColors();
-        TagHandler.loadTags();
+        NameColorHolder.getInstance().loadAll();
+        TagHolder.getInstance().loadAll();
     }
 
     public void onDisable() {
@@ -81,8 +80,8 @@ public class Maquillage extends JavaPlugin {
         essentialsHook.onDisable();
         placeholderHandler.onDisable();
 
-        NameColorHandler.clearColors();
-        TagHandler.clearTags();
+        NameColorHolder.getInstance().cacheClear();
+        TagHolder.getInstance().cacheClear();
     }
 
     @NotNull

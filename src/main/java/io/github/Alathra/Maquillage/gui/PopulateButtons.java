@@ -3,8 +3,10 @@ package io.github.Alathra.Maquillage.gui;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
+import io.github.Alathra.Maquillage.player.PlayerData;
+import io.github.Alathra.Maquillage.player.PlayerDataHolder;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,21 +32,25 @@ public class PopulateButtons {
         skullMeta.lore(Collections.singletonList(ColorParser.of("<red>Click to clear your " + type.toString().toLowerCase()).build()));
 
         // Sets head name to match selected tag and color
-        String tag = TagHandler.doesPlayerHaveTag(p) ? TagHandler.getPlayerTagString(p) + " " : "";
-        String color = NameColorHandler.doesPlayerHaveColor(p) ? NameColorHandler.getPlayerColorString(p) : "<white>";
+        PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
+        if (playerData != null) {
+            String tag = playerData.getTag().isPresent() ? playerData.getTag().get().getTag() + " " : "";
+            String color = playerData.getNameColor().isPresent() ? playerData.getNameColor().get().getColor() : "<white>";
 
-        skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build().decoration(TextDecoration.ITALIC, false));
+            skullMeta.displayName(ColorParser.of(tag + color + p.getName()).build().decoration(TextDecoration.ITALIC, false));
+        }
+
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
 
         gui.setItem(6, 5, ItemBuilder.from(skull).asGuiItem(event -> {
             switch (type) {
                 case COLOR -> {
-                    NameColorHandler.clearPlayerColor(p);
+                    NameColorHolder.clearPlayerColor(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
                 case TAG ->  {
-                    TagHandler.clearPlayerTag(p);
+                    TagHolder.clearPlayerTag(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
             }

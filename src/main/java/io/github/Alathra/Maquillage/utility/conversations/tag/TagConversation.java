@@ -1,10 +1,7 @@
 package io.github.Alathra.Maquillage.utility.conversations.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.Tag;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +48,7 @@ public class TagConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
-            if (TagHandler.tagIdentifiers.containsKey(input)) {
+            if (TagHolder.getInstance().doesIdentifierExist(input)) {
                 Player player = (Player) conversationContext.getForWhom();
                 player.sendMessage(ColorParser.of("<red>This identifier is already in use. Identifiers have to be unique").build());
                 return identifierPrompt;
@@ -80,7 +77,7 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHandler.addTag(tag, permission, name, identifier);
+                int ID = TagHolder.getInstance().add(tag, permission, name, identifier);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
                 } else {

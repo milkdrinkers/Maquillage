@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.utility.conversations.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.tag.Tag;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.tag.Tag;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -43,7 +43,7 @@ public class EditTagPermConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHandler.updateTag(tag.getTag(), updatedPerm, tag.getName(), tag.getIdentifier(), tag.getID());
+                boolean success = TagHolder.getInstance().update(tag.getTag(), updatedPerm, tag.getName(), tag.getIdentifier(), tag.getID());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The permission node was successfully updated!").build());
                 } else {

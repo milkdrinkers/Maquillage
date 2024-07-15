@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.utility.conversations.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColor;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -40,7 +40,7 @@ public class EditColorColorConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHandler.updateColor(updatedColor, color.getPerm(), color.getName(), color.getIdentifier(), color.getID());
+                boolean success = NameColorHolder.getInstance().update(updatedColor, color.getPerm(), color.getName(), color.getIdentifier(), color.getID());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
                 } else {

@@ -1,17 +1,6 @@
 package io.github.Alathra.Maquillage.utility;
 
-import com.earth2me.essentials.Essentials;
-import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.Tag;
-import io.github.Alathra.Maquillage.tag.TagHandler;
-import net.ess3.api.IUser;
-import net.kyori.adventure.text.Component;
-import org.bukkit.entity.Player;
-
-public class UpdateDisplayName {
+/*public class UpdateDisplayName {
 
     public static void updateDisplayName(Player player, Tag tag, NameColor color) {
         Component newName = null;
@@ -49,8 +38,8 @@ public class UpdateDisplayName {
         Component newName = null;
 
         String tag = "";
-        if (TagHandler.doesPlayerHaveTag(player))
-            tag = TagHandler.getPlayerTagString(player) + " ";
+        if (TagHolder.doesPlayerHaveTag(player))
+            tag = TagHolder.getPlayerTagString(player) + " ";
 
         // Use essentials nickname if essentials is loaded
         if (Maquillage.getEssentialsHook().isHookLoaded()) {
@@ -73,8 +62,8 @@ public class UpdateDisplayName {
         Component newName = null;
 
         String color = "<white>";
-        if (NameColorHandler.doesPlayerHaveColor(player))
-            color = NameColorHandler.getPlayerColorString(player);
+        if (NameColorHolder.doesPlayerHaveColor(player))
+            color = NameColorHolder.getPlayerColorString(player);
 
         // Use essentials nickname if essentials is loaded
         if (Maquillage.getEssentialsHook().isHookLoaded()) {
@@ -132,4 +121,4 @@ public class UpdateDisplayName {
 
         p.displayName(newName);
     }
-}
+}*/
