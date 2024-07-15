@@ -2,7 +2,9 @@ package io.github.Alathra.Maquillage.tag;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
+import io.github.Alathra.Maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
@@ -83,13 +85,22 @@ public class TagHandler {
             );
             tagIdentifiers.put(identifier, ID);
 
-            // Don't register permission node if it already exists
-            if (Bukkit.getPluginManager().getPermission(permission) == null) {
-                Bukkit.getPluginManager().addPermission(new Permission(permission));
-            }
+            PermissionUtility.registerPermission(permission);
 
             index ++;
         }
+    }
+
+    public static void loadTag(int id, String tag, String permission, String displayName, String identifier) {
+        loadedTags.put(id, new Tag(
+            tag,
+            permission,
+            displayName,
+            identifier,
+            id
+        ));
+        tagIdentifiers.put(identifier, id);
+        PermissionUtility.registerPermission(permission);
     }
 
     public static void clearTags() {
@@ -117,10 +128,7 @@ public class TagHandler {
         loadedTags.put(tag.getID(), tag);
         tagIdentifiers.put(tag.getIdentifier(), tag.getID());
 
-        // Don't register permission node if it already exists
-        if (Bukkit.getPluginManager().getPermission(tag.getPerm()) == null) {
-            Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
-        }
+        PermissionUtility.registerPermission(tag.getPerm());
     }
 
     /**
@@ -133,8 +141,10 @@ public class TagHandler {
      */
     public static int addTag(String tag, String perm, String name, String identifier) {
         int ID = addTagToDB(tag, perm, name, identifier);
-        if (ID != -1)
+        if (ID != -1) {
             addTagToCache(new Tag(tag, perm, name, identifier, ID));
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
+        }
         return ID;
     }
 
@@ -147,6 +157,7 @@ public class TagHandler {
         if (!success)
             return false;
         addTagToCache(new Tag(tag, perm, name, identifier, ID));
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
         return true;
     }
 
@@ -158,10 +169,11 @@ public class TagHandler {
         loadedTags.remove(tag.getID());
         tagIdentifiers.remove(tag.getIdentifier());
 
-        // Only remove permission node if there are no other tags that use it
-        if (loadedTags.values().stream().noneMatch(t -> t.getPerm().equals(tag.getPerm()))) {
-            Bukkit.getPluginManager().removePermission(tag.getPerm());
-        }
+        PermissionUtility.removePermission(tag.getPerm());
+    }
+
+    public static void uncacheTag(int id) {
+        uncacheTag(getTagByID(id));
     }
 
     public static boolean removeTag(Tag tag) {
@@ -169,6 +181,7 @@ public class TagHandler {
         if (!success)
             return false;
         uncacheTag(tag);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, tag.getID());
         return true;
     }
 
