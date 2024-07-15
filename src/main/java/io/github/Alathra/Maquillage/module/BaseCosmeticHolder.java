@@ -29,6 +29,13 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
     void cacheRemove(T value);
 
     /**
+     * Remove this by id from the cache
+     *
+     * @param id BaseCosmetic id
+     */
+    void cacheRemove(int id);
+
+    /**
      * Clear the entire cache
      */
     void cacheClear();
@@ -65,6 +72,17 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      * @return false if failed
      */
     boolean remove(T value);
+
+    /**
+     * Load a BaseCosmetic from DB into cache
+     *
+     * @param id         a unique id
+     * @param value      BaseCosmetic
+     * @param perm       a permission node
+     * @param name       a display name
+     * @param identifier a unique identifier
+     */
+    void load(int id, String value, String perm, String name, String identifier);
 
     /**
      * Loads all data from DB and caches it

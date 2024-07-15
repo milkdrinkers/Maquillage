@@ -2,13 +2,14 @@ package io.github.Alathra.Maquillage.module.namecolor;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import io.github.Alathra.Maquillage.module.BaseCosmeticHolder;
 import io.github.Alathra.Maquillage.player.PlayerData;
 import io.github.Alathra.Maquillage.player.PlayerDataHolder;
+import io.github.Alathra.Maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -45,9 +46,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         cachedColors.put(color.getID(), color);
         colorIdentifiers.put(color.getIdentifier(), color.getID());
 
-        if (Bukkit.getPluginManager().getPermission(color.getPerm()) == null) {
-            Bukkit.getPluginManager().addPermission(new Permission(color.getPerm()));
-        }
+        PermissionUtility.registerPermission(color.getPerm());
     }
 
     @Override
@@ -55,10 +54,12 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         cachedColors.remove(value.getID());
         colorIdentifiers.remove(value.getIdentifier());
 
-        // Only remove permission node if there are no other colors that use it
-        if (cachedColors.values().stream().noneMatch(c -> c.getPerm().equals(value.getPerm()))) {
-            Bukkit.getPluginManager().removePermission(value.getPerm());
-        }
+        PermissionUtility.removePermission(value.getPerm());
+    }
+
+    @Override
+    public void cacheRemove(int id) {
+        cacheRemove(getByID(id));
     }
 
     @Override
@@ -72,7 +73,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     @Override
     public int add(String value, String perm, String name, String identifier) {
         int ID = DatabaseQueries.saveColor(value, perm, name, identifier);
-        if (ID != -1)
+        if (ID != -1) {
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(value)
@@ -82,6 +83,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                     .withID(ID)
                     .createNameColor()
             );
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, ID);
+        }
         return ID;
     }
 
@@ -92,6 +95,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getID());
         cacheRemove(value);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getID());
         return true;
     }
 
@@ -110,7 +114,22 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withID(ID)
                 .createNameColor()
         );
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, ID);
         return true;
+    }
+
+    @Override
+    public void load(int ID, String value, String perm, String name, String identifier) {
+        cacheAdd(
+            new NameColorBuilder()
+                .withColor(value)
+                .withPerm(perm)
+                .withName(name)
+                .withIdentifier(identifier)
+                .withID(ID)
+                .createNameColor()
+
+        );
     }
 
     @Override

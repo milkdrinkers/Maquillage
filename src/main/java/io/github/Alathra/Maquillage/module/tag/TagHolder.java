@@ -2,13 +2,14 @@ package io.github.Alathra.Maquillage.module.tag;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
+import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.gui.GuiCooldown;
 import io.github.Alathra.Maquillage.module.BaseCosmeticHolder;
 import io.github.Alathra.Maquillage.player.PlayerData;
 import io.github.Alathra.Maquillage.player.PlayerDataHolder;
+import io.github.Alathra.Maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permission;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -45,10 +46,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         cachedTags.put(tag.getID(), tag);
         tagIdentifiers.put(tag.getIdentifier(), tag.getID());
 
-        // Don't register permission node if it already exists
-        if (Bukkit.getPluginManager().getPermission(tag.getPerm()) == null) {
-            Bukkit.getPluginManager().addPermission(new Permission(tag.getPerm()));
-        }
+        PermissionUtility.registerPermission(tag.getPerm());
     }
 
     @Override
@@ -56,10 +54,12 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         cachedTags.remove(value.getID());
         tagIdentifiers.remove(value.getIdentifier());
 
-        // Only remove permission node if there are no other tags that use it
-        if (cachedTags.values().stream().noneMatch(t -> t.getPerm().equals(value.getPerm()))) {
-            Bukkit.getPluginManager().removePermission(value.getPerm());
-        }
+        PermissionUtility.removePermission(value.getPerm());
+    }
+
+    @Override
+    public void cacheRemove(int id) {
+        cacheRemove(getByID(id));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     @Override
     public int add(String value, String perm, String name, String identifier) {
         int ID = DatabaseQueries.saveTag(value, perm, name, identifier);
-        if (ID != -1)
+        if (ID != -1) {
             cacheAdd(
                 new TagBuilder()
                     .withTag(value)
@@ -83,6 +83,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                     .withID(ID)
                     .createTag()
             );
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
+        }
         return ID;
     }
 
@@ -93,6 +95,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getID());
         cacheRemove(value);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getID());
         return true;
     }
 
@@ -111,7 +114,21 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withID(ID)
                 .createTag()
         );
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
         return true;
+    }
+
+    @Override
+    public void load(int ID, String value, String perm, String name, String identifier) {
+        cacheAdd(
+            new TagBuilder()
+                .withTag(value)
+                .withPerm(perm)
+                .withName(name)
+                .withIdentifier(identifier)
+                .withID(ID)
+                .createTag()
+        );
     }
 
     @Override

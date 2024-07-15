@@ -3,18 +3,17 @@ package io.github.Alathra.Maquillage.db.sync;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.db.schema.Tables;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.Bukkit;
-import org.jooq.Record3;
 import org.jooq.Record;
+import org.jooq.Record3;
 import org.jooq.Result;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 public class SyncHandler {
-
     public enum SyncAction {
         FETCH,
         DELETE
@@ -55,7 +54,7 @@ public class SyncHandler {
                             if (r == null)
                                 return;
 
-                            NameColorHandler.loadColor(r.get(Tables.COLORS.ID),
+                            NameColorHolder.getInstance().load(r.get(Tables.COLORS.ID),
                                 r.get(Tables.COLORS.COLOR),
                                 r.get(Tables.COLORS.PERM),
                                 r.get(Tables.COLORS.DISPLAYNAME),
@@ -68,7 +67,7 @@ public class SyncHandler {
                             if (r == null)
                                 return;
 
-                            TagHandler.loadTag(r.get(Tables.TAGS.ID),
+                            TagHolder.getInstance().load(r.get(Tables.TAGS.ID),
                                 r.get(Tables.TAGS.TAG),
                                 r.get(Tables.TAGS.PERM),
                                 r.get(Tables.TAGS.DISPLAYNAME),
@@ -82,11 +81,11 @@ public class SyncHandler {
                     message = message.substring(SyncAction.DELETE.name().length() + 1);
 
                     if (message.startsWith(SyncType.COLOR.name())) {
-                        NameColorHandler.uncacheColor(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1)));
+                        NameColorHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1)));
                     }
 
                     if (message.startsWith(SyncType.TAG.name())) {
-                        TagHandler.uncacheTag(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1)));
+                        TagHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1)));
                     }
                 }
 
