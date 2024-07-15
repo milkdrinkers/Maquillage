@@ -5,10 +5,7 @@ import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jooq.DSLContext;
-import org.jooq.Record1;
-import org.jooq.Record5;
-import org.jooq.Result;
+import org.jooq.*;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;

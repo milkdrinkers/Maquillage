@@ -1,15 +1,20 @@
 package io.github.Alathra.Maquillage;
 
+import com.earth2me.essentials.Essentials;
 import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.command.CommandHandler;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
+import io.github.Alathra.Maquillage.db.sync.SyncHandler;
 import io.github.Alathra.Maquillage.db.DatabaseHandler;
 import io.github.Alathra.Maquillage.hooks.EssentialsHook;
+import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.hooks.VaultHook;
 import io.github.Alathra.Maquillage.listener.ListenerHandler;
 import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
 import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import io.github.Alathra.Maquillage.placeholders.PlaceholderHandler;
+import io.github.Alathra.Maquillage.tag.TagHandler;
 import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +29,7 @@ public class Maquillage extends JavaPlugin {
     private static VaultHook vaultHook;
     private static EssentialsHook essentialsHook;
     private PlaceholderHandler placeholderHandler;
+    private static SyncHandler syncHandler;
 
     public static Maquillage getInstance() {
         return instance;
@@ -38,6 +44,7 @@ public class Maquillage extends JavaPlugin {
         vaultHook = new VaultHook(instance);
         essentialsHook = new EssentialsHook();
         placeholderHandler = new PlaceholderHandler(instance);
+        syncHandler = new SyncHandler();
 
         configHandler.onLoad();
         databaseHandler.onLoad();
@@ -100,5 +107,9 @@ public class Maquillage extends JavaPlugin {
 
     public static EssentialsHook getEssentialsHook() {
         return essentialsHook;
+    }
+
+    public static SyncHandler getSyncHandler() {
+        return syncHandler;
     }
 }
