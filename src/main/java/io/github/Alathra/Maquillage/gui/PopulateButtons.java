@@ -3,6 +3,7 @@ package io.github.Alathra.Maquillage.gui;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
+import io.github.Alathra.Maquillage.gui.GuiHandler.MaquillageGuiType;
 import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
 import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import io.github.Alathra.Maquillage.player.PlayerData;
@@ -14,18 +15,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import io.github.Alathra.Maquillage.gui.GuiHandler.MaquillageGuiType;
 
 import java.util.Collections;
 
 public class PopulateButtons {
 
-    public static void populateButtons (MaquillageGuiType type, PaginatedGui gui, Player p) {
+    public static void populateButtons(MaquillageGuiType type, PaginatedGui gui, Player p) {
         headButton(type, gui, p);
         arrowButtons(gui);
     }
 
-    private static void headButton (MaquillageGuiType type, PaginatedGui gui, Player p) {
+    private static void headButton(MaquillageGuiType type, PaginatedGui gui, Player p) {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
@@ -49,7 +49,7 @@ public class PopulateButtons {
                     NameColorHolder.clearPlayerColor(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
-                case TAG ->  {
+                case TAG -> {
                     TagHolder.clearPlayerTag(p);
                     GuiHandler.reloadGui(type, gui, p);
                 }
@@ -57,7 +57,7 @@ public class PopulateButtons {
         }));
     }
 
-    private static void arrowButtons (PaginatedGui gui) {
+    private static void arrowButtons(PaginatedGui gui) {
         ItemStack nextPage = new ItemStack(Material.ARROW);
         ItemMeta nextPageMeta = nextPage.getItemMeta();
         nextPageMeta.displayName(ColorParser.of("<green>Next page").build().decoration(TextDecoration.ITALIC, false));
@@ -65,7 +65,7 @@ public class PopulateButtons {
         gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> {
             gui.next();
         }));
-        
+
 
         ItemStack prevPage = new ItemStack(Material.ARROW);
         ItemMeta prevPageMeta = prevPage.getItemMeta();

@@ -23,7 +23,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     private final HashMap<Integer, Tag> cachedTags = new HashMap<>();
     private final HashMap<String, Integer> tagIdentifiers = new HashMap<>();
 
-    private TagHolder() {}
+    private TagHolder() {
+    }
 
     public static TagHolder getInstance() {
         if (INSTANCE == null)
@@ -115,7 +116,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void loadAll() {
-        Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllTags();
+        Result<Record5<Integer, String, String, String, String>> result = DatabaseQueries.loadAllTags();
 
         if (result == null)
             return;

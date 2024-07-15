@@ -23,7 +23,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     private final HashMap<Integer, NameColor> cachedColors = new HashMap<>();
     private final HashMap<String, Integer> colorIdentifiers = new HashMap<>();
 
-    private NameColorHolder() {}
+    private NameColorHolder() {
+    }
 
     public static NameColorHolder getInstance() {
         if (INSTANCE == null)
@@ -114,7 +115,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void loadAll() {
-        Result<Record5<Integer, String, String, String, String>> result =  DatabaseQueries.loadAllColors();
+        Result<Record5<Integer, String, String, String, String>> result = DatabaseQueries.loadAllColors();
 
         if (result == null)
             return;

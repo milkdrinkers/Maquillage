@@ -1,8 +1,6 @@
 package io.github.Alathra.Maquillage.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.triumphteam.gui.guis.PaginatedGui;
-import io.github.Alathra.Maquillage.gui.GuiHandler;
 
 public class CommandMaquillage {
     public CommandMaquillage() {

@@ -1,6 +1,6 @@
 package io.github.Alathra.Maquillage.module.tag;
 
-import io.github.Alathra.Maquillage.module.*;
+import io.github.Alathra.Maquillage.module.BaseCosmetic;
 
 public class Tag extends BaseCosmetic {
     private String tag;

@@ -56,7 +56,7 @@ public class CommandDelete {
                     )
                     .executesPlayer((sender, args) -> {
                         String identifier = args.get("identifier").toString();
-                        if(!TagHolder.getInstance().doesIdentifierExist(identifier))
+                        if (!TagHolder.getInstance().doesIdentifierExist(identifier))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no tag with that identifier").build());
                         factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByIDString(identifier)));
 

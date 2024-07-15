@@ -3,7 +3,10 @@ package io.github.Alathra.Maquillage.utility.conversations.color;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.module.namecolor.NameColor;
 import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
-import org.bukkit.conversations.*;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.FixedSetPrompt;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +47,7 @@ public class EditColorColorConversation {
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
                 } else {
-                  player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }

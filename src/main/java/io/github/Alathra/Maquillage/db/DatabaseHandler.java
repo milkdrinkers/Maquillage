@@ -1,14 +1,14 @@
 package io.github.Alathra.Maquillage.db;
 
-import io.github.Alathra.Maquillage.db.jooq.JooqContext;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.Reloadable;
 import io.github.Alathra.Maquillage.db.flyway.DatabaseMigrationException;
 import io.github.Alathra.Maquillage.db.flyway.DatabaseMigrationHandler;
+import io.github.Alathra.Maquillage.db.jooq.JooqContext;
 import io.github.Alathra.Maquillage.utility.Cfg;
 import io.github.Alathra.Maquillage.utility.Logger;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Singleton;

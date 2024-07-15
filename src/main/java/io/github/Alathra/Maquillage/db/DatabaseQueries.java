@@ -5,7 +5,10 @@ import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jooq.*;
+import org.jooq.DSLContext;
+import org.jooq.Record1;
+import org.jooq.Record5;
+import org.jooq.Result;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -22,7 +25,7 @@ public abstract class DatabaseQueries {
     /**
      * Saves a new tag.
      *
-     * @param tag  the tag
+     * @param tag the tag
      * @return the id of the tag or -1 if saving failed
      */
     public static int saveTag(String tag, String perm, String name, String identifier) {
@@ -55,7 +58,7 @@ public abstract class DatabaseQueries {
     public static boolean updateTag(String tag, String perm, String name, String identifier, int ID) {
         try (
             Connection con = DB.getConnection()
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context.update(TAGS)
@@ -76,7 +79,7 @@ public abstract class DatabaseQueries {
     public static boolean removeTag(int ID) {
         try (
             Connection con = DB.getConnection();
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context.deleteFrom(TAGS)
@@ -214,7 +217,7 @@ public abstract class DatabaseQueries {
     public static void removePlayerTag(UUID uuid) {
         try (
             Connection con = DB.getConnection()
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context
@@ -284,7 +287,7 @@ public abstract class DatabaseQueries {
     public static @Nullable Record1<Integer> loadPlayerTag(byte[] uuid) {
         try (
             Connection con = DB.getConnection();
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             return context

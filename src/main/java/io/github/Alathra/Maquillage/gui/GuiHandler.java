@@ -27,7 +27,7 @@ public class GuiHandler {
                     .disableItemTake()
                     .create();
             }
-            default ->  {
+            default -> {
                 return null;
             }
         }

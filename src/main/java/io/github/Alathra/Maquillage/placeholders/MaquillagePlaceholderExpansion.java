@@ -89,7 +89,7 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
     private String getTag(Player p) {
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
         if (playerData == null || playerData.getTag().isEmpty())
-            return  "";
+            return "";
 
         return playerData.getTag().get().getTag();
     }

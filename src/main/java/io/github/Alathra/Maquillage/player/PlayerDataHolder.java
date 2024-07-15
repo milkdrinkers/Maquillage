@@ -10,7 +10,8 @@ public class PlayerDataHolder {
     private static PlayerDataHolder INSTANCE;
     private final HashMap<UUID, PlayerData> playerData = new HashMap<>();
 
-    private PlayerDataHolder() {}
+    private PlayerDataHolder() {
+    }
 
     public static PlayerDataHolder getInstance() {
         if (INSTANCE == null)

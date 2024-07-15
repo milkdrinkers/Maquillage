@@ -9,18 +9,21 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
     /**
      * Get the entire cache
+     *
      * @return then entire cache
      */
     HashMap<Integer, T> cacheGet();
 
     /**
      * Add this value to the cache
+     *
      * @param value BaseCosmetic
      */
     void cacheAdd(T value);
 
     /**
      * Remove this value from the cache
+     *
      * @param value BaseCosmetic
      */
     void cacheRemove(T value);
@@ -34,9 +37,10 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
     /**
      * Attempts to save a BaseCosmetic to DB and, if successful, caches the BaseCosmetic
-     * @param value BaseCosmetic
-     * @param perm a permission node
-     * @param name a display name
+     *
+     * @param value      BaseCosmetic
+     * @param perm       a permission node
+     * @param name       a display name
      * @param identifier a unique identifier
      * @return -1 if failed, otherwise the ID of the BaseCosmetic
      */
@@ -44,17 +48,19 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
     /**
      * Attempts to update a BaseCosmetic to DB and, if successful, re-caches the BaseCosmetic
-     * @param value BaseCosmetic
-     * @param perm a permission node
-     * @param name a display name
+     *
+     * @param value      BaseCosmetic
+     * @param perm       a permission node
+     * @param name       a display name
      * @param identifier a unique identifier
-     * @param ID a unique id
+     * @param ID         a unique id
      * @return whether the value was updated
      */
     boolean update(String value, String perm, String name, String identifier, int ID);
 
     /**
      * Attempts to remove a BaseCosmetic from DB and, if successful, un-caches the BaseCosmetic
+     *
      * @param value BaseCosmetic
      * @return false if failed
      */

@@ -38,6 +38,7 @@ public class PlayerData {
 
     /**
      * Get the associated players UUID
+     *
      * @return player UUID
      */
     public UUID getUuid() {
@@ -46,6 +47,7 @@ public class PlayerData {
 
     /**
      * Get the associated player
+     *
      * @return player
      */
     public Player getPlayer() {
@@ -54,6 +56,7 @@ public class PlayerData {
 
     /**
      * Get the associated players name color
+     *
      * @return name color
      */
     public Optional<NameColor> getNameColor() {
@@ -62,6 +65,7 @@ public class PlayerData {
 
     /**
      * Get the associated players tag
+     *
      * @return tag
      */
     public Optional<Tag> getTag() {
@@ -72,6 +76,7 @@ public class PlayerData {
 
     /**
      * Set the associated players name color
+     *
      * @param nameColor A name color or null for nothing
      */
     public void setNameColor(@Nullable NameColor nameColor) {
@@ -83,6 +88,7 @@ public class PlayerData {
 
     /**
      * Set the associated players name color
+     *
      * @param nameColorId A name color id or -1 for nothing
      */
     public void setNameColor(int nameColorId) {
@@ -100,6 +106,7 @@ public class PlayerData {
 
     /**
      * Set the associated players tag
+     *
      * @param tag A tag or null for nothing
      */
     public void setTag(@Nullable Tag tag) {
@@ -111,6 +118,7 @@ public class PlayerData {
 
     /**
      * Set the associated players tag
+     *
      * @param tagId A tag id or -1 for nothing
      */
     public void setTag(int tagId) {
@@ -130,6 +138,7 @@ public class PlayerData {
 
     /**
      * Compare two PlayerData objects
+     *
      * @param playerData player data
      * @return true when player UUID is the same
      */
