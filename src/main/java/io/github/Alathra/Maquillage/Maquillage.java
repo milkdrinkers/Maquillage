@@ -88,6 +88,12 @@ public class Maquillage extends JavaPlugin {
         TagHandler.clearTags();
     }
 
+    public void onReload() {
+        onDisable();
+        onLoad();
+        onEnable();
+    }
+
     @NotNull
     public DatabaseHandler getDataHandler() {
         return databaseHandler;
