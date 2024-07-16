@@ -87,6 +87,12 @@ public class Maquillage extends JavaPlugin {
         TagHolder.getInstance().cacheClear();
     }
 
+    public void onReload() {
+        onDisable();
+        onLoad();
+        onEnable();
+    }
+
     @NotNull
     public DatabaseHandler getDataHandler() {
         return databaseHandler;
