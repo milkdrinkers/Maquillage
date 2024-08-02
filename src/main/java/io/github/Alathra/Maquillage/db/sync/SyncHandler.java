@@ -81,7 +81,9 @@ public class SyncHandler implements Reloadable {
                         message = message.substring(SyncAction.FETCH.name().length() + 1);
 
                         if (message.startsWith(SyncType.COLOR.name())) {
-                            fetchColor(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1))).thenAccept(r -> {
+                            final int ID = Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1));
+
+                            fetchColor(ID).thenAccept(r -> {
                                 if (r == null)
                                     throw new IllegalStateException("Error while fetching color, r is null!");
 
@@ -90,31 +92,27 @@ public class SyncHandler implements Reloadable {
                                     .withPerm(r.get(Tables.COLORS.PERM))
                                     .withName(r.get(Tables.COLORS.DISPLAYNAME))
                                     .withIdentifier(r.get(Tables.COLORS.IDENTIFIER))
-                                    .withID(r.get(Tables.COLORS.ID))
+                                    .withID(ID)
                                     .createNameColor();
 
                                 NameColorHolder.getInstance().load(nameColor);
                             });
                         } else if (message.startsWith(SyncType.TAG.name())) {
-                            Logger.get().info(String.valueOf(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1))));
+                            final int ID = Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1));
 
-                            fetchTag(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1))).thenAccept(r -> {
-                                Logger.get().info("SOME FUCKING LOG #1");
+                            fetchTag(ID).thenAccept(r -> {
                                 if (r == null)
                                     throw new IllegalStateException("Error while fetching tag, r is null!");
 
-                                Logger.get().info("SOME FUCKING LOG #2");
                                 Tag tag = new TagBuilder()
                                     .withTag(r.get(Tables.TAGS.TAG))
                                     .withPerm(r.get(Tables.TAGS.PERM))
                                     .withName(r.get(Tables.TAGS.DISPLAYNAME))
                                     .withIdentifier(r.get(Tables.TAGS.IDENTIFIER))
-                                    .withID(r.get(Tables.TAGS.ID))
+                                    .withID(ID)
                                     .createTag();
-                                Logger.get().info("SOME FUCKING LOG #3");
 
                                 TagHolder.getInstance().load(tag);
-                                Logger.get().info("SOME FUCKING LOG #4");
                             });
                         }
 
