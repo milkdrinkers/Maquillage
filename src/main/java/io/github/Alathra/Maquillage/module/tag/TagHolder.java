@@ -119,16 +119,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     }
 
     @Override
-    public void load(int ID, String value, String perm, String name, String identifier) {
-        cacheAdd(
-            new TagBuilder()
-                .withTag(value)
-                .withPerm(perm)
-                .withName(name)
-                .withIdentifier(identifier)
-                .withID(ID)
-                .createTag()
-        );
+    public void load(Tag tag) {
+        cacheAdd(tag);
     }
 
     @Override

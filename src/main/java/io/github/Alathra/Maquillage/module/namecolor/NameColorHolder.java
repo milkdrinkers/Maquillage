@@ -119,17 +119,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     }
 
     @Override
-    public void load(int ID, String value, String perm, String name, String identifier) {
-        cacheAdd(
-            new NameColorBuilder()
-                .withColor(value)
-                .withPerm(perm)
-                .withName(name)
-                .withIdentifier(identifier)
-                .withID(ID)
-                .createNameColor()
-
-        );
+    public void load(NameColor nameColor) {
+        cacheAdd(nameColor);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class NameColorBuilder {
         return this;
     }
 
-    public NameColor createNameColor() {
+    public NameColor createNameColor() throws IllegalStateException {
         if (color == null)
             throw new IllegalStateException("Missing state color when creating Tag object");
 

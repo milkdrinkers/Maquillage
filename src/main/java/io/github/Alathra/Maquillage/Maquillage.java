@@ -49,6 +49,7 @@ public class Maquillage extends JavaPlugin {
         vaultHook.onLoad();
         essentialsHook.onLoad();
         placeholderHandler.onLoad();
+        syncHandler.onLoad();
     }
 
     public void onEnable() {
@@ -72,9 +73,11 @@ public class Maquillage extends JavaPlugin {
 
         NameColorHolder.getInstance().loadAll();
         TagHolder.getInstance().loadAll();
+        syncHandler.onEnable();
     }
 
     public void onDisable() {
+        syncHandler.onDisable();
         configHandler.onDisable();
         databaseHandler.onDisable();
         commandHandler.onDisable();

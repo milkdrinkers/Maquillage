@@ -34,7 +34,7 @@ public class TagBuilder {
         return this;
     }
 
-    public Tag createTag() {
+    public Tag createTag() throws IllegalStateException {
         if (tag == null)
             throw new IllegalStateException("Missing state tag when creating Tag object");
 

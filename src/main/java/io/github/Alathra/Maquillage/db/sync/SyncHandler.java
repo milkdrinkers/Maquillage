@@ -1,10 +1,17 @@
 package io.github.Alathra.Maquillage.db.sync;
 
+import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.Reloadable;
 import io.github.Alathra.Maquillage.db.DatabaseQueries;
 import io.github.Alathra.Maquillage.db.schema.Tables;
+import io.github.Alathra.Maquillage.module.namecolor.NameColor;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorBuilder;
 import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.Tag;
+import io.github.Alathra.Maquillage.module.tag.TagBuilder;
 import io.github.Alathra.Maquillage.module.tag.TagHolder;
+import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.jooq.Record;
 import org.jooq.Record3;
@@ -13,7 +20,32 @@ import org.jooq.Result;
 import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
-public class SyncHandler {
+public class SyncHandler implements Reloadable {
+    /**
+     * On plugin load.
+     */
+    @Override
+    public void onLoad() {
+
+    }
+
+    /**
+     * On plugin enable.
+     */
+    @Override
+    public void onEnable() {
+        Bukkit.getScheduler().runTaskTimer(Maquillage.getInstance(), this::sync, 30, 30);
+//        Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 120, 120); // TODO Re-implement, not working
+    }
+
+    /**
+     * On plugin disable.
+     */
+    @Override
+    public void onDisable() {
+
+    }
+
     public enum SyncAction {
         FETCH,
         DELETE
@@ -26,72 +58,84 @@ public class SyncHandler {
 
     private int latestSyncId = -1;
 
-    public SyncHandler() {
-        Bukkit.getScheduler().runTaskTimer(Maquillage.getInstance(), this::sync, 30, 30);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 120, 120);
-    }
-
     private void runCleanUp() {
         DatabaseQueries.cleanUpSyncMessages();
     }
 
     private void sync() {
-        fetchSyncMessages().thenAccept(result -> {
-            if (result == null)
-                return;
+        try {
+            fetchSyncMessages().thenAccept(result -> {
+                if (result == null)
+                    throw new IllegalStateException("Error while syncing, result is null!");
 
-            for (Record3<Integer, String, LocalDateTime> record : result) {
-                if (record == null)
-                    continue;
+                if (result.isEmpty())
+                    return;
 
-                String message = record.get(Tables.SYNC.MESSAGE);
+                for (Record3<Integer, String, LocalDateTime> record : result) {
+                    if (record == null)
+                        throw new IllegalStateException("Error while syncing, record is null!");
 
-                if (message.startsWith(SyncAction.FETCH.name())) {
-                    message = message.substring(SyncAction.FETCH.name().length() + 1);
+                    String message = record.get(Tables.SYNC.MESSAGE);
 
-                    if (message.startsWith(SyncType.COLOR.name())) {
-                        fetchColor(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1))).thenAccept(r -> {
-                            if (r == null)
-                                return;
+                    if (message.startsWith(SyncAction.FETCH.name())) {
+                        message = message.substring(SyncAction.FETCH.name().length() + 1);
 
-                            NameColorHolder.getInstance().load(r.get(Tables.COLORS.ID),
-                                r.get(Tables.COLORS.COLOR),
-                                r.get(Tables.COLORS.PERM),
-                                r.get(Tables.COLORS.DISPLAYNAME),
-                                r.get(Tables.COLORS.IDENTIFIER));
-                        });
+                        if (message.startsWith(SyncType.COLOR.name())) {
+                            fetchColor(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1))).thenAccept(r -> {
+                                if (r == null)
+                                    throw new IllegalStateException("Error while fetching color, r is null!");
+
+                                NameColor nameColor = new NameColorBuilder()
+                                    .withColor(r.get(Tables.COLORS.COLOR))
+                                    .withPerm(r.get(Tables.COLORS.PERM))
+                                    .withName(r.get(Tables.COLORS.DISPLAYNAME))
+                                    .withIdentifier(r.get(Tables.COLORS.IDENTIFIER))
+                                    .withID(r.get(Tables.COLORS.ID))
+                                    .createNameColor();
+
+                                NameColorHolder.getInstance().load(nameColor);
+                            });
+                        } else if (message.startsWith(SyncType.TAG.name())) {
+                            Logger.get().info(String.valueOf(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1))));
+
+                            fetchTag(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1))).thenAccept(r -> {
+                                Logger.get().info("SOME FUCKING LOG #1");
+                                if (r == null)
+                                    throw new IllegalStateException("Error while fetching tag, r is null!");
+
+                                Logger.get().info("SOME FUCKING LOG #2");
+                                Tag tag = new TagBuilder()
+                                    .withTag(r.get(Tables.TAGS.TAG))
+                                    .withPerm(r.get(Tables.TAGS.PERM))
+                                    .withName(r.get(Tables.TAGS.DISPLAYNAME))
+                                    .withIdentifier(r.get(Tables.TAGS.IDENTIFIER))
+                                    .withID(r.get(Tables.TAGS.ID))
+                                    .createTag();
+                                Logger.get().info("SOME FUCKING LOG #3");
+
+                                TagHolder.getInstance().load(tag);
+                                Logger.get().info("SOME FUCKING LOG #4");
+                            });
+                        }
+
+                    } else if (message.startsWith(SyncAction.DELETE.name())) {
+                        message = message.substring(SyncAction.DELETE.name().length() + 1);
+
+                        if (message.startsWith(SyncType.COLOR.name())) {
+                            NameColorHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1)));
+                        }
+
+                        if (message.startsWith(SyncType.TAG.name())) {
+                            TagHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1)));
+                        }
                     }
 
-                    if (message.startsWith(SyncType.TAG.name())) {
-                        fetchTag(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1))).thenAccept(r -> {
-                            if (r == null)
-                                return;
-
-                            TagHolder.getInstance().load(r.get(Tables.TAGS.ID),
-                                r.get(Tables.TAGS.TAG),
-                                r.get(Tables.TAGS.PERM),
-                                r.get(Tables.TAGS.DISPLAYNAME),
-                                r.get(Tables.TAGS.IDENTIFIER));
-                        });
-                    }
-
+                    this.latestSyncId = record.getValue(Tables.SYNC.ID);
                 }
-
-                if (message.startsWith(SyncAction.DELETE.name())) {
-                    message = message.substring(SyncAction.DELETE.name().length() + 1);
-
-                    if (message.startsWith(SyncType.COLOR.name())) {
-                        NameColorHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.COLOR.name().length() + 1)));
-                    }
-
-                    if (message.startsWith(SyncType.TAG.name())) {
-                        TagHolder.getInstance().cacheRemove(Integer.parseInt(message.substring(SyncType.TAG.name().length() + 1)));
-                    }
-                }
-
-                this.latestSyncId = record.getValue(Tables.SYNC.ID);
-            }
-        });
+            });
+        } catch (IllegalStateException e) {
+            Logger.get().error("Something went wrong syncing: " + e);
+        }
     }
 
     private CompletableFuture<Result<Record3<Integer, String, LocalDateTime>>> fetchSyncMessages() {

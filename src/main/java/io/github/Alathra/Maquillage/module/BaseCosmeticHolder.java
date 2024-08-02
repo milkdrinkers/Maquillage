@@ -76,13 +76,9 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
     /**
      * Load a BaseCosmetic from DB into cache
      *
-     * @param id         a unique id
-     * @param value      BaseCosmetic
-     * @param perm       a permission node
-     * @param name       a display name
-     * @param identifier a unique identifier
+     * @param value BaseCosmetic
      */
-    void load(int id, String value, String perm, String name, String identifier);
+    void load(T value);
 
     /**
      * Loads all data from DB and caches it
