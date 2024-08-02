@@ -12,7 +12,8 @@ public class CommandMaquillage {
                 CommandName.registerCommandName(),
                 CommandCreate.registerCommandCreate(),
                 CommandDelete.registerCommandDelete(),
-                CommandEdit.registerCommandEdit()
+                CommandEdit.registerCommandEdit(),
+                CommandReload.registerCommandReload()
             )
             .register();
     }
