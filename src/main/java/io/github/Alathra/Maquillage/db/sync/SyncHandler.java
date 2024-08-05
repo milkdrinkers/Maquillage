@@ -35,7 +35,7 @@ public class SyncHandler implements Reloadable {
     @Override
     public void onEnable() {
         Bukkit.getScheduler().runTaskTimer(Maquillage.getInstance(), this::sync, 600, 600);
-//        Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 120, 120); // TODO Re-implement, not working
+        Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 2400, 2400);
     }
 
     /**
