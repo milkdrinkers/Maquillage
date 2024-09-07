@@ -31,6 +31,7 @@ public abstract class AbstractPluginHook<T> implements Reloadable {
 
     /**
      * Check if this plugin hook is loaded and ready for use.
+     *
      * @return whether this plugin hook is loaded or not
      */
     public boolean isHookLoaded() {

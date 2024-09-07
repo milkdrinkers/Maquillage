@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.utility.conversations.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColor;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -24,11 +24,9 @@ public class DeleteColorConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHandler.removeColor(color);
+                boolean success = NameColorHolder.getInstance().remove(color);
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully deleted!").build());
-
-                    NameColorHandler.clearAllPlayerColorsWithID(color.getID());
                 } else {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not deleted.").build());
                 }

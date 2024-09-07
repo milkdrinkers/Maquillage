@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.config;
 
+import com.github.milkdrinkers.Crate.Config;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.Reloadable;
-import com.github.milkdrinkers.Crate.Config;
 
 import javax.inject.Singleton;
 

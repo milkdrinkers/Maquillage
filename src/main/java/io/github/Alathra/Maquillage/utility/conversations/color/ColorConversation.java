@@ -1,8 +1,7 @@
 package io.github.Alathra.Maquillage.utility.conversations.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -61,7 +60,7 @@ public class ColorConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
-            if (NameColorHandler.colorIdentifiers.containsKey(input)) {
+            if (NameColorHolder.getInstance().doesIdentifierExist(input)) {
                 Player player = (Player) conversationContext.getForWhom();
                 player.sendMessage(ColorParser.of("<red>This identifier is already in use. Identifiers have to be unique").build());
                 return identifierPrompt;
@@ -90,7 +89,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHandler.addColor(color, permission, name, identifier);
+                int ID = NameColorHolder.getInstance().add(color, permission, name, identifier);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {

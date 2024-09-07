@@ -5,8 +5,8 @@ import io.github.Alathra.Maquillage.utility.Logger;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jooq.*;
 import org.jooq.Record;
+import org.jooq.*;
 
 import java.nio.ByteBuffer;
 import java.sql.Connection;
@@ -27,7 +27,7 @@ public abstract class DatabaseQueries {
     /**
      * Saves a new tag.
      *
-     * @param tag  the tag
+     * @param tag the tag
      * @return the id of the tag or -1 if saving failed
      */
     public static int saveTag(String tag, String perm, String name, String identifier) {
@@ -60,7 +60,7 @@ public abstract class DatabaseQueries {
     public static boolean updateTag(String tag, String perm, String name, String identifier, int ID) {
         try (
             Connection con = DB.getConnection()
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context.update(TAGS)
@@ -81,7 +81,7 @@ public abstract class DatabaseQueries {
     public static boolean removeTag(int ID) {
         try (
             Connection con = DB.getConnection();
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context.deleteFrom(TAGS)
@@ -219,7 +219,7 @@ public abstract class DatabaseQueries {
     public static void removePlayerTag(UUID uuid) {
         try (
             Connection con = DB.getConnection()
-            ) {
+        ) {
             DSLContext context = DB.getContext(con);
 
             context
@@ -249,96 +249,6 @@ public abstract class DatabaseQueries {
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!", e);
         }
-    }
-
-    // Loads all tags. Should be called on server start and reload.
-    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllTags() {
-        try (
-            Connection con = DB.getConnection();
-        ) {
-            DSLContext context = DB.getContext(con);
-
-            return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
-                .from(TAGS)
-                .fetch();
-        } catch (SQLException e) {
-            Logger.get().error("SQL Query threw an error!", e);
-        }
-        return null;
-    }
-
-    // Loads all colors. Should be called on server start and reload.
-    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllColors() {
-        try (
-            Connection con = DB.getConnection();
-        ) {
-            DSLContext context = DB.getContext(con);
-
-            return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
-                .from(COLORS)
-                .fetch();
-        } catch (SQLException e) {
-            Logger.get().error("SQL Query threw an error!", e);
-        }
-        return null;
-    }
-
-    // Loads a player's tag. Called on player join
-    public static @Nullable Record1<Integer> loadPlayerTag(byte[] uuid) {
-        try (
-            Connection con = DB.getConnection();
-            ) {
-            DSLContext context = DB.getContext(con);
-
-            return context
-                .select(TAGS_PLAYERS.TAG)
-                .from(TAGS_PLAYERS)
-                .where(TAGS_PLAYERS.PLAYER.equal(uuid))
-                .fetchOne();
-        } catch (SQLException e) {
-            Logger.get().error("SQL Query threw an error!", e);
-        }
-        return null;
-    }
-
-    public static @Nullable Record1<Integer> loadPlayerTag(UUID uuid) {
-        return loadPlayerTag(convertUUIDToBytes(uuid));
-    }
-
-    public static @Nullable Record1<Integer> loadPlayerTag(Player p) {
-        return loadPlayerTag(p.getUniqueId());
-    }
-
-    public static @Nullable Record1<Integer> loadPlayertag(Player p) {
-        return loadPlayerTag(p.getUniqueId());
-    }
-
-    // Loads a player's tag. Called on player join
-    public static @Nullable Record1<Integer> loadPlayerColor(byte[] uuid) {
-        try (
-            Connection con = DB.getConnection();
-        ) {
-            DSLContext context = DB.getContext(con);
-
-            return context
-                .select(COLORS_PLAYERS.COLOR)
-                .from(COLORS_PLAYERS)
-                .where(COLORS_PLAYERS.PLAYER.equal(uuid))
-                .fetchOne();
-        } catch (SQLException e) {
-            Logger.get().error("SQL Query threw an error!", e);
-        }
-        return null;
-    }
-
-    public static @Nullable Record1<Integer> loadPlayerColor(UUID uuid) {
-        return loadPlayerColor(convertUUIDToBytes(uuid));
-    }
-
-    public static @Nullable Record1<Integer> loadPlayerColor(Player p) {
-        return loadPlayerColor(p.getUniqueId());
     }
 
     public static @Nullable Record loadColor(int id) {
@@ -423,6 +333,96 @@ public abstract class DatabaseQueries {
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!" + e);
         }
+    }
+
+    // Loads all tags. Should be called on server start and reload.
+    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllTags() {
+        try (
+            Connection con = DB.getConnection();
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
+                .from(TAGS)
+                .fetch();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+        return null;
+    }
+
+    // Loads all colors. Should be called on server start and reload.
+    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllColors() {
+        try (
+            Connection con = DB.getConnection();
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
+                .from(COLORS)
+                .fetch();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+        return null;
+    }
+
+    // Loads a player's tag. Called on player join
+    public static @Nullable Record1<Integer> loadPlayerTag(byte[] uuid) {
+        try (
+            Connection con = DB.getConnection();
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(TAGS_PLAYERS.TAG)
+                .from(TAGS_PLAYERS)
+                .where(TAGS_PLAYERS.PLAYER.equal(uuid))
+                .fetchOne();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+        return null;
+    }
+
+    public static @Nullable Record1<Integer> loadPlayerTag(UUID uuid) {
+        return loadPlayerTag(convertUUIDToBytes(uuid));
+    }
+
+    public static @Nullable Record1<Integer> loadPlayerTag(Player p) {
+        return loadPlayerTag(p.getUniqueId());
+    }
+
+    public static @Nullable Record1<Integer> loadPlayertag(Player p) {
+        return loadPlayerTag(p.getUniqueId());
+    }
+
+    // Loads a player's tag. Called on player join
+    public static @Nullable Record1<Integer> loadPlayerColor(byte[] uuid) {
+        try (
+            Connection con = DB.getConnection();
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(COLORS_PLAYERS.COLOR)
+                .from(COLORS_PLAYERS)
+                .where(COLORS_PLAYERS.PLAYER.equal(uuid))
+                .fetchOne();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+        return null;
+    }
+
+    public static @Nullable Record1<Integer> loadPlayerColor(UUID uuid) {
+        return loadPlayerColor(convertUUIDToBytes(uuid));
+    }
+
+    public static @Nullable Record1<Integer> loadPlayerColor(Player p) {
+        return loadPlayerColor(p.getUniqueId());
     }
 
     public static byte[] convertUUIDToBytes(UUID uuid) {

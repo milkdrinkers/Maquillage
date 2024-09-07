@@ -3,8 +3,8 @@ package io.github.Alathra.Maquillage.gui;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.entity.Player;
 
 public class GuiHandler {
@@ -27,7 +27,7 @@ public class GuiHandler {
                     .disableItemTake()
                     .create();
             }
-            default ->  {
+            default -> {
                 return null;
             }
         }
@@ -37,12 +37,12 @@ public class GuiHandler {
         switch (type) {
             case TAG -> {
                 PopulateBorder.populateBorder(gui);
-                PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
+                PopulateContent.populateTagContent(gui, TagHolder.getInstance().cacheGet(), p);
                 PopulateButtons.populateButtons(type, gui, p);
             }
             case COLOR -> {
                 PopulateBorder.populateBorder(gui);
-                PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
+                PopulateContent.populateColorContent(gui, NameColorHolder.getInstance().cacheGet(), p);
                 PopulateButtons.populateButtons(type, gui, p);
             }
         }
@@ -52,13 +52,13 @@ public class GuiHandler {
         switch (type) {
             case TAG -> {
                 gui.clearPageItems();
-                PopulateContent.populateTagContent(gui, TagHandler.loadedTags, p);
+                PopulateContent.populateTagContent(gui, TagHolder.getInstance().cacheGet(), p);
                 PopulateButtons.populateButtons(type, gui, p);
                 gui.update();
             }
             case COLOR -> {
                 gui.clearPageItems();
-                PopulateContent.populateColorContent(gui, NameColorHandler.loadedColors, p);
+                PopulateContent.populateColorContent(gui, NameColorHolder.getInstance().cacheGet(), p);
                 PopulateButtons.populateButtons(type, gui, p);
                 gui.update();
             }
