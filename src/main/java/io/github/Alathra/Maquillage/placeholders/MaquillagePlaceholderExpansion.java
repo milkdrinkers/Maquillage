@@ -66,7 +66,13 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
 
                 yield getNameColor(p, newName);
             }
-            case "tag" -> getTag(p) + " ";
+            case "tag" -> {
+                String tag = getTag(p);
+                if (tag.isEmpty())
+                    yield "";
+                else
+                    yield tag + " ";
+            }
             case "tag_nospace" -> getTag(p);
             default -> null;
         };
