@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.utility.conversations.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.tag.Tag;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.tag.Tag;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -24,11 +24,9 @@ public class DeleteTagConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHandler.removeTag(tag);
+                boolean success = TagHolder.getInstance().remove(tag);
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The tag was successfully deleted!").build());
-
-                    TagHandler.clearALlPlayerTagsWithID(tag.getID());
                 } else {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not deleted.").build());
                 }

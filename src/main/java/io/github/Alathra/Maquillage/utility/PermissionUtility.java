@@ -1,7 +1,7 @@
 package io.github.Alathra.Maquillage.utility;
 
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 
@@ -24,8 +24,8 @@ public class PermissionUtility {
      * @param permission
      */
     public static void removePermission(String permission) {
-        if (TagHandler.loadedTags.values().stream().noneMatch(t -> t.getPerm().equals(permission))
-            || NameColorHandler.loadedColors.values().stream().noneMatch(c -> c.getPerm().equals(permission))) {
+        if (TagHolder.getInstance().cacheGet().values().stream().noneMatch(t -> t.getPerm().equals(permission))
+            || NameColorHolder.getInstance().cacheGet().values().stream().noneMatch(c -> c.getPerm().equals(permission))) {
             Bukkit.getPluginManager().removePermission(permission);
         }
     }

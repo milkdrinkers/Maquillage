@@ -1,9 +1,12 @@
 package io.github.Alathra.Maquillage.utility.conversations.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.Alathra.Maquillage.namecolor.NameColor;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import org.bukkit.conversations.*;
+import io.github.Alathra.Maquillage.module.namecolor.NameColor;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.FixedSetPrompt;
+import org.bukkit.conversations.Prompt;
+import org.bukkit.conversations.StringPrompt;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,11 +43,11 @@ public class EditColorColorConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHandler.updateColor(updatedColor, color.getPerm(), color.getName(), color.getIdentifier(), color.getID());
+                boolean success = NameColorHolder.getInstance().update(updatedColor, color.getPerm(), color.getName(), color.getIdentifier(), color.getID());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
                 } else {
-                  player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }

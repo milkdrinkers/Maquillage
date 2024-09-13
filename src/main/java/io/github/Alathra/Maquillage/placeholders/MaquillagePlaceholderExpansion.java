@@ -1,13 +1,11 @@
 package io.github.Alathra.Maquillage.placeholders;
 
 import com.earth2me.essentials.Essentials;
-import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.player.PlayerData;
+import io.github.Alathra.Maquillage.player.PlayerDataHolder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import net.ess3.api.IUser;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,61 +44,59 @@ public class MaquillagePlaceholderExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String onPlaceholderRequest(Player player, @NotNull String params) {
-        if (params.equals("namecolor")) {
-            if (NameColorHandler.doesPlayerHaveColor(player)) {
-                String colorString = NameColorHandler.getPlayerColorString(player);
-                if (colorString.startsWith("<gradient"))
-                    return colorString + player.getName() + "</gradient>";
-                else if (colorString.startsWith("<rainbow"))
-                    return colorString + player.getName() + "</rainbow>";
+    public @Nullable String onPlaceholderRequest(Player p, @NotNull String params) {
+        return switch (params) {
+            case "namecolor" -> getNameColor(p, p.getName());
+            case "namecolor_essentialsnick" -> {
+                String newName = null;
 
-                return colorString + player.getName();
+                // Use essentials nickname if essentials is loaded
+                if (Maquillage.getEssentialsHook().isHookLoaded()) {
+                    Essentials essentials = Maquillage.getEssentialsHook().getHook();
+                    IUser user = essentials.getUser(p);
+                    String nickname = user.getFormattedNickname();
+
+                    if (nickname != null)
+                        newName = nickname;
+                }
+
+                // Fallback to player name if essentials is not loaded or the nickname was empty
+                if (newName == null)
+                    newName = p.getName();
+
+                yield getNameColor(p, newName);
             }
-            return player.getName();
-        }
-
-        if (params.equals("namecolor_essentialsnick")) {
-            String newName = null;
-
-            // Use essentials nickname if essentials is loaded
-            if (Maquillage.getEssentialsHook().isHookLoaded()) {
-                Essentials essentials = Maquillage.getEssentialsHook().getHook();
-                IUser user = essentials.getUser(player);
-                String nickname = user.getFormattedNickname();
-
-                if (nickname != null)
-                    newName = nickname;
+            case "tag" -> {
+                String tag = getTag(p);
+                if (tag.isEmpty())
+                    yield "";
+                else
+                    yield tag + " ";
             }
+            case "tag_nospace" -> getTag(p);
+            default -> null;
+        };
+    }
 
-            // Fallback to player name if essentials is not loaded or the nickname was empty
-            if (newName == null)
-                newName = player.getName();
+    private String getNameColor(Player p, String name) {
+        PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
+        if (playerData == null || playerData.getNameColor().isEmpty())
+            return name;
 
-            if (NameColorHandler.doesPlayerHaveColor(player)) {
-                String colorString = NameColorHandler.getPlayerColorString(player);
-                if (colorString.startsWith("<gradient"))
-                    return colorString + newName + "</gradient>";
-                else if (colorString.startsWith("<rainbow"))
-                    return colorString + newName + "</rainbow>";
+        String colorString = playerData.getNameColor().get().getColor();
+        if (colorString.startsWith("<gradient"))
+            return colorString + name + "</gradient>";
+        else if (colorString.startsWith("<rainbow"))
+            return colorString + name + "</rainbow>";
 
-                return colorString + newName;
-            }
-            return newName;
-        }
+        return colorString + name;
+    }
 
-        if (params.equals("tag")) {
-            if (TagHandler.doesPlayerHaveTag(player))
-                return TagHandler.getPlayerTagString(player) + " ";
+    private String getTag(Player p) {
+        PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
+        if (playerData == null || playerData.getTag().isEmpty())
             return "";
-        }
 
-        if (params.equals("tag_nospace")) {
-            if (TagHandler.doesPlayerHaveTag(player))
-                return TagHandler.getPlayerTagString(player);
-            return "";
-        }
-
-        return "Error";
+        return playerData.getTag().get().getTag();
     }
 }

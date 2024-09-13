@@ -4,8 +4,8 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorColorConversation;
 import io.github.Alathra.Maquillage.utility.conversations.color.EditColorNameConversation;
@@ -35,12 +35,12 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            NameColorHandler.getAllIdentifiers()
+                                            NameColorHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHandler.getNameColorByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
@@ -50,12 +50,12 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            NameColorHandler.getAllIdentifiers()
+                                            NameColorHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditColorNameConversation.editNamePrompt(NameColorHandler.getNameColorByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditColorNameConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
@@ -65,19 +65,19 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            NameColorHandler.getAllIdentifiers()
+                                            NameColorHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHandler.getNameColorByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
                             }),
                         new CommandAPICommand("keys")
                             .executesPlayer((sender, args) -> {
-                                sender.sendMessage(NameColorHandler.getAllIdentifiers().toString());
+                                sender.sendMessage(NameColorHolder.getInstance().getAllIdentifiers().toString());
                             })
                     ),
                 new CommandAPICommand("tag")
@@ -88,12 +88,12 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            TagHandler.getAllIdentifiers()
+                                            TagHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHandler.getTagByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
@@ -103,12 +103,12 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            TagHandler.getAllIdentifiers()
+                                            TagHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditTagNameConversation.editNamePrompt(TagHandler.getTagByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditTagNameConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
@@ -118,19 +118,19 @@ public class CommandEdit {
                                 new StringArgument("identifier")
                                     .replaceSuggestions(
                                         ArgumentSuggestions.strings(
-                                            TagHandler.getAllIdentifiers()
+                                            TagHolder.getInstance().getAllIdentifiers()
                                         )
                                     )
                             )
                             .executesPlayer((sender, args) -> {
-                                factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHandler.getTagByIDString(args.get("identifier").toString())));
+                                factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                                 Conversation conversation = factory.buildConversation(sender);
                                 conversation.begin();
                             }),
                         new CommandAPICommand("keys")
                             .executesPlayer((sender, args) -> {
-                                sender.sendMessage(TagHandler.getAllIdentifiers().toString());
+                                sender.sendMessage(TagHolder.getInstance().getAllIdentifiers().toString());
                             })
                     )
             );

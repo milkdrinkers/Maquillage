@@ -1,9 +1,9 @@
 package io.github.Alathra.Maquillage.command;
 
-import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.Reloadable;
 import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import io.github.Alathra.Maquillage.Maquillage;
+import io.github.Alathra.Maquillage.Reloadable;
 
 /**
  * A class to handle registration of commands.

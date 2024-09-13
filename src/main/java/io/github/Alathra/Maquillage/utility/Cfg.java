@@ -1,8 +1,8 @@
 package io.github.Alathra.Maquillage.utility;
 
+import com.github.milkdrinkers.Crate.Config;
 import io.github.Alathra.Maquillage.Maquillage;
 import io.github.Alathra.Maquillage.config.ConfigHandler;
-import com.github.milkdrinkers.Crate.Config;
 import org.jetbrains.annotations.NotNull;
 
 /**
