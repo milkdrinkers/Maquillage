@@ -72,7 +72,7 @@ dependencies {
     library("org.flywaydb:flyway-mysql:10.17.3")
     library("org.flywaydb:flyway-database-hsqldb:10.17.3")
     library("org.jooq:jooq:3.19.11")
-    jooqCodegen("com.h2database:h2:2.2.232")
+    jooqCodegen("com.h2database:h2:2.3.232")
 
     // JDBC Drivers
     library("org.hsqldb:hsqldb:2.7.3")
