@@ -77,7 +77,7 @@ dependencies {
     // JDBC Drivers
     library("org.hsqldb:hsqldb:2.7.3")
     library("com.h2database:h2:2.3.232")
-    library("com.mysql:mysql-connector-j:8.4.0")
+    library("com.mysql:mysql-connector-j:9.0.0")
     library("org.mariadb.jdbc:mariadb-java-client:3.4.1")
 }
 
