@@ -1,6 +1,7 @@
 package io.github.Alathra.Maquillage.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
+import io.github.Alathra.Maquillage.command.cosmetics.*;
 
 public class CommandMaquillage {
     public CommandMaquillage() {

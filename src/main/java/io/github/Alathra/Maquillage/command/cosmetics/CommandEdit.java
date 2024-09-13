@@ -1,4 +1,4 @@
-package io.github.Alathra.Maquillage.command;
+package io.github.Alathra.Maquillage.command.cosmetics;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
