@@ -6,8 +6,8 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.Alathra.Maquillage.Maquillage;
-import io.github.Alathra.Maquillage.namecolor.NameColorHandler;
-import io.github.Alathra.Maquillage.tag.TagHandler;
+import io.github.Alathra.Maquillage.module.namecolor.NameColorHolder;
+import io.github.Alathra.Maquillage.module.tag.TagHolder;
 import io.github.Alathra.Maquillage.utility.conversations.Conversations;
 import io.github.Alathra.Maquillage.utility.conversations.color.DeleteColorConversation;
 import io.github.Alathra.Maquillage.utility.conversations.tag.DeleteTagConversation;
@@ -31,15 +31,15 @@ public class CommandDelete {
                         new StringArgument("identifier")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    NameColorHandler.getAllIdentifiers()
+                                    NameColorHolder.getInstance().getAllIdentifiers()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
                         String identifier = args.get("identifier").toString();
-                        if (!NameColorHandler.doesIdentifierExist(identifier))
+                        if (!NameColorHolder.getInstance().doesIdentifierExist(identifier))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no color with that identifier.").build());
-                        factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHandler.getNameColorByIDString(identifier)));
+                        factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByIDString(identifier)));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -50,15 +50,15 @@ public class CommandDelete {
                         new StringArgument("identifier")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    TagHandler.getAllIdentifiers()
+                                    TagHolder.getInstance().getAllIdentifiers()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
                         String identifier = args.get("identifier").toString();
-                        if(!TagHandler.doesIdentifierExist(identifier))
+                        if (!TagHolder.getInstance().doesIdentifierExist(identifier))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no tag with that identifier").build());
-                        factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHandler.getTagByIDString(identifier)));
+                        factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByIDString(identifier)));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();

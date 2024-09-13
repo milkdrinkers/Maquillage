@@ -1,17 +1,15 @@
-package io.github.Alathra.Maquillage.tag;
+package io.github.Alathra.Maquillage.module;
 
 import io.github.Alathra.Maquillage.Maquillage;
 import org.bukkit.entity.Player;
 
-public class Tag {
-    private String tag;
+public abstract class BaseCosmetic implements Permissible, Nameable, CosmeticIdentifiable, Identifiable {
     private String perm;
     private String name;
     private String identifier;
     private int ID;
 
-    public Tag(String tag, String perm, String name, String identifier, int ID) {
-        this.tag = tag;
+    public BaseCosmetic(String perm, String name, String identifier, int ID) {
         this.perm = perm;
         this.name = name;
         this.identifier = identifier;
@@ -26,15 +24,6 @@ public class Tag {
         this.name = name;
     }
 
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
     public String getPerm() {
         return perm;
     }
@@ -46,7 +35,6 @@ public class Tag {
     public boolean hasPerm(Player p) {
         return Maquillage.getVaultHook().getPermissions().has(p, this.getPerm());
     }
-
 
     public String getIdentifier() {
         return identifier;
@@ -62,5 +50,29 @@ public class Tag {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public boolean equals(int id) {
+        return getID() == id;
+    }
+
+    public boolean equals(BaseCosmetic baseCosmetic) {
+        return getID() == baseCosmetic.getID();
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseCosmetic baseCosmetic)) return false;
+        return getID() == baseCosmetic.getID();
+    }
+
+    @Override
+    public String toString() {
+        return "BaseCosmetic{" +
+            "perm='" + perm + '\'' +
+            ", name='" + name + '\'' +
+            ", identifier='" + identifier + '\'' +
+            ", ID=" + ID +
+            '}';
     }
 }
