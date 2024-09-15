@@ -1,33 +1,33 @@
-CREATE TABLE IF NOT EXISTS ${tablePrefix}tags (
-    id INT NOT NULL AUTO_INCREMENT,
-    tag TINYTEXT NOT NULL,
-    perm TINYTEXT,
-    displayname TINYTEXT,
-    identifier TINYTEXT,
+CREATE TABLE IF NOT EXISTS "${tablePrefix}tags" (
+    "id" INT AUTO_INCREMENT,
+    "tag" TINYTEXT NOT NULL,
+    "perm" TINYTEXT,
+    "displayname" TINYTEXT,
+    "identifier" TINYTEXT,
     PRIMARY KEY (id)
-)${tableDefaults};
+);
 
-CREATE TABLE IF NOT EXISTS ${tablePrefix}colors (
-    id INT NOT NULL AUTO_INCREMENT,
-    color TINYTEXT NOT NULL,
-    perm TINYTEXT,
-    displayname TINYTEXT,
-    identifier TINYTEXT,
+CREATE TABLE IF NOT EXISTS "${tablePrefix}colors" (
+    "id" INT AUTO_INCREMENT,
+    "color" TINYTEXT NOT NULL,
+    "perm" TINYTEXT,
+    "displayname" TINYTEXT,
+    "identifier" TINYTEXT,
     PRIMARY KEY (id)
-)${tableDefaults};
+);
 
-CREATE TABLE IF NOT EXISTS ${tablePrefix}tags_players (
-    player ${uuidType} NOT NULL,
-    tag INT NOT NULL,
+CREATE TABLE IF NOT EXISTS "${tablePrefix}tags_players" (
+    "player" BINARY(16) NOT NULL,
+    "tag" INT NOT NULL,
     PRIMARY KEY (player),
-    INDEX tagid (tag),
-    CONSTRAINT tagid FOREIGN KEY (tag) REFERENCES ${tablePrefix}tags (id) ON DELETE CASCADE
-)${tableDefaults};
+    CONSTRAINT tagid FOREIGN KEY (tag) REFERENCES "${tablePrefix}tags" (id) ON DELETE CASCADE
+);
+CREATE INDEX tagid ON "${tablePrefix}tags_players" ("tag");
 
-CREATE TABLE IF NOT EXISTS ${tablePrefix}colors_players (
-    player ${uuidType} NOT NULL,
-    color INT NOT NULL,
+CREATE TABLE IF NOT EXISTS "${tablePrefix}colors_players" (
+    "player" BINARY(16) NOT NULL,
+    "color" INT NOT NULL,
     PRIMARY KEY (player),
-    INDEX colorid (color),
-    CONSTRAINT colorid FOREIGN KEY (color) REFERENCES ${tablePrefix}colors (id) ON DELETE CASCADE
-)${tableDefaults};
+    CONSTRAINT colorid FOREIGN KEY (color) REFERENCES "${tablePrefix}colors" (id) ON DELETE CASCADE
+);
+CREATE INDEX colorid ON "${tablePrefix}colors_players" ("color");

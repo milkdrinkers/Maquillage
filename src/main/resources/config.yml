@@ -1,10 +1,9 @@
-# Database Settings
-db:
-  type: "h2" # Available types: "h2", "mysql", "mariadb"
-  prefix: "maquillage_" # The table prefix
-  host: "127.0.0.1"
-  port: 3306
-  database: "database_name"
-  user: "name"
-  pass: "123"
-  repair: false
+# Update Checker Settings
+update-checker:
+  enable: true
+  console: true # Post message to console
+  op: true # Send update notification to opped players on join
+
+# Translation, specify the language file to use, for example `en-US` which will load `/translations/en-US.yml`
+translation: "en-US"
+
