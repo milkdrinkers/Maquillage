@@ -7,11 +7,14 @@ class CommandMaquillage {
     public static CommandAPICommand registerCommandMaquillage(boolean tags, boolean colors) {
         CommandAPICommand commandMaquillage = new CommandAPICommand("maquillage")
             .withAliases("maq")
-            .withShortDescription("The main command for the plugin Maquillage.")withSubcommands(
-            CommandReload.registerCommandReload(),
-            CommandCreate.registerCommandCreate(tags, colors),
-            CommandDelete.registerCommandDelete(),
-            CommandEdit.registerCommandEdit());
+            .withShortDescription("The main command for the plugin Maquillage.")
+            .withSubcommands(
+                CommandTranslation.registerCommandTranslation(),
+                CommandReload.registerCommandReload(),
+                CommandCreate.registerCommandCreate(tags, colors),
+                CommandDelete.registerCommandDelete(tags, colors),
+                CommandEdit.registerCommandEdit(tags, colors)
+            );
 
          if (tags) {
             commandMaquillage.withSubcommands(CommandTag.registerCommandTag());

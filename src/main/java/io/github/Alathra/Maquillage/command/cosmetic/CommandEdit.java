@@ -26,7 +26,7 @@ public class CommandEdit {
         CommandAPICommand commandEdit =  new CommandAPICommand("edit")
             .withPermission("maquillage.edit")
             .withShortDescription("Edits a Maquillage color or tag.");
-        
+
         if (tags)
             commandEdit.withSubcommand(registerSubcommandTag());
 

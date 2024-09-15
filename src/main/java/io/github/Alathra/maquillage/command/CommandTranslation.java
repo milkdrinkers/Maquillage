@@ -20,7 +20,7 @@ class CommandTranslation {
     /**
      * Instantiates a new command tree.
      */
-    protected static CommandAPICommand registerCommand() {
+    protected static CommandAPICommand registerCommandTranslation() {
         return new CommandAPICommand("translation")
             .withFullDescription("Translation help command.")
             .withShortDescription("Translation help command.")
