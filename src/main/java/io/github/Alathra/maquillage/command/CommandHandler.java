@@ -5,6 +5,8 @@ import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.Reloadable;
 import io.github.alathra.maquillage.command.cosmetic.*;
+import io.github.alathra.maquillage.command.nickname.CommandNickname;
+import io.github.alathra.maquillage.command.nickname.CommandRealname;
 import io.github.alathra.maquillage.utility.Cfg;
 
 /**
@@ -38,6 +40,11 @@ public class CommandHandler implements Reloadable {
 
         if (colors)
             CommandNamecolor.registerCommandNamecolor().withAliases("namecolor").register();
+
+        if (nicks) {
+            CommandNickname.registerCommandNickname();
+            CommandRealname.registerCommandRealname();
+        }
     }
 
     @Override
