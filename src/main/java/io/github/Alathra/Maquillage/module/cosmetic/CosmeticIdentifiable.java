@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.module;
+package io.github.alathra.maquillage.module.cosmetic;
 
 public interface CosmeticIdentifiable {
     String getIdentifier();

@@ -1,6 +1,6 @@
-package io.github.alathra.maquillage.module.namecolor;
+package io.github.alathra.maquillage.module.cosmetic.namecolor;
 
-import io.github.alathra.maquillage.module.BaseCosmetic;
+import io.github.alathra.maquillage.module.cosmetic.BaseCosmetic;
 
 public class NameColor extends BaseCosmetic {
     private String color;

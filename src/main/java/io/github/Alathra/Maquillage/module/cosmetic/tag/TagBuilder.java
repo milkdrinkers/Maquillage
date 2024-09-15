@@ -1,42 +1,42 @@
-package io.github.alathra.maquillage.module.namecolor;
+package io.github.alathra.maquillage.module.cosmetic.tag;
 
 import org.jetbrains.annotations.Nullable;
 
-public class NameColorBuilder {
-    private @Nullable String color;
+public class TagBuilder {
+    private @Nullable String tag;
     private @Nullable String perm;
     private @Nullable String name;
     private @Nullable String identifier;
     private int id = -1;
 
-    public NameColorBuilder withColor(String color) {
-        this.color = color;
+    public TagBuilder withTag(String tag) {
+        this.tag = tag;
         return this;
     }
 
-    public NameColorBuilder withPerm(String perm) {
+    public TagBuilder withPerm(String perm) {
         this.perm = perm;
         return this;
     }
 
-    public NameColorBuilder withName(String name) {
+    public TagBuilder withName(String name) {
         this.name = name;
         return this;
     }
 
-    public NameColorBuilder withIdentifier(String identifier) {
+    public TagBuilder withIdentifier(String identifier) {
         this.identifier = identifier;
         return this;
     }
 
-    public NameColorBuilder withID(int id) {
+    public TagBuilder withID(int id) {
         this.id = id;
         return this;
     }
 
-    public NameColor createNameColor() throws IllegalStateException {
-        if (color == null)
-            throw new IllegalStateException("Missing state color when creating Tag object");
+    public Tag createTag() throws IllegalStateException {
+        if (tag == null)
+            throw new IllegalStateException("Missing state tag when creating Tag object");
 
         if (perm == null)
             throw new IllegalStateException("Missing state perm when creating Tag object");
@@ -50,8 +50,8 @@ public class NameColorBuilder {
         if (id == -1)
             throw new IllegalStateException("Missing state id when creating Tag object");
 
-        return new NameColor(
-            color,
+        return new Tag(
+            tag,
             perm,
             name,
             identifier,

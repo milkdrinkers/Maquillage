@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.module;
+package io.github.alathra.maquillage.module.cosmetic;
 
 import java.util.HashMap;
 import java.util.List;

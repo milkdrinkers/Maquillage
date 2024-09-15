@@ -18,3 +18,5 @@ module:
     prefix:
       enabled: true
       string: ""
+    set-displayname: true # Sets the displayname to the nickname. Disable this if you have another plugin which modifies the displayname
+    length: 20 # The maximum allowed length for nicknames. Allowed range: 1-255

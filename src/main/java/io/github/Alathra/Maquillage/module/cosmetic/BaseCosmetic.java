@@ -1,6 +1,9 @@
-package io.github.alathra.maquillage.module;
+package io.github.alathra.maquillage.module.cosmetic;
 
 import io.github.alathra.maquillage.Maquillage;
+import io.github.alathra.maquillage.module.Identifiable;
+import io.github.alathra.maquillage.module.Nameable;
+import io.github.alathra.maquillage.module.Permissible;
 import org.bukkit.entity.Player;
 
 public abstract class BaseCosmetic implements Permissible, Nameable, CosmeticIdentifiable, Identifiable {

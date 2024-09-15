@@ -1,9 +1,10 @@
 package io.github.alathra.maquillage.player;
 
-import io.github.alathra.maquillage.module.namecolor.NameColor;
-import io.github.alathra.maquillage.module.namecolor.NameColorHolder;
-import io.github.alathra.maquillage.module.tag.Tag;
-import io.github.alathra.maquillage.module.tag.TagHolder;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.module.cosmetic.tag.Tag;
+import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.module.nickname.Nickname;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,7 @@ public class PlayerData {
     // Maquillage Data
     private @Nullable NameColor nameColor;
     private @Nullable Tag tag;
+    private @Nullable Nickname nickname;
 
     PlayerData(
         UUID uuid,
@@ -70,6 +72,10 @@ public class PlayerData {
      */
     public Optional<Tag> getTag() {
         return Optional.ofNullable(tag);
+    }
+
+    public Optional<Nickname> getNickname() {
+        return Optional.ofNullable(nickname);
     }
 
     // SECTION Setters
@@ -134,6 +140,23 @@ public class PlayerData {
         setTag(null);
     }
 
+
+    /**
+     * Set the associated players nickname
+     *
+     * @param nickname The desired nickname
+     */
+    public void setNickname(String nickname) {
+        this.nickname = new Nickname(nickname);
+    }
+
+    /**
+     * Set the associated players nickname to nothing
+     */
+    public void clearNickname() {
+        setNickname(null);
+    }
+
     // SECTION Misc
 
     /**
@@ -160,6 +183,7 @@ public class PlayerData {
             ", player=" + player +
             ", nameColor=" + nameColor +
             ", tag=" + tag +
+            ", nickname=" + nickname +
             '}';
     }
 }

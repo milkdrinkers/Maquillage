@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.utility.conversations.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.alathra.maquillage.module.tag.TagHolder;
+import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

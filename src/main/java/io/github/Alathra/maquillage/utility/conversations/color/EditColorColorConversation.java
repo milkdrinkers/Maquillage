@@ -1,8 +1,8 @@
 package io.github.alathra.maquillage.utility.conversations.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.alathra.maquillage.module.namecolor.NameColor;
-import io.github.alathra.maquillage.module.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;

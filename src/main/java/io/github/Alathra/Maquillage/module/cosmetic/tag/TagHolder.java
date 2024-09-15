@@ -1,10 +1,10 @@
-package io.github.alathra.maquillage.module.tag;
+package io.github.alathra.maquillage.module.cosmetic.tag;
 
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.database.DatabaseQueries;
 import io.github.alathra.maquillage.database.sync.SyncHandler;
 import io.github.alathra.maquillage.gui.GuiCooldown;
-import io.github.alathra.maquillage.module.BaseCosmeticHolder;
+import io.github.alathra.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import io.github.alathra.maquillage.utility.PermissionUtility;

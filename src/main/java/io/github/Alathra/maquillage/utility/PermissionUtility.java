@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.utility;
 
-import io.github.alathra.maquillage.module.namecolor.NameColorHolder;
-import io.github.alathra.maquillage.module.tag.TagHolder;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 

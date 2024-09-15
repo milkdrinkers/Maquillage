@@ -3,8 +3,8 @@ package io.github.alathra.maquillage.gui;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
-import io.github.alathra.maquillage.module.namecolor.NameColorHolder;
-import io.github.alathra.maquillage.module.tag.TagHolder;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import org.bukkit.entity.Player;
 
 public class GuiHandler {
