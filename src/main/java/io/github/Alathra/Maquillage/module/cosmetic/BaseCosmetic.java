@@ -2,29 +2,29 @@ package io.github.alathra.maquillage.module.cosmetic;
 
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.module.Identifiable;
-import io.github.alathra.maquillage.module.Nameable;
+import io.github.alathra.maquillage.module.Labelable;
 import io.github.alathra.maquillage.module.Permissible;
 import org.bukkit.entity.Player;
 
-public abstract class BaseCosmetic implements Permissible, Nameable, CosmeticIdentifiable, Identifiable {
+public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticIdentifiable, Identifiable {
     private String perm;
-    private String name;
+    private String label;
     private String identifier;
     private int ID;
 
-    public BaseCosmetic(String perm, String name, String identifier, int ID) {
+    public BaseCosmetic(String perm, String label, String identifier, int ID) {
         this.perm = perm;
-        this.name = name;
+        this.label = label;
         this.identifier = identifier;
         this.ID = ID;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getPerm() {
@@ -73,7 +73,7 @@ public abstract class BaseCosmetic implements Permissible, Nameable, CosmeticIde
     public String toString() {
         return "BaseCosmetic{" +
             "perm='" + perm + '\'' +
-            ", name='" + name + '\'' +
+            ", name='" + label + '\'' +
             ", identifier='" + identifier + '\'' +
             ", ID=" + ID +
             '}';

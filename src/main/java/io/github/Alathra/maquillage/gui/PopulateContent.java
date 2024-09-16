@@ -36,7 +36,7 @@ public class PopulateContent {
     public static void populateColorContent(PaginatedGui gui, HashMap<Integer, NameColor> colors, Player p) {
         List<NameColor> colorList = colors.values().stream()
             .filter(color -> color.hasPerm(p))
-            .sorted(Comparator.comparing(NameColor::getName))
+            .sorted(Comparator.comparing(NameColor::getLabel))
             .toList();
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
 
@@ -60,7 +60,7 @@ public class PopulateContent {
     public static void populateTagContent(PaginatedGui gui, HashMap<Integer, Tag> tags, Player p) {
         List<Tag> tagList = tags.values().stream()
             .filter(tag -> tag.hasPerm(p))
-            .sorted(Comparator.comparing(Tag::getName))
+            .sorted(Comparator.comparing(Tag::getLabel))
             .toList();
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
 
@@ -82,7 +82,7 @@ public class PopulateContent {
     }
 
     private static void addColorItem(PaginatedGui gui, NameColor color, Player p, PlayerData playerData) {
-        colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build().decoration(TextDecoration.ITALIC, false));
+        colorItemMeta.displayName(ColorParser.of(color.getColor() + color.getLabel()).build().decoration(TextDecoration.ITALIC, false));
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name in the color
         String tag = playerData.getTag().map(tag1 -> tag1.getTag() + "<white> ").orElse("");
@@ -104,7 +104,7 @@ public class PopulateContent {
     }
 
     private static void addSelectedColorItem(PaginatedGui gui, NameColor color, Player p, PlayerData playerData) {
-        selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getName()).build().decoration(TextDecoration.ITALIC, false));
+        selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getLabel()).build().decoration(TextDecoration.ITALIC, false));
         String tag = playerData.getTag().map(tag1 -> tag1.getTag() + "<white> ").orElse("");
         selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
         selectedColorItemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
@@ -114,7 +114,7 @@ public class PopulateContent {
     }
 
     private static void addTagItem(PaginatedGui gui, Tag tag, Player p, PlayerData playerData) {
-        tagItemMeta.displayName(ColorParser.of((tag.getName())).build().decoration(TextDecoration.ITALIC, false));
+        tagItemMeta.displayName(ColorParser.of((tag.getLabel())).build().decoration(TextDecoration.ITALIC, false));
         List<Component> loreList = new ArrayList<>();
         // Add a component to the list that contains the player's name with the tag
         String color = playerData.getNameColor().map(NameColor::getColor).orElse("<white>");
@@ -136,7 +136,7 @@ public class PopulateContent {
     }
 
     public static void addSelectedTagItem(PaginatedGui gui, Tag tag, Player p, PlayerData playerData) {
-        selectedTagItemMeta.displayName(ColorParser.of("<white>" + tag.getName()).build().decoration(TextDecoration.ITALIC, false));
+        selectedTagItemMeta.displayName(ColorParser.of("<white>" + tag.getLabel()).build().decoration(TextDecoration.ITALIC, false));
         String color = playerData.getNameColor().map(NameColor::getColor).orElse("<white>");
         selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + color + " " + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
         selectedTagItem.setItemMeta(selectedTagItemMeta);

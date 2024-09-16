@@ -8,9 +8,9 @@ import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.alathra.maquillage.utility.conversations.Conversations;
 import io.github.alathra.maquillage.utility.conversations.color.EditColorColorConversation;
-import io.github.alathra.maquillage.utility.conversations.color.EditColorNameConversation;
+import io.github.alathra.maquillage.utility.conversations.color.EditColorLabelConversation;
 import io.github.alathra.maquillage.utility.conversations.color.EditColorPermConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.EditTagNameConversation;
+import io.github.alathra.maquillage.utility.conversations.tag.EditTagLabelConversation;
 import io.github.alathra.maquillage.utility.conversations.tag.EditTagPermConversation;
 import io.github.alathra.maquillage.utility.conversations.tag.EditTagTagConversation;
 import org.bukkit.conversations.Conversation;
@@ -55,7 +55,7 @@ public class CommandEdit {
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
-                new CommandAPICommand("name")
+                new CommandAPICommand("label")
                     .withArguments(
                         new StringArgument("identifier")
                             .replaceSuggestions(
@@ -65,7 +65,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorNameConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -111,7 +111,7 @@ public class CommandEdit {
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
-                new CommandAPICommand("name")
+                new CommandAPICommand("label")
                     .withArguments(
                         new StringArgument("identifier")
                             .replaceSuggestions(
@@ -121,7 +121,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagNameConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();

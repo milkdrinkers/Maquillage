@@ -11,15 +11,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EditTagNameConversation {
+public class EditTagLabelConversation {
 
-    static String currentName;
-    static String updatedName;
+    static String currentLabel;
+    static String updatedLabel;
     static Tag tag;
 
     public static Prompt editNamePrompt(Tag tag) {
-        EditTagNameConversation.tag = tag;
-        EditTagNameConversation.currentName = tag.getName();
+        EditTagLabelConversation.tag = tag;
+        EditTagLabelConversation.currentLabel = tag.getLabel();
         return editNameStringPrompt;
     }
 
@@ -27,13 +27,13 @@ public class EditTagNameConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current name for " + tag.getTag() + player.getName() + "<white> is " + currentName).build());
-            return "What do you want the new name to be?";
+            player.sendMessage(ColorParser.of("The current name for " + tag.getTag() + player.getName() + "<white> is " + currentLabel).build());
+            return "What do you want the new label to be?";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-            updatedName = s;
+            updatedLabel = s;
             return confirmPrompt;
         }
     };
@@ -43,22 +43,22 @@ public class EditTagNameConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHolder.getInstance().update(tag.getTag(), tag.getPerm(), updatedName, tag.getIdentifier(), tag.getID());
+                boolean success = TagHolder.getInstance().update(tag.getTag(), tag.getPerm(), updatedLabel, tag.getIdentifier(), tag.getID());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The tag name was successfully updated!").build());
+                    player.sendMessage(ColorParser.of("<green>The tag label was successfully updated!").build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag name was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag label was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The tag name was not updated.").build());
+            player.sendMessage(ColorParser.of("<red>The tag label was not updated.").build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the name of this tag " + tag.getTag() + "<white> to " + updatedName + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to update the label of this tag " + tag.getTag() + "<white> to " + updatedLabel + "?").build());
             return "YES/NO?";
         }
     };

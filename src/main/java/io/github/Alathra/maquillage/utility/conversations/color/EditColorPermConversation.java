@@ -43,7 +43,7 @@ public class EditColorPermConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHolder.getInstance().update(color.getColor(), updatedPerm, color.getName(), color.getIdentifier(), color.getID());
+                boolean success = NameColorHolder.getInstance().update(color.getColor(), updatedPerm, color.getLabel(), color.getIdentifier(), color.getID());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The permission node was successfully updated!").build());
                 } else {

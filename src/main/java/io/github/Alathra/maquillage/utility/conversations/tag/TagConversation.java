@@ -11,7 +11,7 @@ public class TagConversation {
 
     static String tag;
     static String permission;
-    static String name;
+    static String label;
     static String identifier;
 
     public static Prompt newTagPrompt = new StringPrompt() {
@@ -23,19 +23,19 @@ public class TagConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             tag = input;
-            return namePrompt;
+            return labelPrompt;
         }
     };
 
-    static Prompt namePrompt = new StringPrompt() {
+    static Prompt labelPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the display name.";
+            return "Input the desired label.";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            name = input;
+            label = input;
             return identifierPrompt;
         }
     };
@@ -77,7 +77,7 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHolder.getInstance().add(tag, permission, name, identifier);
+                int ID = TagHolder.getInstance().add(tag, permission, label, identifier);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
                 } else {
@@ -93,7 +93,7 @@ public class TagConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
-            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + name + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + label + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

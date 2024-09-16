@@ -11,15 +11,15 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EditColorNameConversation {
+public class EditColorLabelConversation {
 
-    static String currentName;
-    static String updatedName;
+    static String currentLabel;
+    static String updatedLabel;
     static NameColor color;
 
     public static Prompt editNamePrompt(NameColor color) {
-        EditColorNameConversation.color = color;
-        EditColorNameConversation.currentName = color.getName();
+        EditColorLabelConversation.color = color;
+        EditColorLabelConversation.currentLabel = color.getLabel();
         return editNameStringPrompt;
     }
 
@@ -27,13 +27,13 @@ public class EditColorNameConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current name for " + color.getColor() + player.getName() + "<white> is " + currentName).build());
-            return "What do you want the new name to be?";
+            player.sendMessage(ColorParser.of("The current label for " + color.getColor() + player.getName() + "<white> is " + currentLabel).build());
+            return "What do you want the new label to be?";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-            updatedName = s;
+            updatedLabel = s;
             return confirmPrompt;
         }
     };
@@ -43,22 +43,22 @@ public class EditColorNameConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHolder.getInstance().update(color.getColor(), color.getPerm(), updatedName, color.getIdentifier(), color.getID());
+                boolean success = NameColorHolder.getInstance().update(color.getColor(), color.getPerm(), updatedLabel, color.getIdentifier(), color.getID());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The color name was successfully updated!").build());
+                    player.sendMessage(ColorParser.of("<green>The color label was successfully updated!").build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color name was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color label was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color name was not updated.").build());
+            player.sendMessage(ColorParser.of("<red>The color label was not updated.").build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the name of this color " + color.getColor() + player.getName() + "<white> to " + updatedName + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to update the label of this color " + color.getColor() + player.getName() + "<white> to " + updatedLabel + "?").build());
             return "YES/NO?";
         }
     };
