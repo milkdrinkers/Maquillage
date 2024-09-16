@@ -22,7 +22,7 @@ import static io.github.alathra.maquillage.database.schema.tables.Tags.TAGS;
 public class TagHolder implements BaseCosmeticHolder<Tag> {
     private static TagHolder INSTANCE;
     private final HashMap<Integer, Tag> cachedTags = new HashMap<>();
-    private final HashMap<String, Integer> tagIdentifiers = new HashMap<>();
+    private final HashMap<String, Integer> tagKeys = new HashMap<>();
 
     private TagHolder() {
     }
@@ -44,7 +44,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     @Override
     public void cacheAdd(Tag tag) {
         cachedTags.put(tag.getID(), tag);
-        tagIdentifiers.put(tag.getIdentifier(), tag.getID());
+        tagKeys.put(tag.getKey(), tag.getID());
 
         PermissionUtility.registerPermission(tag.getPerm());
     }
@@ -52,7 +52,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     @Override
     public void cacheRemove(Tag value) {
         cachedTags.remove(value.getID());
-        tagIdentifiers.remove(value.getIdentifier());
+        tagKeys.remove(value.getKey());
 
         PermissionUtility.removePermission(value.getPerm());
     }
@@ -65,7 +65,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     @Override
     public void cacheClear() {
         cachedTags.clear();
-        tagIdentifiers.clear();
+        tagKeys.clear();
     }
 
     // SECTION Database
@@ -158,17 +158,17 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public Tag getByIDString(String identifier) {
-        return getByID(tagIdentifiers.get(identifier));
+        return getByID(tagKeys.get(identifier));
     }
 
     @Override
-    public List<String> getAllIdentifiers() {
-        return tagIdentifiers.keySet().stream().toList();
+    public List<String> getAllKeys() {
+        return tagKeys.keySet().stream().toList();
     }
 
     @Override
     public boolean doesIdentifierExist(String identifier) {
-        return tagIdentifiers.containsKey(identifier);
+        return tagKeys.containsKey(identifier);
     }
 
     // SECTION Player

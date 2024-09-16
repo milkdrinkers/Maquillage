@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.module.cosmetic;
 
 public interface CosmeticIdentifiable {
-    String getIdentifier();
+    String getKey();
 
-    void setIdentifier(String identifier);
+    void setKey(String key);
 }

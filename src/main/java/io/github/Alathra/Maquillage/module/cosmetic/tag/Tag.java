@@ -35,7 +35,7 @@ public class Tag extends BaseCosmetic {
             "tag='" + getTag() + '\'' +
             ", perm='" + getPerm() + '\'' +
             ", label='" + getLabel() + '\'' +
-            ", identifier='" + getIdentifier() + '\'' +
+            ", identifier='" + getKey() + '\'' +
             ", ID=" + getID() +
             '}';
     }

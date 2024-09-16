@@ -41,7 +41,7 @@ public class CommandDelete {
                 new StringArgument("identifier")
                     .replaceSuggestions(
                         ArgumentSuggestions.strings(
-                            NameColorHolder.getInstance().getAllIdentifiers()
+                            NameColorHolder.getInstance().getAllKeys()
                         )
                     )
             )
@@ -63,7 +63,7 @@ public class CommandDelete {
                 new StringArgument("identifier")
                     .replaceSuggestions(
                         ArgumentSuggestions.strings(
-                            TagHolder.getInstance().getAllIdentifiers()
+                            TagHolder.getInstance().getAllKeys()
                         )
                     )
             )

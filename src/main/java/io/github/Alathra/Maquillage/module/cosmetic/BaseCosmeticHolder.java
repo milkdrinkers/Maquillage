@@ -91,7 +91,7 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
     T getByIDString(String identifier);
 
-    List<String> getAllIdentifiers();
+    List<String> getAllKeys();
 
     boolean doesIdentifierExist(String identifier);
 }

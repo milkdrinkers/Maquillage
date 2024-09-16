@@ -42,52 +42,52 @@ public class CommandEdit {
             .withSubcommands(
                 new CommandAPICommand("color")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllIdentifiers()
+                                    NameColorHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("label")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllIdentifiers()
+                                    NameColorHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("permission")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllIdentifiers()
+                                    NameColorHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("keys")
                     .executesPlayer((sender, args) -> {
-                        sender.sendMessage(NameColorHolder.getInstance().getAllIdentifiers().toString());
+                        sender.sendMessage(NameColorHolder.getInstance().getAllKeys().toString());
                     })
             );
     }
@@ -98,52 +98,52 @@ public class CommandEdit {
             .withSubcommands(
                 new CommandAPICommand("tag")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllIdentifiers()
+                                    TagHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("label")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllIdentifiers()
+                                    TagHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("permission")
                     .withArguments(
-                        new StringArgument("identifier")
+                        new StringArgument("key")
                             .replaceSuggestions(
                                 ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllIdentifiers()
+                                    TagHolder.getInstance().getAllKeys()
                                 )
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByIDString(args.get("identifier").toString())));
+                        factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("keys")
                     .executesPlayer((sender, args) -> {
-                        sender.sendMessage(TagHolder.getInstance().getAllIdentifiers().toString());
+                        sender.sendMessage(TagHolder.getInstance().getAllKeys().toString());
                     })
             );
     }

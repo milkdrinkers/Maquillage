@@ -22,7 +22,7 @@ import static io.github.alathra.maquillage.database.schema.tables.Colors.COLORS;
 public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     private static NameColorHolder INSTANCE;
     private final HashMap<Integer, NameColor> cachedColors = new HashMap<>();
-    private final HashMap<String, Integer> colorIdentifiers = new HashMap<>();
+    private final HashMap<String, Integer> colorKeys = new HashMap<>();
 
     private NameColorHolder() {
     }
@@ -44,7 +44,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     @Override
     public void cacheAdd(NameColor color) {
         cachedColors.put(color.getID(), color);
-        colorIdentifiers.put(color.getIdentifier(), color.getID());
+        colorKeys.put(color.getKey(), color.getID());
 
         PermissionUtility.registerPermission(color.getPerm());
     }
@@ -52,7 +52,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     @Override
     public void cacheRemove(NameColor value) {
         cachedColors.remove(value.getID());
-        colorIdentifiers.remove(value.getIdentifier());
+        colorKeys.remove(value.getKey());
 
         PermissionUtility.removePermission(value.getPerm());
     }
@@ -65,7 +65,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     @Override
     public void cacheClear() {
         cachedColors.clear();
-        colorIdentifiers.clear();
+        colorKeys.clear();
     }
 
     // SECTION Database
@@ -158,17 +158,17 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public NameColor getByIDString(String identifier) {
-        return getByID(colorIdentifiers.get(identifier));
+        return getByID(colorKeys.get(identifier));
     }
 
     @Override
-    public List<String> getAllIdentifiers() {
-        return colorIdentifiers.keySet().stream().toList();
+    public List<String> getAllKeys() {
+        return colorKeys.keySet().stream().toList();
     }
 
     @Override
     public boolean doesIdentifierExist(String identifier) {
-        return colorIdentifiers.containsKey(identifier);
+        return colorKeys.containsKey(identifier);
     }
 
     // SECTION Player

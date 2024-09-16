@@ -35,7 +35,7 @@ public class NameColor extends BaseCosmetic {
             "color='" + getColor() + '\'' +
             ", perm='" + getPerm() + '\'' +
             ", label='" + getLabel() + '\'' +
-            ", identifier='" + getIdentifier() + '\'' +
+            ", identifier='" + getKey() + '\'' +
             ", ID=" + getID() +
             '}';
     }

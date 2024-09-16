@@ -12,7 +12,7 @@ public class ColorConversation {
     static String color;
     static String permission;
     static String label;
-    static String identifier;
+    static String key;
     static boolean colorIsGradient;
     static boolean colorIsRainbow;
 
@@ -48,24 +48,24 @@ public class ColorConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             label = input;
-            return identifierPrompt;
+            return keyPrompt;
         }
     };
 
-    static Prompt identifierPrompt = new StringPrompt() {
+    static Prompt keyPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
-            return "Input the identifier.";
+            return "Input the key.";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
             if (NameColorHolder.getInstance().doesIdentifierExist(input)) {
                 Player player = (Player) conversationContext.getForWhom();
-                player.sendMessage(ColorParser.of("<red>This identifier is already in use. Identifiers have to be unique").build());
-                return identifierPrompt;
+                player.sendMessage(ColorParser.of("<red>This key is already in use. Keys have to be unique").build());
+                return keyPrompt;
             }
-            identifier = input;
+            key = input;
             return permissionPrompt;
         }
     };
@@ -89,7 +89,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHolder.getInstance().add(color, permission, label, identifier);
+                int ID = NameColorHolder.getInstance().add(color, permission, label, key);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {
@@ -114,7 +114,7 @@ public class ColorConversation {
             if (colorIsRainbow)
                 correctGradients = "</rainbow>";
 
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + ", the identifier " + identifier + " and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + ", the key " + key + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

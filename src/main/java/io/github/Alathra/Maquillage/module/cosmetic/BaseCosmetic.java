@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticIdentifiable, Identifiable {
     private String perm;
     private String label;
-    private String identifier;
+    private String key;
     private int ID;
 
-    public BaseCosmetic(String perm, String label, String identifier, int ID) {
+    public BaseCosmetic(String perm, String label, String key, int ID) {
         this.perm = perm;
         this.label = label;
-        this.identifier = identifier;
+        this.key = key;
         this.ID = ID;
     }
 
@@ -39,12 +39,12 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
         return Maquillage.getVaultHook().getPermissions().has(p, this.getPerm());
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public String getKey() {
+        return key;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getID() {
@@ -74,7 +74,7 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
         return "BaseCosmetic{" +
             "perm='" + perm + '\'' +
             ", name='" + label + '\'' +
-            ", identifier='" + identifier + '\'' +
+            ", identifier='" + key + '\'' +
             ", ID=" + ID +
             '}';
     }
