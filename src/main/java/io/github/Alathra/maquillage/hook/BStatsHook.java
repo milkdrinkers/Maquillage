@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
  * A hook to interface with <a href="https://github.com/Bastian/bstats-metrics">BStats</a>.
  */
 public class BStatsHook implements Reloadable {
-    private final static int BSTATS_ID = 1234; // Signup to BStats and register your new plugin here: https://bstats.org/getting-started, replace the id with you new one!
+    private final static int BSTATS_ID = 23369; // Signup to BStats and register your new plugin here: https://bstats.org/getting-started, replace the id with you new one!
     private final Maquillage plugin;
     private @Nullable Metrics hook;
 
