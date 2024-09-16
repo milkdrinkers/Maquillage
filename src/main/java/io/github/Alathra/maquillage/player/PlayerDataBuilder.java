@@ -10,6 +10,7 @@ public class PlayerDataBuilder {
     private @Nullable Player player;
     private int nameColorId = -1;
     private int tagId = -1;
+    private String nickname = null;
 
     public PlayerDataBuilder withUuid(UUID uuid) {
         this.uuid = uuid;
@@ -31,6 +32,11 @@ public class PlayerDataBuilder {
         return this;
     }
 
+    public PlayerDataBuilder withNickname(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
     public PlayerData build() {
         if (uuid == null)
             throw new IllegalStateException("Missing state uuid when creating PlayerData object");
@@ -42,7 +48,8 @@ public class PlayerDataBuilder {
             uuid,
             player,
             nameColorId,
-            tagId
+            tagId,
+            nickname
         );
     }
 }

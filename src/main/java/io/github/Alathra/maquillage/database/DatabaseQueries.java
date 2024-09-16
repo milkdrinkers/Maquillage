@@ -425,6 +425,134 @@ public abstract class DatabaseQueries {
     }
 
     /**
+     * Saves a player's nickname.
+     *
+     * @param uuid a byte array representing the player's UUID.
+     * @param nickname the player's nickname.
+     */
+    public static void savePlayerNickname(byte[] uuid, String nickname) {
+        try (
+            Connection  con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context
+                .insertInto(NICKNAMES, NICKNAMES.PLAYER, NICKNAMES.NICKNAME)
+                .values(
+                    uuid,
+                    nickname
+                )
+                .onDuplicateKeyUpdate()
+                .set(NICKNAMES.PLAYER, uuid)
+                .set(NICKNAMES.NICKNAME, nickname)
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!" + e);
+        }
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#savePlayerNickname(byte[], String)}
+     *
+     * @param uuid
+     * @param nickname
+     */
+    public static void savePlayerNickname(UUID uuid, String nickname) {
+        savePlayerNickname(convertUUIDToBytes(uuid), nickname);
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#savePlayerNickname(byte[], String)}
+     *
+     * @param p
+     * @param nickname
+     */
+    public static void savePlayerNickname(Player p, String nickname) {
+        savePlayerNickname(p.getUniqueId(), nickname);
+    }
+
+    /**
+     * Loads a player's nickname.
+     *
+     * @param uuid byte array representing the player's UUID.
+     * @return the player's nickname, in a jOOQ record.
+     */
+    public static @Nullable Record1<String> loadPlayerNickname(byte[] uuid) {
+        try(
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            return context
+                .select(NICKNAMES.NICKNAME)
+                .from(NICKNAMES)
+                .where(NICKNAMES.PLAYER.equal(uuid))
+                .fetchOne();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Query threw an error!", e);
+        }
+        return null;
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#loadPlayerNickname(byte[])}
+     *
+     * @param uuid the player's UUID.
+     * @return the player's nickname, in a jOOQ record.
+     */
+    public static @Nullable Record1<String> loadPlayerNickname(UUID uuid) {
+        return loadPlayerNickname(convertUUIDToBytes(uuid));
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#loadPlayerNickname(byte[])}
+     *
+     * @param p the player object.
+     * @return the player's nickname, in a jOOQ record.
+     */
+    public static @Nullable Record1<String> loadPlayerNickname(Player p) {
+        return loadPlayerNickname(p.getUniqueId());
+    }
+
+    /**
+     * Clears a player's nickname.
+     *
+     * @param uuid a byte array representing the player's UUID.
+     */
+    public static void clearPlayerNickname(byte[] uuid) {
+        try (
+            Connection con = DB.getConnection()
+        ) {
+            DSLContext context = DB.getContext(con);
+
+            context
+                .deleteFrom(NICKNAMES)
+                .where(NICKNAMES.PLAYER.equal(uuid))
+                .execute();
+        } catch (SQLException e) {
+            Logger.get().error("SQL Exception caught an error!" + e);
+        }
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#clearPlayerNickname(byte[])}
+     *
+     * @param uuid
+     */
+    public static void clearPlayerNickname(UUID uuid) {
+        clearPlayerNickname(convertUUIDToBytes(uuid));
+    }
+
+    /**
+     * Convenience method for {@link DatabaseQueries#clearPlayerNickname(byte[])}
+     *
+     * @param p
+     */
+    public static void clearPlayerNickname(Player p) {
+        clearPlayerNickname(convertUUIDToBytes(p.getUniqueId()));
+    }
+
+    /**
      * Convert uuid to an array of bytes.
      *
      * @param uuid the uuid

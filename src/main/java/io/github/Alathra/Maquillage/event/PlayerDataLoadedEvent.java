@@ -1,5 +1,6 @@
 package io.github.alathra.maquillage.event;
 
+import io.github.alathra.maquillage.player.PlayerData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -9,13 +10,11 @@ public class PlayerDataLoadedEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
     private Player player;
-    private int colorID;
-    private int tagID;
+    private PlayerData data;
 
-    public PlayerDataLoadedEvent(Player player, int colorID, int tagID) {
+    public PlayerDataLoadedEvent(Player player, PlayerData data) {
         this.player = player;
-        this.colorID = colorID;
-        this.tagID = tagID;
+        this.data = data;
     }
 
     public @NotNull HandlerList getHandlers() {
@@ -30,12 +29,7 @@ public class PlayerDataLoadedEvent extends Event {
         return player;
     }
 
-    public int getColorID() {
-        return colorID;
+    public PlayerData getData() {
+        return data;
     }
-
-    public int getTagID() {
-        return tagID;
-    }
-
 }

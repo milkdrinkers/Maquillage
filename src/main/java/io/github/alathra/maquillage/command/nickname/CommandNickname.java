@@ -5,10 +5,13 @@ import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
+import io.github.alathra.maquillage.Maquillage;
+import io.github.alathra.maquillage.database.DatabaseQueries;
 import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import io.github.alathra.maquillage.utility.Cfg;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -48,7 +51,9 @@ public class CommandNickname {
 
                         NicknameLookup.getInstance().addNicknameToLookup(nick, player);
 
-                        // TODO run DB query to save nickname
+                        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
+                            DatabaseQueries.savePlayerNickname(player, nick);
+                        });
                     }),
                 new CommandAPICommand("clear")
                     .withPermission("maquillage.nick.clear")
@@ -68,6 +73,10 @@ public class CommandNickname {
 
                         data.clearNickname();
                         PlayerDataHolder.getInstance().setPlayerData(player, data);
+
+                        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
+                            DatabaseQueries.clearPlayerNickname(player);
+                        });
                     })
             );
     }

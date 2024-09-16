@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.listener.listeners;
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.database.DatabaseQueries;
 import io.github.alathra.maquillage.event.PlayerDataLoadedEvent;
+import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataBuilder;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import org.bukkit.Bukkit;
@@ -22,36 +23,18 @@ public class PlayerJoinListener implements Listener {
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
         Player p = e.getPlayer();
 
-        loadPlayerData(p).thenAccept(ids -> {
+        loadPlayerData(p).thenAccept(data -> {
             Bukkit.getScheduler().runTask(Maquillage.getInstance(), () -> {
                 // Add player to cacheAdd
-                PlayerDataHolder.getInstance().setPlayerData(
-                    p,
-                    new PlayerDataBuilder()
-                        .withUuid(p.getUniqueId())
-                        .withPlayer(p)
-                        .withNameColorId(ids[0])
-                        .withTagId(ids[1])
-                        .build()
-                );
+                PlayerDataHolder.getInstance().setPlayerData(p, data);
 
-                PlayerDataLoadedEvent firedEvent = new PlayerDataLoadedEvent(p, ids[0], ids[1]);
+                PlayerDataLoadedEvent firedEvent = new PlayerDataLoadedEvent(p, data);
                 Bukkit.getPluginManager().callEvent(firedEvent);
-
-
-//                if (TagHolder.doesPlayerHaveTag(p) && NameColorHolder.doesPlayerHaveColor(p))
-//                    UpdateDisplayName.updateDisplayName(p, TagHolder.getPlayerTag(p), NameColorHolder.getPlayerColor(p));
-//                else if (TagHolder.doesPlayerHaveTag(p) && !NameColorHolder.doesPlayerHaveColor(p))
-//                    UpdateDisplayName.updateDisplayNameNoColor(p, TagHolder.getPlayerTag(p));
-//                else if (!TagHolder.doesPlayerHaveTag(p) && NameColorHolder.doesPlayerHaveColor(p))
-//                    UpdateDisplayName.updateDisplayNameNoTag(p, NameColorHolder.getPlayerColor(p));
-//                else if (!TagHolder.doesPlayerHaveTag(p) && !NameColorHolder.doesPlayerHaveColor(p))
-//                    return;
             });
         });
     }
 
-    private CompletableFuture<int[]> loadPlayerData(Player p) {
+    private CompletableFuture<PlayerData> loadPlayerData(Player p) {
         return CompletableFuture.supplyAsync(() -> {
             Record1<Integer> colorRecord = DatabaseQueries.loadPlayerColor(p);
             int colorID;
@@ -67,7 +50,20 @@ public class PlayerJoinListener implements Listener {
             else
                 tagID = tagRecord.component1();
 
-            return new int[]{colorID, tagID};
+            Record1<String> nicknameRecord = DatabaseQueries.loadPlayerNickname(p);
+            String nick;
+            if (nicknameRecord == null)
+                nick = null;
+            else
+                nick = nicknameRecord.component1();
+
+            return new PlayerDataBuilder()
+                .withUuid(p.getUniqueId())
+                .withPlayer(p)
+                .withNameColorId(colorID)
+                .withTagId(tagID)
+                .withNickname(nick)
+                .build();
         });
     }
 
