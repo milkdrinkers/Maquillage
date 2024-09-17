@@ -11,6 +11,7 @@ import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import io.github.alathra.maquillage.utility.Cfg;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -51,6 +52,15 @@ public class CommandNickname {
 
                         NicknameLookup.getInstance().addNicknameToLookup(nick, player);
 
+                        if (Cfg.get().getBoolean("module.nickname.set-displayname")) {
+                            String prefix = "";
+                            if (Cfg.get().getBoolean("module.nickname.prefix.enabled")){
+                                prefix = Cfg.get().getString("module.nickname.prefix.string");
+                            }
+
+                            player.displayName(Component.text(prefix + nick));
+                        }
+
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.savePlayerNickname(player, nick);
                         });
@@ -73,6 +83,10 @@ public class CommandNickname {
 
                         data.clearNickname();
                         PlayerDataHolder.getInstance().setPlayerData(player, data);
+
+                        if (Cfg.get().getBoolean("module.nickname.set-displayname")) {
+                            player.displayName(Component.text(player.getName()));
+                        }
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.clearPlayerNickname(player);
