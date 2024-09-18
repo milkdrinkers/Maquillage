@@ -79,7 +79,7 @@ abstract class AbstractDatabaseTest {
         Connection con = databaseHandler.getConnection();
         DSLContext context = jooqContext.createContext(con);
         context
-            .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY))
+            .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL))
             .from(COLORS)
             .where(COLORS.ID.equal(1))
             .fetchOne();
@@ -96,12 +96,11 @@ abstract class AbstractDatabaseTest {
         Connection con = databaseHandler.getConnection();
         DSLContext context = jooqContext.createContext(con);
         Record1<Integer> record = context
-            .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY)
+            .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL)
             .values(
                 "<blue>",
                 "",
-                "testname",
-                "testidentifier"
+                "testname"
             )
             .returningResult(COLORS.ID)
             .fetchOne();
@@ -121,7 +120,6 @@ abstract class AbstractDatabaseTest {
             .set(COLORS.COLOR, "<red>")
             .set(COLORS.PERM, "someperm")
             .set(COLORS.LABEL, "testlabel")
-            .set(COLORS.KEY, "testkey")
             .where(COLORS.ID.eq(1))
             .execute();
         con.close();

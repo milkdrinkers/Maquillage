@@ -10,6 +10,7 @@ import io.github.alathra.maquillage.player.PlayerDataHolder;
 import io.github.alathra.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -71,15 +72,14 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String label, String key) {
-        int databaseId = DatabaseQueries.saveColor(value, perm, label, key);
+    public int add(String value, String perm, String label) {
+        int databaseId = DatabaseQueries.saveColor(value, perm, label);
         if (databaseId != -1) {
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(value)
                     .withPerm(perm)
                     .withLabel(label)
-                    .withKey(key)
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
@@ -100,8 +100,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     }
 
     @Override
-    public boolean update(String value, String perm, String label, String key, int databaseId) {
-        boolean success = DatabaseQueries.updateColor(value, perm, label, key, databaseId);
+    public boolean update(String value, String perm, String label, int databaseId) {
+        boolean success = DatabaseQueries.updateColor(value, perm, label, databaseId);
         if (!success)
             return false;
 
@@ -110,7 +110,6 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withColor(value)
                 .withPerm(perm)
                 .withLabel(label)
-                .withKey(key)
                 .withDatabaseId(databaseId)
                 .createNameColor()
         );
@@ -125,24 +124,22 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void loadAll() {
-        Result<Record5<Integer, String, String, String, String>> result = DatabaseQueries.loadAllColors();
+        Result<Record4<Integer, String, String, String>> result = DatabaseQueries.loadAllColors();
 
         if (result == null)
             return;
 
-        for (Record5<Integer, String, String, String, String> record : result) {
+        for (Record4<Integer, String, String, String> record : result) {
             int databaseId = record.get(COLORS.ID);
             String color = record.get(COLORS.COLOR);
             String permission = record.get(COLORS.PERM);
             String label = record.get(COLORS.LABEL);
-            String key = record.get(COLORS.KEY);
 
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(color)
                     .withPerm(permission)
                     .withLabel(label)
-                    .withKey(key)
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
@@ -211,5 +208,9 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, databaseId));
 
         return true;
+    }
+
+    public HashMap<String, Integer> getColorKeys() {
+        return colorKeys;
     }
 }

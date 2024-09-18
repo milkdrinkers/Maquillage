@@ -10,6 +10,7 @@ import io.github.alathra.maquillage.player.PlayerDataHolder;
 import io.github.alathra.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jooq.Record4;
 import org.jooq.Record5;
 import org.jooq.Result;
 
@@ -22,6 +23,7 @@ import static io.github.alathra.maquillage.database.schema.tables.Tags.TAGS;
 public class TagHolder implements BaseCosmeticHolder<Tag> {
     private static TagHolder INSTANCE;
     private final HashMap<Integer, Tag> cachedTags = new HashMap<>();
+
     private final HashMap<String, Integer> tagKeys = new HashMap<>();
 
     private TagHolder() {
@@ -71,15 +73,14 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String label, String key) {
-        int databaseId = DatabaseQueries.saveTag(value, perm, label, key);
+    public int add(String value, String perm, String label) {
+        int databaseId = DatabaseQueries.saveTag(value, perm, label);
         if (databaseId != -1) {
             cacheAdd(
                 new TagBuilder()
                     .withTag(value)
                     .withPerm(perm)
                     .withLabel(label)
-                    .withKey(key)
                     .withDatabaseId(databaseId)
                     .createTag()
             );
@@ -100,8 +101,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     }
 
     @Override
-    public boolean update(String value, String perm, String label, String key, int databaseId) {
-        boolean success = DatabaseQueries.updateTag(value, perm, label, key, databaseId);
+    public boolean update(String value, String perm, String label, int databaseId) {
+        boolean success = DatabaseQueries.updateTag(value, perm, label, databaseId);
         if (!success)
             return false;
 
@@ -110,7 +111,6 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withTag(value)
                 .withPerm(perm)
                 .withLabel(label)
-                .withKey(key)
                 .withDatabaseId(databaseId)
                 .createTag()
         );
@@ -125,24 +125,22 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void loadAll() {
-        Result<Record5<Integer, String, String, String, String>> result = DatabaseQueries.loadAllTags();
+        Result<Record4<Integer, String, String, String>> result = DatabaseQueries.loadAllTags();
 
         if (result == null)
             return;
 
-        for (Record5<Integer, String, String, String, String> record : result) {
+        for (Record4<Integer, String, String, String> record : result) {
             int databaseId = record.get(TAGS.ID);
             String tag = record.get(TAGS.TAG);
             String permission = record.get(TAGS.PERM);
             String label = record.get(TAGS.LABEL);
-            String key = record.get(TAGS.KEY);
 
             cacheAdd(
                 new TagBuilder()
                     .withTag(tag)
                     .withPerm(permission)
                     .withLabel(label)
-                    .withKey(key)
                     .withDatabaseId(databaseId)
                     .createTag()
             );
@@ -211,5 +209,9 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerTag(uuid, tagID));
 
         return true;
+    }
+
+    public HashMap<String, Integer> getTagKeys() {
+        return tagKeys;
     }
 }

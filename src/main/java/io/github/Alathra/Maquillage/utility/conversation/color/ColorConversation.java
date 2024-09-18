@@ -89,7 +89,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHolder.getInstance().add(color, permission, label, key);
+                int ID = NameColorHolder.getInstance().add(color, permission, label);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {

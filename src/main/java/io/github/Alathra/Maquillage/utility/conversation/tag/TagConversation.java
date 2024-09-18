@@ -77,7 +77,7 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHolder.getInstance().add(tag, permission, label, key);
+                int ID = TagHolder.getInstance().add(tag, permission, label);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
                 } else {

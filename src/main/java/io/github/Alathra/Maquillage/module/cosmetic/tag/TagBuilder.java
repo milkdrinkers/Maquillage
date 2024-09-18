@@ -1,12 +1,12 @@
 package io.github.alathra.maquillage.module.cosmetic.tag;
 
+import io.github.alathra.maquillage.utility.Util;
 import org.jetbrains.annotations.Nullable;
 
 public class TagBuilder {
     private @Nullable String tag;
     private @Nullable String perm;
-    private @Nullable String name;
-    private @Nullable String identifier;
+    private @Nullable String label;
     private int id = -1;
 
     public TagBuilder withTag(String tag) {
@@ -20,12 +20,7 @@ public class TagBuilder {
     }
 
     public TagBuilder withLabel(String label) {
-        this.name = label;
-        return this;
-    }
-
-    public TagBuilder withKey(String key) {
-        this.identifier = key;
+        this.label = label;
         return this;
     }
 
@@ -41,11 +36,8 @@ public class TagBuilder {
         if (perm == null)
             throw new IllegalStateException("Missing state perm when creating Tag object");
 
-        if (name == null)
+        if (label == null)
             throw new IllegalStateException("Missing state name when creating Tag object");
-
-        if (identifier == null)
-            throw new IllegalStateException("Missing state identifier when creating Tag object");
 
         if (id == -1)
             throw new IllegalStateException("Missing state id when creating Tag object");
@@ -53,8 +45,8 @@ public class TagBuilder {
         return new Tag(
             tag,
             perm,
-            name,
-            identifier,
+            label,
+            Util.createKey(label, TagHolder.getInstance().getTagKeys()),
             id
         );
     }

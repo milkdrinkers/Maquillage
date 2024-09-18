@@ -29,19 +29,18 @@ public abstract class DatabaseQueries {
      * @param tag the tag
      * @return the id of the tag or -1 if saving failed
      */
-    public static int saveTag(String tag, String perm, String name, String identifier) {
+    public static int saveTag(String tag, String perm, String label) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY)
+                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.LABEL)
                 .values(
                     tag,
                     perm,
-                    name,
-                    identifier
+                    label
                 )
                 .returningResult(TAGS.ID)
                 .fetchOne();
@@ -56,7 +55,7 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static boolean updateTag(String tag, String perm, String name, String identifier, int ID) {
+    public static boolean updateTag(String tag, String perm, String label, int databaseId) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -65,9 +64,8 @@ public abstract class DatabaseQueries {
             context.update(TAGS)
                 .set(TAGS.TAG, tag)
                 .set(TAGS.PERM, perm)
-                .set(TAGS.LABEL, name)
-                .set(TAGS.KEY, identifier)
-                .where(TAGS.ID.eq(ID))
+                .set(TAGS.LABEL, label)
+                .where(TAGS.ID.eq(databaseId))
                 .execute();
             return true;
 
@@ -77,14 +75,14 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static boolean removeTag(int ID) {
+    public static boolean removeTag(int databaseId) {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             context.deleteFrom(TAGS)
-                .where(TAGS.ID.eq(ID))
+                .where(TAGS.ID.eq(databaseId))
                 .execute();
             return true;
 
@@ -100,19 +98,18 @@ public abstract class DatabaseQueries {
      * @param color the color
      * @return the id of the color or -1 if saving failed
      */
-    public static int saveColor(String color, String perm, String name, String identifier) {
+    public static int saveColor(String color, String perm, String label) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY)
+                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL)
                 .values(
                     color,
                     perm,
-                    name,
-                    identifier
+                    label
                 )
                 .returningResult(COLORS.ID)
                 .fetchOne();
@@ -128,7 +125,7 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static boolean updateColor(String color, String perm, String name, String identifier, int ID) {
+    public static boolean updateColor(String color, String perm, String label, int databaseId) {
         try (
             Connection con = DB.getConnection()
         ) {
@@ -137,9 +134,8 @@ public abstract class DatabaseQueries {
             context.update(COLORS)
                 .set(COLORS.COLOR, color)
                 .set(COLORS.PERM, perm)
-                .set(COLORS.LABEL, name)
-                .set(COLORS.KEY, identifier)
-                .where(COLORS.ID.eq(ID))
+                .set(COLORS.LABEL, label)
+                .where(COLORS.ID.eq(databaseId))
                 .execute();
             return true;
 
@@ -149,14 +145,14 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static boolean removeColor(int ID) {
+    public static boolean removeColor(int databaseId) {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             context.deleteFrom(COLORS)
-                .where(COLORS.ID.eq(ID))
+                .where(COLORS.ID.eq(databaseId))
                 .execute();
             return true;
 
@@ -250,16 +246,16 @@ public abstract class DatabaseQueries {
         }
     }
 
-    public static @Nullable org.jooq.Record loadColor(int id) {
+    public static @Nullable org.jooq.Record loadColor(int databaseId) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY))
+                .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL))
                 .from(COLORS)
-                .where(COLORS.ID.equal(id))
+                .where(COLORS.ID.equal(databaseId))
                 .fetchOne();
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!" + e);
@@ -267,16 +263,16 @@ public abstract class DatabaseQueries {
         return null;
     }
 
-    public static @Nullable Record loadTag(final int id) {
+    public static @Nullable Record loadTag(final int databaseId) {
         try (
             Connection con = DB.getConnection()
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY))
+                .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.LABEL))
                 .from(TAGS)
-                .where(TAGS.ID.equal(id))
+                .where(TAGS.ID.equal(databaseId))
                 .fetchOne();
         } catch (SQLException e) {
             Logger.get().error("SQL Query threw an error!" + e);
@@ -335,14 +331,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all tags. Should be called on server start and reload.
-    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllTags() {
+    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllTags() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY)
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.LABEL)
                 .from(TAGS)
                 .fetch();
         } catch (SQLException e) {
@@ -352,14 +348,14 @@ public abstract class DatabaseQueries {
     }
 
     // Loads all colors. Should be called on server start and reload.
-    public static @Nullable Result<Record5<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String, @NotNull String>> loadAllColors() {
+    public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllColors() {
         try (
             Connection con = DB.getConnection();
         ) {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY)
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.LABEL)
                 .from(COLORS)
                 .fetch();
         } catch (SQLException e) {
