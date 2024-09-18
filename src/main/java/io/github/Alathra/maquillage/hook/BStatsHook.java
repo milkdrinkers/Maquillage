@@ -47,7 +47,7 @@ public class BStatsHook implements Reloadable {
 
         hook.addCustomChart(new SingleLineChart("tags", () -> TagHolder.getInstance().getAllKeys().size()));
 
-        hook.addCustomChart(new SingleLineChart("tags", () -> NameColorHolder.getInstance().getAllKeys().size()));
+        hook.addCustomChart(new SingleLineChart("colors", () -> NameColorHolder.getInstance().getAllKeys().size()));
     }
 
     @Override
