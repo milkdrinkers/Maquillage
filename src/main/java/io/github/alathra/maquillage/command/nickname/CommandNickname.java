@@ -30,14 +30,10 @@ public class CommandNickname {
                         new PlayerArgument("player"),
                         new StringArgument("nick")))
                     .executes((sender, args) -> {
-                        Player player = (Player) args.get("player");
-
-                        String nick = (String) args.get("nick");
-
-                        if (player == null)
+                        if (!(args.get("player") instanceof Player player))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>The player wasn't found.").build());
 
-                        if (nick == null)
+                        if (!(args.get("nick") instanceof String nick))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>You need to input a nickname.").build());
 
                         if(nick.length() > Cfg.get().getInt("module.nickname.length"))
@@ -69,9 +65,7 @@ public class CommandNickname {
                     .withPermission("maquillage.nick.clear")
                     .withArguments(new PlayerArgument("player"))
                     .executes((sender, args) -> {
-                        Player player = (Player) args.get("player");
-
-                        if (player == null)
+                        if (!(args.get("player") instanceof Player player))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>The player wasn't found.").build());
 
                         PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
