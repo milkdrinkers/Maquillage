@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.utility.conversations.color;
+package io.github.alathra.maquillage.utility.conversation.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
@@ -11,29 +11,29 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class EditColorColorConversation {
+public class EditColorPermConversation {
 
-    static String currentColor;
-    static String updatedColor;
+    static String currentPerm;
+    static String updatedPerm;
     static NameColor color;
 
-    public static Prompt editColorPrompt(NameColor color) {
-        EditColorColorConversation.color = color;
-        EditColorColorConversation.currentColor = color.getColor();
-        return editColorStringPrompt;
+    public static Prompt editPermPrompt(NameColor color) {
+        EditColorPermConversation.color = color;
+        EditColorPermConversation.currentPerm = color.getPerm();
+        return editPermStringPrompt;
     }
 
-    static Prompt editColorStringPrompt = new StringPrompt() {
+    static Prompt editPermStringPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current color is " + currentColor + player.getName()).build());
-            return "What do you want the new color to be?";
+            player.sendMessage(ColorParser.of("The current permission node for " + color.getColor() + player.getName() + "<white> is " + currentPerm).build());
+            return "What do you want the new permission node to be?";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-            updatedColor = s;
+            updatedPerm = s;
             return confirmPrompt;
         }
     };
@@ -43,22 +43,22 @@ public class EditColorColorConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHolder.getInstance().update(updatedColor, color.getPerm(), color.getLabel(), color.getKey(), color.getDatabaseId());
+                boolean success = NameColorHolder.getInstance().update(color.getColor(), updatedPerm, color.getLabel(), color.getKey(), color.getDatabaseId());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
+                    player.sendMessage(ColorParser.of("<green>The permission node was successfully updated!").build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The permission node was not updated.").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color was not updated.").build());
+            player.sendMessage(ColorParser.of("<red>The permission node was not updated.").build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the color to this: " + updatedColor + player.getName() + "<white>?").build());
+            player.sendMessage(ColorParser.of("Do you want to update the permission node for " + color.getColor() + player.getName() + "<white> to " + updatedPerm + "?").build());
             return "YES/NO?";
         }
     };

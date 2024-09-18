@@ -2,18 +2,16 @@ package io.github.alathra.maquillage.command.cosmetic;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.utility.conversations.Conversations;
-import io.github.alathra.maquillage.utility.conversations.color.ColorConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.TagConversation;
-import org.bukkit.conversations.Conversable;
-import org.bukkit.conversations.Conversation;
+import io.github.alathra.maquillage.utility.conversation.Conversation;
+import io.github.alathra.maquillage.utility.conversation.color.ColorConversation;
+import io.github.alathra.maquillage.utility.conversation.tag.TagConversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
 public class CommandCreate {
 
     static Plugin plugin = Maquillage.getInstance();
-    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversation.prefix).withLocalEcho(false);
 
     public static CommandAPICommand registerCommandCreate(boolean tags, boolean colors) {
         CommandAPICommand commandCreate = new CommandAPICommand("create")
@@ -35,7 +33,7 @@ public class CommandCreate {
             .executesPlayer((sender, args) -> {
                 factory.withFirstPrompt(ColorConversation.newColorPrompt);
 
-                Conversation conversation = factory.buildConversation(sender);
+                org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
             });
     }
@@ -46,7 +44,7 @@ public class CommandCreate {
             .executesPlayer((sender, args) -> {
                 factory.withFirstPrompt(TagConversation.newTagPrompt);
 
-                Conversation conversation = factory.buildConversation(sender);
+                org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
             });
     }

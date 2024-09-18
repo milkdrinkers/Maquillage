@@ -6,21 +6,20 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.alathra.maquillage.utility.conversations.Conversations;
-import io.github.alathra.maquillage.utility.conversations.color.EditColorColorConversation;
-import io.github.alathra.maquillage.utility.conversations.color.EditColorLabelConversation;
-import io.github.alathra.maquillage.utility.conversations.color.EditColorPermConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.EditTagLabelConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.EditTagPermConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.EditTagTagConversation;
-import org.bukkit.conversations.Conversation;
+import io.github.alathra.maquillage.utility.conversation.Conversation;
+import io.github.alathra.maquillage.utility.conversation.color.EditColorColorConversation;
+import io.github.alathra.maquillage.utility.conversation.color.EditColorLabelConversation;
+import io.github.alathra.maquillage.utility.conversation.color.EditColorPermConversation;
+import io.github.alathra.maquillage.utility.conversation.tag.EditTagLabelConversation;
+import io.github.alathra.maquillage.utility.conversation.tag.EditTagPermConversation;
+import io.github.alathra.maquillage.utility.conversation.tag.EditTagTagConversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
 public class CommandEdit {
 
     static Plugin plugin = Maquillage.getInstance();
-    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversation.prefix).withLocalEcho(false);
 
     public static CommandAPICommand registerCommandEdit(boolean tags, boolean colors) {
         CommandAPICommand commandEdit =  new CommandAPICommand("edit")
@@ -52,7 +51,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("label")
@@ -67,7 +66,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("permission")
@@ -82,7 +81,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("keys")
@@ -108,7 +107,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("label")
@@ -123,7 +122,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("permission")
@@ -138,7 +137,7 @@ public class CommandEdit {
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
-                        Conversation conversation = factory.buildConversation(sender);
+                        org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
                     }),
                 new CommandAPICommand("keys")

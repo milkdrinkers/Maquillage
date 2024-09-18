@@ -1,10 +1,10 @@
-package io.github.alathra.maquillage.utility.conversations;
+package io.github.alathra.maquillage.utility.conversation;
 
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationPrefix;
 import org.jetbrains.annotations.NotNull;
 
-public class Conversations {
+public class Conversation {
 
     public static ConversationPrefix prefix = new ConversationPrefix() {
         @Override

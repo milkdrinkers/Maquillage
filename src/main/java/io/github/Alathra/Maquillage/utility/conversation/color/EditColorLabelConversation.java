@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.utility.conversations.color;
+package io.github.alathra.maquillage.utility.conversation.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;

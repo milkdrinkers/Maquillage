@@ -8,17 +8,16 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.alathra.maquillage.utility.conversations.Conversations;
-import io.github.alathra.maquillage.utility.conversations.color.DeleteColorConversation;
-import io.github.alathra.maquillage.utility.conversations.tag.DeleteTagConversation;
-import org.bukkit.conversations.Conversation;
+import io.github.alathra.maquillage.utility.conversation.Conversation;
+import io.github.alathra.maquillage.utility.conversation.color.DeleteColorConversation;
+import io.github.alathra.maquillage.utility.conversation.tag.DeleteTagConversation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
 public class CommandDelete {
 
     static Plugin plugin = Maquillage.getInstance();
-    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversations.prefix).withLocalEcho(false);
+    static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversation.prefix).withLocalEcho(false);
 
     public static CommandAPICommand registerCommandDelete(boolean tags, boolean colors) {
         CommandAPICommand commandDelete =  new CommandAPICommand("delete")
@@ -51,7 +50,7 @@ public class CommandDelete {
                     throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no color with that identifier.").build());
                 factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByKey(identifier)));
 
-                Conversation conversation = factory.buildConversation(sender);
+                org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
             });
     }
@@ -73,7 +72,7 @@ public class CommandDelete {
                     throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no tag with that identifier").build());
                 factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByKey(identifier)));
 
-                Conversation conversation = factory.buildConversation(sender);
+                org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
             });
     }

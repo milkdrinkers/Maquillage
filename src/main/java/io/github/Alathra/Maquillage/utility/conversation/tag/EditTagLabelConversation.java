@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.utility.conversations.tag;
+package io.github.alathra.maquillage.utility.conversation.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.tag.Tag;

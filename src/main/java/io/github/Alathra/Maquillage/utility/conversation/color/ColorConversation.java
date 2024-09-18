@@ -1,28 +1,40 @@
-package io.github.alathra.maquillage.utility.conversations.tag;
+package io.github.alathra.maquillage.utility.conversation.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
-import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class TagConversation {
+public class ColorConversation {
 
-    static String tag;
+    static String color;
     static String permission;
     static String label;
     static String key;
+    static boolean colorIsGradient;
+    static boolean colorIsRainbow;
 
-    public static Prompt newTagPrompt = new StringPrompt() {
+    public static Prompt newColorPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired tag.";
+            return "Input the desired color.";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            tag = input;
+            color = input;
+            if (input.startsWith("<gradient")) {
+                colorIsGradient = true;
+                colorIsRainbow = false;
+            } else if (input.startsWith("<rainbow")) {
+                colorIsGradient = false;
+                colorIsRainbow = true;
+            } else {
+                colorIsGradient = false;
+                colorIsRainbow = false;
+            }
             return labelPrompt;
         }
     };
@@ -43,12 +55,12 @@ public class TagConversation {
     static Prompt keyPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
-            return "Input the desired key.";
+            return "Input the key.";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
-            if (TagHolder.getInstance().doesKeyExist(input)) {
+            if (NameColorHolder.getInstance().doesKeyExist(input)) {
                 Player player = (Player) conversationContext.getForWhom();
                 player.sendMessage(ColorParser.of("<red>This key is already in use. Keys have to be unique").build());
                 return keyPrompt;
@@ -77,15 +89,15 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHolder.getInstance().add(tag, permission, label, key);
+                int ID = NameColorHolder.getInstance().add(color, permission, label, key);
                 if (ID == -1) {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
+                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
                 } else {
-                    player.sendMessage(ColorParser.of("<green>The tag was successfully saved!").build());
+                    player.sendMessage(ColorParser.of("<green>The color was successfully saved!").build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The tag was not saved.").build());
+            player.sendMessage(ColorParser.of("<red>The color was not saved.").build());
             return Prompt.END_OF_CONVERSATION;
         }
 
@@ -93,8 +105,18 @@ public class TagConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
-            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + label + ", the key " + key + " and the permission node " + permission + "?").build());
+            String colorName = color + player.getName();
+
+            // Adds ending to correctly display rainbows and gradients.
+            String correctGradients = "";
+            if (colorIsGradient)
+                correctGradients = "</gradient>";
+            if (colorIsRainbow)
+                correctGradients = "</rainbow>";
+
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + ", the key " + key + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };
+
 }
