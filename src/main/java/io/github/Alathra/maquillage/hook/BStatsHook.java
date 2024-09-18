@@ -2,9 +2,16 @@ package io.github.alathra.maquillage.hook;
 
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.Reloadable;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.utility.Cfg;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.SimplePie;
+import org.bstats.charts.SingleLineChart;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.concurrent.Callable;
 
 /**
  * A hook to interface with <a href="https://github.com/Bastian/bstats-metrics">BStats</a>.
@@ -35,6 +42,12 @@ public class BStatsHook implements Reloadable {
         } catch (Exception ignored) {
             setHook(null);
         }
+
+        hook.addCustomChart(new SimplePie("used_language", () -> Cfg.get().getString("translation")));
+
+        hook.addCustomChart(new SingleLineChart("tags", () -> TagHolder.getInstance().getAllKeys().size()));
+
+        hook.addCustomChart(new SingleLineChart("tags", () -> NameColorHolder.getInstance().getAllKeys().size()));
     }
 
     @Override
