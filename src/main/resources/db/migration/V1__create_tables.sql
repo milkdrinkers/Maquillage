@@ -33,3 +33,16 @@ CREATE TABLE IF NOT EXISTS "${tablePrefix}colors_players" (
     CONSTRAINT "${tablePrefix}colors_players_color_foreign_key" FOREIGN KEY ("color") REFERENCES "${tablePrefix}colors" ("id") ON DELETE CASCADE
 );
 CREATE INDEX "${tablePrefix}colors_players_color_index" ON "${tablePrefix}colors_players" ("color"); -- Indexes and Unique indexed must be created in separate statements due to SQLite
+
+CREATE TABLE IF NOT EXISTS "${tablePrefix}sync" (
+    "id" INT AUTO_INCREMENT,
+    "message" TINYTEXT NOT NULL,
+    "timestamp" TIMESTAMP NOT NULL,
+    PRIMARY KEY ("id")
+);
+
+CREATE TABLE IF NOT EXISTS "${tablePrefix}nicknames" (
+    "player" BINARY(16) NOT NULL,
+    "nickname" TINYTEXT,
+    PRIMARY KEY ("player")
+);
