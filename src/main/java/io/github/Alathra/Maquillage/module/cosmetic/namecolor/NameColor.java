@@ -5,8 +5,8 @@ import io.github.alathra.maquillage.module.cosmetic.BaseCosmetic;
 public class NameColor extends BaseCosmetic {
     private String color;
 
-    NameColor(String color, String perm, String label, String identifier, int ID) {
-        super(perm, label, identifier, ID);
+    NameColor(String color, String perm, String label, String key, int ID) {
+        super(perm, label, key, ID);
         this.color = color;
     }
 
@@ -35,7 +35,7 @@ public class NameColor extends BaseCosmetic {
             "color='" + getColor() + '\'' +
             ", perm='" + getPerm() + '\'' +
             ", label='" + getLabel() + '\'' +
-            ", identifier='" + getKey() + '\'' +
+            ", key='" + getKey() + '\'' +
             ", ID=" + getID() +
             '}';
     }
