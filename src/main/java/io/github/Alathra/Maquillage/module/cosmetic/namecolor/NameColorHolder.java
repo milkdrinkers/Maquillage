@@ -134,8 +134,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             int databaseId = record.get(COLORS.ID);
             String color = record.get(COLORS.COLOR);
             String permission = record.get(COLORS.PERM);
-            String label = record.get(COLORS.DISPLAYNAME);
-            String key = record.get(COLORS.IDENTIFIER);
+            String label = record.get(COLORS.LABEL);
+            String key = record.get(COLORS.KEY);
 
             cacheAdd(
                 new NameColorBuilder()

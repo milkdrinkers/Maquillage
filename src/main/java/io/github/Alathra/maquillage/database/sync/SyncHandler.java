@@ -89,8 +89,8 @@ public class SyncHandler implements Reloadable {
                                 NameColor nameColor = new NameColorBuilder()
                                     .withColor(r.get(Tables.COLORS.COLOR))
                                     .withPerm(r.get(Tables.COLORS.PERM))
-                                    .withLabel(r.get(Tables.COLORS.DISPLAYNAME))
-                                    .withKey(r.get(Tables.COLORS.IDENTIFIER))
+                                    .withLabel(r.get(Tables.COLORS.LABEL))
+                                    .withKey(r.get(Tables.COLORS.KEY))
                                     .withDatabaseId(ID)
                                     .createNameColor();
 
@@ -106,8 +106,8 @@ public class SyncHandler implements Reloadable {
                                 Tag tag = new TagBuilder()
                                     .withTag(r.get(Tables.TAGS.TAG))
                                     .withPerm(r.get(Tables.TAGS.PERM))
-                                    .withLabel(r.get(Tables.TAGS.DISPLAYNAME))
-                                    .withKey(r.get(Tables.TAGS.IDENTIFIER))
+                                    .withLabel(r.get(Tables.TAGS.LABEL))
+                                    .withKey(r.get(Tables.TAGS.KEY))
                                     .withDatabaseId(ID)
                                     .createTag();
 

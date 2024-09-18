@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS "${tablePrefix}tags" (
     "id" INT AUTO_INCREMENT,
     "tag" TINYTEXT NOT NULL,
     "perm" TINYTEXT,
-    "displayname" TINYTEXT,
-    "identifier" TINYTEXT,
+    "label" TINYTEXT,
+    "key" TINYTEXT,
     PRIMARY KEY ("id")
 );
 
@@ -11,8 +11,8 @@ CREATE TABLE IF NOT EXISTS "${tablePrefix}colors" (
     "id" INT AUTO_INCREMENT,
     "color" TINYTEXT NOT NULL,
     "perm" TINYTEXT,
-    "displayname" TINYTEXT,
-    "identifier" TINYTEXT,
+    "label" TINYTEXT,
+    "key" TINYTEXT,
     PRIMARY KEY ("id")
 );
 

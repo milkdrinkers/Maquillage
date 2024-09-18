@@ -134,8 +134,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             int databaseId = record.get(TAGS.ID);
             String tag = record.get(TAGS.TAG);
             String permission = record.get(TAGS.PERM);
-            String label = record.get(TAGS.DISPLAYNAME);
-            String key = record.get(TAGS.IDENTIFIER);
+            String label = record.get(TAGS.LABEL);
+            String key = record.get(TAGS.KEY);
 
             cacheAdd(
                 new TagBuilder()

@@ -36,7 +36,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
+                .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY)
                 .values(
                     tag,
                     perm,
@@ -65,8 +65,8 @@ public abstract class DatabaseQueries {
             context.update(TAGS)
                 .set(TAGS.TAG, tag)
                 .set(TAGS.PERM, perm)
-                .set(TAGS.DISPLAYNAME, name)
-                .set(TAGS.IDENTIFIER, identifier)
+                .set(TAGS.LABEL, name)
+                .set(TAGS.KEY, identifier)
                 .where(TAGS.ID.eq(ID))
                 .execute();
             return true;
@@ -107,7 +107,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             Record1<Integer> record = context
-                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
+                .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY)
                 .values(
                     color,
                     perm,
@@ -137,8 +137,8 @@ public abstract class DatabaseQueries {
             context.update(COLORS)
                 .set(COLORS.COLOR, color)
                 .set(COLORS.PERM, perm)
-                .set(COLORS.DISPLAYNAME, name)
-                .set(COLORS.IDENTIFIER, identifier)
+                .set(COLORS.LABEL, name)
+                .set(COLORS.KEY, identifier)
                 .where(COLORS.ID.eq(ID))
                 .execute();
             return true;
@@ -257,7 +257,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER))
+                .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY))
                 .from(COLORS)
                 .where(COLORS.ID.equal(id))
                 .fetchOne();
@@ -274,7 +274,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER))
+                .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY))
                 .from(TAGS)
                 .where(TAGS.ID.equal(id))
                 .fetchOne();
@@ -342,7 +342,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.DISPLAYNAME, TAGS.IDENTIFIER)
+                .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.KEY)
                 .from(TAGS)
                 .fetch();
         } catch (SQLException e) {
@@ -359,7 +359,7 @@ public abstract class DatabaseQueries {
             DSLContext context = DB.getContext(con);
 
             return context
-                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.DISPLAYNAME, COLORS.IDENTIFIER)
+                .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.KEY)
                 .from(COLORS)
                 .fetch();
         } catch (SQLException e) {
