@@ -33,6 +33,11 @@ public class CommandNickname {
                         if (!(args.get("player") instanceof Player player))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>The player wasn't found.").build());
 
+                        if (!Maquillage.getVaultHook().getPermissions().has(player, "maquillage.nick.admin")) {
+                            if (NicknameCooldown.hasCooldown(player))
+                                throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>This command has a cooldown. Try again in a few seconds.").build());
+                        }
+
                         if (!(args.get("nick") instanceof String nick))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>You need to input a nickname.").build());
 
@@ -56,6 +61,8 @@ public class CommandNickname {
 
                             player.displayName(Component.text(prefix + nick));
                         }
+
+                        NicknameCooldown.setCooldown(player);
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.savePlayerNickname(player, nick);
