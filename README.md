@@ -15,6 +15,6 @@ Coming soon (tm)
 
 ## Statistics
 
-https://bstats.org/signatures/bukkit/maquillage.svg
+<img src="https://bstats.org/signatures/bukkit/maquillage.svg"/>
 
 ---
