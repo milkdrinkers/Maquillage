@@ -120,8 +120,8 @@ abstract class AbstractDatabaseTest {
         context.update(COLORS)
             .set(COLORS.COLOR, "<red>")
             .set(COLORS.PERM, "someperm")
-            .set(COLORS.LABEL, "testname")
-            .set(COLORS.KEY, "testidentifier")
+            .set(COLORS.LABEL, "testlabel")
+            .set(COLORS.KEY, "testkey")
             .where(COLORS.ID.eq(1))
             .execute();
         con.close();
