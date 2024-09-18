@@ -1,9 +1,9 @@
 package io.github.alathra.maquillage.module;
 
 public interface Identifiable {
-    int getID();
+    int getDatabaseId();
 
-    void setID(int ID);
+    void setDatabaseId(int databaseId);
 
     boolean equals(int id);
 }

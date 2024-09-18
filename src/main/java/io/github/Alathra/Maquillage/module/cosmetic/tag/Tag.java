@@ -5,8 +5,8 @@ import io.github.alathra.maquillage.module.cosmetic.BaseCosmetic;
 public class Tag extends BaseCosmetic {
     private String tag;
 
-    Tag(String tag, String perm, String label, String key, int ID) {
-        super(perm, label, key, ID);
+    Tag(String tag, String perm, String label, String key, int databaseId) {
+        super(perm, label, key, databaseId);
         this.tag = tag;
     }
 
@@ -19,14 +19,14 @@ public class Tag extends BaseCosmetic {
     }
 
     public boolean equals(Tag otherTag) {
-        return getID() == otherTag.getID();
+        return getDatabaseId() == otherTag.getDatabaseId();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag otherTag)) return false;
-        return getID() == otherTag.getID();
+        return getDatabaseId() == otherTag.getDatabaseId();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Tag extends BaseCosmetic {
             ", perm='" + getPerm() + '\'' +
             ", label='" + getLabel() + '\'' +
             ", key='" + getKey() + '\'' +
-            ", ID=" + getID() +
+            ", databaseId=" + getDatabaseId() +
             '}';
     }
 }

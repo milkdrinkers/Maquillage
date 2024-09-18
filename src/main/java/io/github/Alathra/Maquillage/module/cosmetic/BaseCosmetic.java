@@ -10,13 +10,13 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
     private String perm;
     private String label;
     private String key;
-    private int ID;
+    private int databaseId;
 
-    public BaseCosmetic(String perm, String label, String key, int ID) {
+    public BaseCosmetic(String perm, String label, String key, int databaseId) {
         this.perm = perm;
         this.label = label;
         this.key = key;
-        this.ID = ID;
+        this.databaseId = databaseId;
     }
 
     public String getLabel() {
@@ -47,26 +47,26 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
         this.key = key;
     }
 
-    public int getID() {
-        return ID;
+    public int getDatabaseId() {
+        return databaseId;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setDatabaseId(int databaseId) {
+        this.databaseId = databaseId;
     }
 
     public boolean equals(int id) {
-        return getID() == id;
+        return getDatabaseId() == id;
     }
 
     public boolean equals(BaseCosmetic baseCosmetic) {
-        return getID() == baseCosmetic.getID();
+        return getDatabaseId() == baseCosmetic.getDatabaseId();
     }
 
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BaseCosmetic baseCosmetic)) return false;
-        return getID() == baseCosmetic.getID();
+        return getDatabaseId() == baseCosmetic.getDatabaseId();
     }
 
     @Override
@@ -75,7 +75,7 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
             "perm='" + perm + '\'' +
             ", name='" + label + '\'' +
             ", identifier='" + key + '\'' +
-            ", ID=" + ID +
+            ", ID=" + databaseId +
             '}';
     }
 }

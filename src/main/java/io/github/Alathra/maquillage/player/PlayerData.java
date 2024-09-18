@@ -36,8 +36,8 @@ public class PlayerData {
     ) {
         this.uuid = uuid;
         this.player = player;
-        this.nameColor = NameColorHolder.getInstance().getByID(nameColor);
-        this.tag = TagHolder.getInstance().getByID(tag);
+        this.nameColor = NameColorHolder.getInstance().getByDatabaseId(nameColor);
+        this.tag = TagHolder.getInstance().getByDatabaseId(tag);
         this.nickname = new Nickname(nickname);
         this.nameColorId = nameColor;
         this.tagId = tag;
@@ -109,7 +109,7 @@ public class PlayerData {
         if (nameColor == null)
             setNameColor(-1);
         else
-            setNameColor(nameColor.getID());
+            setNameColor(nameColor.getDatabaseId());
     }
 
     /**
@@ -118,7 +118,7 @@ public class PlayerData {
      * @param nameColorId A name color id or -1 for nothing
      */
     public void setNameColor(int nameColorId) {
-        this.nameColor = NameColorHolder.getInstance().getByID(nameColorId);
+        this.nameColor = NameColorHolder.getInstance().getByDatabaseId(nameColorId);
         this.nameColorId = nameColorId;
     }
 
@@ -140,7 +140,7 @@ public class PlayerData {
         if (tag == null)
             setTag(-1);
         else
-            setTag(tag.getID());
+            setTag(tag.getDatabaseId());
     }
 
     /**
@@ -149,7 +149,7 @@ public class PlayerData {
      * @param tagId A tag id or -1 for nothing
      */
     public void setTag(int tagId) {
-        this.tag = TagHolder.getInstance().getByID(tagId);
+        this.tag = TagHolder.getInstance().getByDatabaseId(tagId);
         this.tagId = tagId;
     }
 

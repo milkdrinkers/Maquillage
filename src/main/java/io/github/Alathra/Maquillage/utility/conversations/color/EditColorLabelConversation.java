@@ -43,7 +43,7 @@ public class EditColorLabelConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHolder.getInstance().update(color.getColor(), color.getPerm(), updatedLabel, color.getKey(), color.getID());
+                boolean success = NameColorHolder.getInstance().update(color.getColor(), color.getPerm(), updatedLabel, color.getKey(), color.getDatabaseId());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The color label was successfully updated!").build());
                 } else {

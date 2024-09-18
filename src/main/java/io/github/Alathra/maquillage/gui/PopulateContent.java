@@ -41,11 +41,11 @@ public class PopulateContent {
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
 
         if (playerData != null && playerData.getNameColor().isPresent()) {
-            int selectedColor = playerData.getNameColor().get().getID();
+            int selectedColor = playerData.getNameColor().get().getDatabaseId();
 
             if (!colorList.isEmpty()) {
                 for (NameColor color : colorList) {
-                    if (color.getID() == selectedColor) {
+                    if (color.getDatabaseId() == selectedColor) {
                         addSelectedColorItem(gui, color, p, playerData);
                     } else {
                         addColorItem(gui, color, p, playerData);
@@ -65,11 +65,11 @@ public class PopulateContent {
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
 
         if (playerData != null && playerData.getTag().isPresent()) {
-            int selectedTag = playerData.getTag().get().getID();
+            int selectedTag = playerData.getTag().get().getDatabaseId();
 
             if (!tagList.isEmpty()) {
                 for (Tag tag : tagList) {
-                    if (tag.getID() == selectedTag) {
+                    if (tag.getDatabaseId() == selectedTag) {
                         addSelectedTagItem(gui, tag, p, playerData);
                     } else {
                         addTagItem(gui, tag, p, playerData);

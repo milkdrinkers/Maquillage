@@ -43,15 +43,15 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void cacheAdd(NameColor color) {
-        cachedColors.put(color.getID(), color);
-        colorKeys.put(color.getKey(), color.getID());
+        cachedColors.put(color.getDatabaseId(), color);
+        colorKeys.put(color.getKey(), color.getDatabaseId());
 
         PermissionUtility.registerPermission(color.getPerm());
     }
 
     @Override
     public void cacheRemove(NameColor value) {
-        cachedColors.remove(value.getID());
+        cachedColors.remove(value.getDatabaseId());
         colorKeys.remove(value.getKey());
 
         PermissionUtility.removePermission(value.getPerm());
@@ -59,7 +59,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void cacheRemove(int id) {
-        cacheRemove(getByID(id));
+        cacheRemove(getByDatabaseId(id));
     }
 
     @Override
@@ -71,37 +71,37 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String name, String identifier) {
-        int ID = DatabaseQueries.saveColor(value, perm, name, identifier);
-        if (ID != -1) {
+    public int add(String value, String perm, String label, String key) {
+        int databaseId = DatabaseQueries.saveColor(value, perm, label, key);
+        if (databaseId != -1) {
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(value)
                     .withPerm(perm)
-                    .withName(name)
-                    .withIdentifier(identifier)
-                    .withID(ID)
+                    .withLabel(label)
+                    .withKey(key)
+                    .withDatabaseId(databaseId)
                     .createNameColor()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, ID);
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         }
-        return ID;
+        return databaseId;
     }
 
     @Override
     public boolean remove(NameColor value) {
-        boolean success = DatabaseQueries.removeColor(value.getID());
+        boolean success = DatabaseQueries.removeColor(value.getDatabaseId());
         if (!success)
             return false;
-        PlayerDataHolder.getInstance().clearNameColorWithId(value.getID());
+        PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getID());
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
         return true;
     }
 
     @Override
-    public boolean update(String value, String perm, String name, String identifier, int ID) {
-        boolean success = DatabaseQueries.updateColor(value, perm, name, identifier, ID);
+    public boolean update(String value, String perm, String label, String key, int databaseId) {
+        boolean success = DatabaseQueries.updateColor(value, perm, label, key, databaseId);
         if (!success)
             return false;
 
@@ -109,12 +109,12 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             new NameColorBuilder()
                 .withColor(value)
                 .withPerm(perm)
-                .withName(name)
-                .withIdentifier(identifier)
-                .withID(ID)
+                .withLabel(label)
+                .withKey(key)
+                .withDatabaseId(databaseId)
                 .createNameColor()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, ID);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         return true;
     }
 
@@ -131,19 +131,19 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return;
 
         for (Record5<Integer, String, String, String, String> record : result) {
-            int ID = record.get(COLORS.ID);
+            int databaseId = record.get(COLORS.ID);
             String color = record.get(COLORS.COLOR);
             String permission = record.get(COLORS.PERM);
-            String name = record.get(COLORS.DISPLAYNAME);
-            String identifier = record.get(COLORS.IDENTIFIER);
+            String label = record.get(COLORS.DISPLAYNAME);
+            String key = record.get(COLORS.IDENTIFIER);
 
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(color)
                     .withPerm(permission)
-                    .withName(name)
-                    .withIdentifier(identifier)
-                    .withID(ID)
+                    .withLabel(label)
+                    .withKey(key)
+                    .withDatabaseId(databaseId)
                     .createNameColor()
             );
         }
@@ -152,13 +152,13 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Identifiers
 
     @Override
-    public NameColor getByID(int ID) {
-        return cachedColors.get(ID);
+    public NameColor getByDatabaseId(int databaseId) {
+        return cachedColors.get(databaseId);
     }
 
     @Override
-    public NameColor getByIDString(String identifier) {
-        return getByID(colorKeys.get(identifier));
+    public NameColor getByKey(String key) {
+        return getByDatabaseId(colorKeys.get(key));
     }
 
     @Override
@@ -167,8 +167,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     }
 
     @Override
-    public boolean doesIdentifierExist(String identifier) {
-        return colorKeys.containsKey(identifier);
+    public boolean doesKeyExist(String key) {
+        return colorKeys.containsKey(key);
     }
 
     // SECTION Player
@@ -206,9 +206,9 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
         GuiCooldown.setCooldown(uuid);
 
-        final int colorID = nameColor.getID();
+        final int databaseId = nameColor.getDatabaseId();
         playerData.setNameColor(nameColor);
-        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, colorID));
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, databaseId));
 
         return true;
     }

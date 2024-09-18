@@ -19,18 +19,18 @@ public class NameColorBuilder {
         return this;
     }
 
-    public NameColorBuilder withName(String name) {
-        this.name = name;
+    public NameColorBuilder withLabel(String label) {
+        this.name = label;
         return this;
     }
 
-    public NameColorBuilder withIdentifier(String identifier) {
-        this.identifier = identifier;
+    public NameColorBuilder withKey(String key) {
+        this.identifier = key;
         return this;
     }
 
-    public NameColorBuilder withID(int id) {
-        this.id = id;
+    public NameColorBuilder withDatabaseId(int databaseId) {
+        this.id = databaseId;
         return this;
     }
 

@@ -47,23 +47,23 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      *
      * @param value      BaseCosmetic
      * @param perm       a permission node
-     * @param name       a display name
-     * @param identifier a unique identifier
+     * @param label       a display label
+     * @param key a unique key
      * @return -1 if failed, otherwise the ID of the BaseCosmetic
      */
-    int add(String value, String perm, String name, String identifier);
+    int add(String value, String perm, String label, String key);
 
     /**
      * Attempts to update a BaseCosmetic to DB and, if successful, re-caches the BaseCosmetic
      *
      * @param value      BaseCosmetic
      * @param perm       a permission node
-     * @param name       a display name
-     * @param identifier a unique identifier
-     * @param ID         a unique id
+     * @param label       a display label
+     * @param key a unique key
+     * @param databaseId         a unique id
      * @return whether the value was updated
      */
-    boolean update(String value, String perm, String name, String identifier, int ID);
+    boolean update(String value, String perm, String label, String key, int databaseId);
 
     /**
      * Attempts to remove a BaseCosmetic from DB and, if successful, un-caches the BaseCosmetic
@@ -87,11 +87,11 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
     // SECTION Identifiers
 
-    T getByID(int ID);
+    T getByDatabaseId(int databaseId);
 
-    T getByIDString(String identifier);
+    T getByKey(String key);
 
     List<String> getAllKeys();
 
-    boolean doesIdentifierExist(String identifier);
+    boolean doesKeyExist(String key);
 }

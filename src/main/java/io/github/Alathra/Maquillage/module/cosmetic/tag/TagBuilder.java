@@ -19,18 +19,18 @@ public class TagBuilder {
         return this;
     }
 
-    public TagBuilder withName(String name) {
-        this.name = name;
+    public TagBuilder withLabel(String label) {
+        this.name = label;
         return this;
     }
 
-    public TagBuilder withIdentifier(String identifier) {
-        this.identifier = identifier;
+    public TagBuilder withKey(String key) {
+        this.identifier = key;
         return this;
     }
 
-    public TagBuilder withID(int id) {
-        this.id = id;
+    public TagBuilder withDatabaseId(int databaseId) {
+        this.id = databaseId;
         return this;
     }
 

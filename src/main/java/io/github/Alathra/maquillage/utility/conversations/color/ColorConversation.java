@@ -60,7 +60,7 @@ public class ColorConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
-            if (NameColorHolder.getInstance().doesIdentifierExist(input)) {
+            if (NameColorHolder.getInstance().doesKeyExist(input)) {
                 Player player = (Player) conversationContext.getForWhom();
                 player.sendMessage(ColorParser.of("<red>This key is already in use. Keys have to be unique").build());
                 return keyPrompt;

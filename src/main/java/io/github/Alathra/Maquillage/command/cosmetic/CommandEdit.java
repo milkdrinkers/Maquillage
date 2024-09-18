@@ -50,7 +50,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -65,7 +65,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -80,7 +80,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -106,7 +106,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -121,7 +121,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
@@ -136,7 +136,7 @@ public class CommandEdit {
                             )
                     )
                     .executesPlayer((sender, args) -> {
-                        factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByIDString(args.get("key").toString())));
+                        factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
                         Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();

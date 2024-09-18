@@ -5,8 +5,8 @@ import io.github.alathra.maquillage.module.cosmetic.BaseCosmetic;
 public class NameColor extends BaseCosmetic {
     private String color;
 
-    NameColor(String color, String perm, String label, String key, int ID) {
-        super(perm, label, key, ID);
+    NameColor(String color, String perm, String label, String key, int databaseId) {
+        super(perm, label, key, databaseId);
         this.color = color;
     }
 
@@ -19,14 +19,14 @@ public class NameColor extends BaseCosmetic {
     }
 
     public boolean equals(NameColor otherNameColor) {
-        return getID() == otherNameColor.getID();
+        return getDatabaseId() == otherNameColor.getDatabaseId();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NameColor otherNameColor)) return false;
-        return getID() == otherNameColor.getID();
+        return getDatabaseId() == otherNameColor.getDatabaseId();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class NameColor extends BaseCosmetic {
             ", perm='" + getPerm() + '\'' +
             ", label='" + getLabel() + '\'' +
             ", key='" + getKey() + '\'' +
-            ", ID=" + getID() +
+            ", databaseId=" + getDatabaseId() +
             '}';
     }
 }

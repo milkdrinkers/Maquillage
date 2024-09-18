@@ -43,7 +43,7 @@ public class EditTagTagConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHolder.getInstance().update(updatedTag, tag.getPerm(), tag.getLabel(), tag.getKey(), tag.getID());
+                boolean success = TagHolder.getInstance().update(updatedTag, tag.getPerm(), tag.getLabel(), tag.getKey(), tag.getDatabaseId());
                 if (success) {
                     player.sendMessage(ColorParser.of("<green>The tag was successfully updated!").build());
                 } else {

@@ -43,15 +43,15 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void cacheAdd(Tag tag) {
-        cachedTags.put(tag.getID(), tag);
-        tagKeys.put(tag.getKey(), tag.getID());
+        cachedTags.put(tag.getDatabaseId(), tag);
+        tagKeys.put(tag.getKey(), tag.getDatabaseId());
 
         PermissionUtility.registerPermission(tag.getPerm());
     }
 
     @Override
     public void cacheRemove(Tag value) {
-        cachedTags.remove(value.getID());
+        cachedTags.remove(value.getDatabaseId());
         tagKeys.remove(value.getKey());
 
         PermissionUtility.removePermission(value.getPerm());
@@ -59,7 +59,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void cacheRemove(int id) {
-        cacheRemove(getByID(id));
+        cacheRemove(getByDatabaseId(id));
     }
 
     @Override
@@ -71,37 +71,37 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String name, String identifier) {
-        int ID = DatabaseQueries.saveTag(value, perm, name, identifier);
-        if (ID != -1) {
+    public int add(String value, String perm, String label, String key) {
+        int databaseId = DatabaseQueries.saveTag(value, perm, label, key);
+        if (databaseId != -1) {
             cacheAdd(
                 new TagBuilder()
                     .withTag(value)
                     .withPerm(perm)
-                    .withName(name)
-                    .withIdentifier(identifier)
-                    .withID(ID)
+                    .withLabel(label)
+                    .withKey(key)
+                    .withDatabaseId(databaseId)
                     .createTag()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
+            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         }
-        return ID;
+        return databaseId;
     }
 
     @Override
     public boolean remove(Tag value) {
-        boolean success = DatabaseQueries.removeTag(value.getID());
+        boolean success = DatabaseQueries.removeTag(value.getDatabaseId());
         if (!success)
             return false;
-        PlayerDataHolder.getInstance().clearTagWithId(value.getID());
+        PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getID());
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
         return true;
     }
 
     @Override
-    public boolean update(String value, String perm, String name, String identifier, int ID) {
-        boolean success = DatabaseQueries.updateTag(value, perm, name, identifier, ID);
+    public boolean update(String value, String perm, String label, String key, int databaseId) {
+        boolean success = DatabaseQueries.updateTag(value, perm, label, key, databaseId);
         if (!success)
             return false;
 
@@ -109,12 +109,12 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             new TagBuilder()
                 .withTag(value)
                 .withPerm(perm)
-                .withName(name)
-                .withIdentifier(identifier)
-                .withID(ID)
+                .withLabel(label)
+                .withKey(key)
+                .withDatabaseId(databaseId)
                 .createTag()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, ID);
+        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         return true;
     }
 
@@ -131,19 +131,19 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return;
 
         for (Record5<Integer, String, String, String, String> record : result) {
-            int ID = record.get(TAGS.ID);
+            int databaseId = record.get(TAGS.ID);
             String tag = record.get(TAGS.TAG);
             String permission = record.get(TAGS.PERM);
-            String name = record.get(TAGS.DISPLAYNAME);
-            String identifier = record.get(TAGS.IDENTIFIER);
+            String label = record.get(TAGS.DISPLAYNAME);
+            String key = record.get(TAGS.IDENTIFIER);
 
             cacheAdd(
                 new TagBuilder()
                     .withTag(tag)
                     .withPerm(permission)
-                    .withName(name)
-                    .withIdentifier(identifier)
-                    .withID(ID)
+                    .withLabel(label)
+                    .withKey(key)
+                    .withDatabaseId(databaseId)
                     .createTag()
             );
         }
@@ -152,13 +152,13 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Identifiers
 
     @Override
-    public Tag getByID(int ID) {
-        return cachedTags.get(ID);
+    public Tag getByDatabaseId(int databaseId) {
+        return cachedTags.get(databaseId);
     }
 
     @Override
-    public Tag getByIDString(String identifier) {
-        return getByID(tagKeys.get(identifier));
+    public Tag getByKey(String key) {
+        return getByDatabaseId(tagKeys.get(key));
     }
 
     @Override
@@ -167,8 +167,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     }
 
     @Override
-    public boolean doesIdentifierExist(String identifier) {
-        return tagKeys.containsKey(identifier);
+    public boolean doesKeyExist(String key) {
+        return tagKeys.containsKey(key);
     }
 
     // SECTION Player
@@ -206,7 +206,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
         GuiCooldown.setCooldown(uuid);
 
-        final int tagID = tag.getID();
+        final int tagID = tag.getDatabaseId();
         playerData.setTag(tag);
         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerTag(uuid, tagID));
 

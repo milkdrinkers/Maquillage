@@ -47,9 +47,9 @@ public class CommandDelete {
             )
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("identifier").toString();
-                if (!NameColorHolder.getInstance().doesIdentifierExist(identifier))
+                if (!NameColorHolder.getInstance().doesKeyExist(identifier))
                     throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no color with that identifier.").build());
-                factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByIDString(identifier)));
+                factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByKey(identifier)));
 
                 Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
@@ -69,9 +69,9 @@ public class CommandDelete {
             )
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("identifier").toString();
-                if (!TagHolder.getInstance().doesIdentifierExist(identifier))
+                if (!TagHolder.getInstance().doesKeyExist(identifier))
                     throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no tag with that identifier").build());
-                factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByIDString(identifier)));
+                factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByKey(identifier)));
 
                 Conversation conversation = factory.buildConversation(sender);
                 conversation.begin();
