@@ -12,7 +12,6 @@ public class TagConversation {
     static String tag;
     static String permission;
     static String label;
-    static String key;
 
     public static Prompt newTagPrompt = new StringPrompt() {
         @Override
@@ -36,24 +35,6 @@ public class TagConversation {
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
             label = input;
-            return keyPrompt;
-        }
-    };
-
-    static Prompt keyPrompt = new StringPrompt() {
-        @Override
-        public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
-            return "Input the desired key.";
-        }
-
-        @Override
-        public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String input) {
-            if (TagHolder.getInstance().doesKeyExist(input)) {
-                Player player = (Player) conversationContext.getForWhom();
-                player.sendMessage(ColorParser.of("<red>This key is already in use. Keys have to be unique").build());
-                return keyPrompt;
-            }
-            key = input;
             return permissionPrompt;
         }
     };
@@ -61,12 +42,16 @@ public class TagConversation {
     static Prompt permissionPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired permission node.";
+            return "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            permission = input;
+            if (input.toLowerCase().equals("none")){
+                permission = "";
+            } else {
+                permission = "maquillage.tag." + input;
+            }
             return confirmPrompt;
         }
     };
@@ -93,7 +78,7 @@ public class TagConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
-            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + label + ", the key " + key + " and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + label + " and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

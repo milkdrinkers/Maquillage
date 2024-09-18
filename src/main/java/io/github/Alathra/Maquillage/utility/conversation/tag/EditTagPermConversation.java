@@ -27,13 +27,24 @@ public class EditTagPermConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current permission node for " + tag.getTag() + "<white> is " + currentPerm).build());
-            return "What do you want the new permission node to be?";
+
+            if (currentPerm.isEmpty()) {
+                player.sendMessage(ColorParser.of("The tag " + tag.getTag() + "<white> is permissionless").build());
+            } else {
+                player.sendMessage(ColorParser.of("The current permission node for " + tag.getTag() + "<white> is " + currentPerm).build());
+            }
+
+
+            return "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"";
         }
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-            updatedPerm = s;
+            if (s.toLowerCase().equals("none")){
+                updatedPerm = "";
+            } else {
+                updatedPerm = "maquillage.tag." + s;
+            }
             return confirmPrompt;
         }
     };
