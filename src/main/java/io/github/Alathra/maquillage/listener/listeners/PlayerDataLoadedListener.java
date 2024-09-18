@@ -1,6 +1,7 @@
 package io.github.alathra.maquillage.listener.listeners;
 
 import io.github.alathra.maquillage.event.PlayerDataLoadedEvent;
+import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.utility.Cfg;
 import net.kyori.adventure.text.Component;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,10 @@ public class PlayerDataLoadedListener implements Listener {
             }
 
             e.getPlayer().displayName(Component.text(prefix + e.getData().getNicknameString()));
+        }
+
+        if (e.getData().getNicknameString() != null) {
+            NicknameLookup.getInstance().addNicknameToLookup(e.getData().getNicknameString(), e.getPlayer());
         }
     }
 }
