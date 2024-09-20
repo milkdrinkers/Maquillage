@@ -62,6 +62,9 @@ public class ColorConversation {
             if (input.toLowerCase().equals("none")){
                 permission = "";
             } else {
+                while (input.charAt(0) == '.') {
+                    input = input.substring(1);
+                }
                 permission = "maquillage.namecolor." + input;
             }
             return confirmPrompt;

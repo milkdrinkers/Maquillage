@@ -43,6 +43,9 @@ public class EditColorPermConversation {
             if (s.toLowerCase().equals("none")){
                 updatedPerm = "";
             } else {
+                while (s.charAt(0) == '.') {
+                    s = s.substring(1);
+                }
                 updatedPerm = "maquillage.namecolor." + s;
             }
             return confirmPrompt;

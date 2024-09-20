@@ -50,6 +50,9 @@ public class TagConversation {
             if (input.toLowerCase().equals("none")){
                 permission = "";
             } else {
+                while (input.charAt(0) == '.') {
+                    input = input.substring(1);
+                }
                 permission = "maquillage.tag." + input;
             }
             return confirmPrompt;
