@@ -14,14 +14,13 @@ public class CommandRealname {
     public static CommandAPICommand registerCommandRealname() {
         return new CommandAPICommand("realname")
             .withPermission("maquillage.realname")
-            .withArguments(List.of(
-                new StringArgument("nickname")
+            .withArguments(List.of(new StringArgument("nickname")))
             .executes((sender, args) -> {
                 String nickname = args.get("nickname").toString();
                 String playerName = NicknameLookup.getInstance().findNameFromNickname(nickname);
 
                 sender.sendMessage(ColorParser.of("<green>The username for <red>" + nickname + "<green> is <red>" + playerName).build());
-            })));
+            });
     }
 
 
