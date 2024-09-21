@@ -1,8 +1,10 @@
 package io.github.alathra.maquillage.utility;
 
+import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 
 public class PermissionUtility {
@@ -28,5 +30,9 @@ public class PermissionUtility {
             || NameColorHolder.getInstance().cacheGet().values().stream().noneMatch(c -> c.getPerm().equals(permission))) {
             Bukkit.getPluginManager().removePermission(permission);
         }
+    }
+
+    public static boolean playerHasPermission(Player p, String permission) {
+        return Maquillage.getVaultHook().getPermissions().has(p, permission);
     }
 }
