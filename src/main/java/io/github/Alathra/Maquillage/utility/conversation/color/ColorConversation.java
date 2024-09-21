@@ -102,7 +102,7 @@ public class ColorConversation {
             if (colorIsRainbow)
                 correctGradients = "</rainbow>";
 
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + " and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + "<white> and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };

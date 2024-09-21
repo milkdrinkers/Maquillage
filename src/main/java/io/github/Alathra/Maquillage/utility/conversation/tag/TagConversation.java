@@ -81,7 +81,7 @@ public class TagConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
-            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the display name " + label + " and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the label " + label + "<white> and the permission node " + permission + "?").build());
             return "YES/NO?";
         }
     };
