@@ -53,7 +53,7 @@ public class TagConversation {
                 while (input.charAt(0) == '.') {
                     input = input.substring(1);
                 }
-                permission = "maquillage.tag." + input;
+                permission = input;
             }
             return confirmPrompt;
         }

@@ -46,7 +46,7 @@ public class EditColorPermConversation {
                 while (s.charAt(0) == '.') {
                     s = s.substring(1);
                 }
-                updatedPerm = "maquillage.namecolor." + s;
+                updatedPerm = s;
             }
             return confirmPrompt;
         }

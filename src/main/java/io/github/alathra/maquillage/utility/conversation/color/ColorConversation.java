@@ -65,7 +65,7 @@ public class ColorConversation {
                 while (input.charAt(0) == '.') {
                     input = input.substring(1);
                 }
-                permission = "maquillage.namecolor." + input;
+                permission = input;
             }
             return confirmPrompt;
         }

@@ -46,7 +46,7 @@ public class EditTagPermConversation {
                 while (s.charAt(0) == '.') {
                     s = s.substring(1);
                 }
-                updatedPerm = "maquillage.tag." + s;
+                updatedPerm = s;
             }
             return confirmPrompt;
         }
