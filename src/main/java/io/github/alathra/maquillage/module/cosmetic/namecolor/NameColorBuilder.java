@@ -16,8 +16,8 @@ public class NameColorBuilder {
 
     public NameColorBuilder withPerm(String perm) {
         if (!perm.isEmpty())
-            perm = "maquillage.tag." + perm;
-        
+            perm = "maquillage.namecolor." + perm;
+
         this.perm = perm;
         return this;
     }
