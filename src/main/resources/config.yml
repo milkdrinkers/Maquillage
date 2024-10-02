@@ -1,0 +1,22 @@
+# Update Checker Settings
+update-checker:
+  enable: true
+  console: true # Post message to console
+  op: true # Send update notification to opped players on join
+
+# Translation, specify the language file to use, for example `en-US` which will load `/translations/en-US.yml`
+translation: "en-US"
+
+# Enabled or disable specific modules
+module:
+  tag:
+    enabled: true
+  namecolor:
+    enabled: true
+  nickname:
+    enabled: true
+    prefix:
+      enabled: true
+      string: ""
+    set-displayname: true # Sets the displayname to the nickname. Disable this if you have another plugin which modifies the displayname
+    length: 20 # The maximum allowed length for nicknames. Allowed range: 1-255

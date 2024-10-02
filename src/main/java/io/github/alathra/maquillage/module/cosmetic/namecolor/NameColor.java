@@ -1,0 +1,42 @@
+package io.github.alathra.maquillage.module.cosmetic.namecolor;
+
+import io.github.alathra.maquillage.module.cosmetic.BaseCosmetic;
+
+public class NameColor extends BaseCosmetic {
+    private String color;
+
+    NameColor(String color, String perm, String label, String key, int databaseId) {
+        super(perm, label, key, databaseId);
+        this.color = color;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public boolean equals(NameColor otherNameColor) {
+        return getDatabaseId() == otherNameColor.getDatabaseId();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NameColor otherNameColor)) return false;
+        return getDatabaseId() == otherNameColor.getDatabaseId();
+    }
+
+    @Override
+    public String toString() {
+        return "NameColor{" +
+            "color='" + getColor() + '\'' +
+            ", perm='" + getPerm() + '\'' +
+            ", label='" + getLabel() + '\'' +
+            ", key='" + getKey() + '\'' +
+            ", databaseId=" + getDatabaseId() +
+            '}';
+    }
+}
