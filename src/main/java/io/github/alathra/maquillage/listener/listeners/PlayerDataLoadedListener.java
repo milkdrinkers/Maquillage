@@ -16,7 +16,7 @@ public class PlayerDataLoadedListener implements Listener {
     public static void onPlayerDataLoaded(PlayerDataLoadedEvent e) {
         PlayerData data = e.getData();
 
-        if (Cfg.get().getBoolean("module.nickname.set-displayname")) {
+        if (Cfg.get().getBoolean("module.nickname.set-displayname") && Cfg.get().getBoolean("module.nickname.enabled")) {
             String prefix = "";
             if (Cfg.get().getBoolean("module.nickname.prefix.enabled")) {
                 prefix = Cfg.get().getString("module.nickname.prefix.string");
