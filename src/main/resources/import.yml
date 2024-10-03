@@ -1,0 +1,35 @@
+# This file can be used to import multiple cosmetics by running the in-game command "/maquillage import".
+#
+# You can add any number of cosmetics at once using this, as long as you follow the provided pattern.
+# To add a new cosmetic, fill in new sections like the examples below and change "import" to true.
+#
+# After loading the cosmetics this file can safely be cleared.
+# If you run the command again without clearing the file, you will end up with duplicate cosmetics.
+# Removing cosmetics from this file will not remove them in-game. To remove them in-game, you can either manually modify the database or run commands.
+#
+# You can find example cosmetic sections in the readme on the Maquillage Github-page: https://github.com/Alathra/Maquillage
+#
+# Cosmetic strings and labels support MiniMessage styling.
+# You can find information about and documentation for MiniMessage here: https://docs.advntr.dev/minimessage/index.html
+# You can find a Web-UI that can be used to test MiniMessage styling here: https://webui.advntr.dev/
+
+
+tags: # Don't repeat this for new tags, simply make new sections under this key.
+  example: # This text can be anything, as long as it's not duplicated in the same section. Using "example" under both tag and namecolor is fine, but "example" twice under tags is not.
+    string: "<dark_grey>[<green>Example<dark_grey>]" # This is what the tag will actually be in-game.
+    label: "<grey>Example tag" # This is the label displayed in the GUI where players pick their tags.
+    permission-node: "" # This can be anything you'd like. The final permission node (for tags) will be "maquillage.tag.<your input>". Leave blank for permissionless tag.
+  another-example:
+    string: "<dark_grey>[<green>Another example<dark_grey>]"
+    label: "<grey>Another example tag"
+    permission-node: "anotherexample" # This will give the permission "maquillage.tag.anotherexample".
+
+namecolors: # Don't repeat this for new namecolors, simply make new sections under this key.
+  example: # This text can be anything, as long as it's not duplicated in the same section. Using "example" under both tag and namecolor is fine, but "example" twice under tags is not.
+    string: "<aqua>" # This is what the namecolor will actually be in-game.
+    label: "<aqua>Example color" # This is the label displayed in the GUI where players pick their tags.
+    permission-node: "" # This can be anything you'd like. The final permission node (for namecolors) will be "maquillage.namecolor.<your input>". Leave blank for permissionless namecolor.
+  another-example:
+    string: "<green>"
+    label: "<green>Another example color"
+    permission-node: "green" # This will give the permission "maquillage.namecolor.green"
