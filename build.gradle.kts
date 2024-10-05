@@ -7,7 +7,7 @@ plugins {
     id("io.github.goooler.shadow") version "8.1.8" // Shades and relocates dependencies, See https://imperceptiblethoughts.com/shadow/introduction/
     id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
-    id("org.flywaydb.flyway") version "10.18.0" // Database migrations
+    id("org.flywaydb.flyway") version "10.19.0" // Database migrations
     id("org.jooq.jooq-codegen-gradle") version "3.19.12"
 
     eclipse
@@ -74,8 +74,8 @@ dependencies {
 
     // Database Dependencies (Core)
     implementation("com.zaxxer:HikariCP:5.1.0")
-    library("org.flywaydb:flyway-core:10.18.0")
-    library("org.flywaydb:flyway-mysql:10.18.0")
+    library("org.flywaydb:flyway-core:10.19.0")
+    library("org.flywaydb:flyway-mysql:10.19.0")
     library("org.jooq:jooq:3.19.12")
     jooqCodegen("com.h2database:h2:2.3.232")
 
@@ -98,8 +98,8 @@ dependencies {
 
     // Testing (Database Dependencies)
     testImplementation("com.zaxxer:HikariCP:5.1.0")
-    testImplementation("org.flywaydb:flyway-core:10.18.0")
-    testImplementation("org.flywaydb:flyway-mysql:10.18.0")
+    testImplementation("org.flywaydb:flyway-core:10.19.0")
+    testImplementation("org.flywaydb:flyway-mysql:10.19.0")
     testImplementation("org.jooq:jooq:3.19.12")
 
     // Testing (JDBC Drivers)
