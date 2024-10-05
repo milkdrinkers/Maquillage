@@ -2,28 +2,31 @@ package io.github.alathra.maquillage.utility;
 
 import com.github.milkdrinkers.crate.Config;
 import io.github.alathra.maquillage.Maquillage;
+import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 
 import java.util.Map;
 
 public class ImportUtil {
 
-    private final Config importCfg;
-
     public ImportUtil() {
-        importCfg = Maquillage.getInstance().getConfigHandler().getImportConfig();
+
     }
 
     public static ImportUtil getInstance() {
         return Maquillage.getInstance().getImportUtil();
     }
 
+    public Config get() {
+        return Maquillage.getInstance().getConfigHandler().getImportConfig();
+    }
+
     public Map<?, ?> getTagMap() {
-        return importCfg.getMap("tags");
+        return get().getMap("tags");
     }
 
     public Map<?, ?> getNamecolorMap() {
-        return importCfg.getMap("namecolors");
+        return get().getMap("namecolors");
     }
 
     public int getTagAmount() {
@@ -55,18 +58,18 @@ public class ImportUtil {
         if (getTagMap() == null || getTagMap().isEmpty())
             return;
         getTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
-            importCfg.getString("tags." + key + ".tag"),
-            importCfg.getString("tags." + key + ".permission-node"),
-            importCfg.getString("tags." + key + ".gui-label")));
+            get().getString("tags." + key + ".tag"),
+            get().getString("tags." + key + ".permission-node"),
+            get().getString("tags." + key + ".gui-label")));
     }
 
     public void addAllNamecolors() {
         if (getNamecolorMap() == null || getNamecolorMap().isEmpty())
             return;
-        getNamecolorMap().keySet().forEach(key -> TagHolder.getInstance().add(
-            importCfg.getString("namecolors." + key + ".color"),
-            importCfg.getString("namecolors." + key + ".permission-node"),
-            importCfg.getString("namecolors." + key + ".gui-label")));
+        getNamecolorMap().keySet().forEach(key -> NameColorHolder.getInstance().add(
+            get().getString("namecolors." + key + ".color"),
+            get().getString("namecolors." + key + ".permission-node"),
+            get().getString("namecolors." + key + ".gui-label")));
     }
 
 }
