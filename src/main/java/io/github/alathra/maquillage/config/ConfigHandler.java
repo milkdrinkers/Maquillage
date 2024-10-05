@@ -14,6 +14,7 @@ public class ConfigHandler implements Reloadable {
     private final Maquillage plugin;
     private Config cfg;
     private Config databaseCfg;
+    private Config importCfg;
 
     /**
      * Instantiates a new Config handler.
@@ -28,6 +29,7 @@ public class ConfigHandler implements Reloadable {
     public void onLoad() {
         cfg = new Config("config", plugin.getDataFolder().getPath(), plugin.getResource("config.yml")); // Create a config file from the template in our resources folder
         databaseCfg = new Config("database", plugin.getDataFolder().getPath(), plugin.getResource("database.yml"));
+        importCfg = new Config("import", plugin.getDataFolder().getPath(), plugin.getResource("import.yml"));
     }
 
     @Override
@@ -54,5 +56,14 @@ public class ConfigHandler implements Reloadable {
      */
     public Config getDatabaseConfig() {
         return databaseCfg;
+    }
+
+    /**
+     * Gets import config object.
+     *
+     * @return the config object
+     */
+    public Config getImportConfig() {
+        return importCfg;
     }
 }

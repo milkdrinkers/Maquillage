@@ -14,6 +14,7 @@ import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.alathra.maquillage.translation.TranslationManager;
 import io.github.alathra.maquillage.updatechecker.UpdateChecker;
+import io.github.alathra.maquillage.utility.ImportUtil;
 import io.github.alathra.maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
