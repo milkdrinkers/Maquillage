@@ -9,36 +9,32 @@ import java.util.Map;
 
 public class ImportUtil {
 
-    public ImportUtil() {
-
-    }
-
-    public static ImportUtil getInstance() {
-        return Maquillage.getInstance().getImportUtil();
-    }
-
-    public Config get() {
+    public static Config get() {
         return Maquillage.getInstance().getConfigHandler().getImportConfig();
     }
 
-    public Map<?, ?> getTagMap() {
+    public static Map<?, ?> getTagMap() {
+        if (get() == null)
+            return null;
         return get().getMap("tags");
     }
 
-    public Map<?, ?> getNamecolorMap() {
+    public static Map<?, ?> getNamecolorMap() {
+        if (get() == null)
+            return null;
         return get().getMap("namecolors");
     }
 
-    public int getTagAmount() {
-        if (getTagMap() != null)
-            return getTagMap().keySet().size();
-        return 0;
+    public static int getTagAmount() {
+        if (getTagMap() == null)
+            return 0;
+        return getTagMap().keySet().size();
     }
 
-    public int getNamecolorAmount() {
-        if (getNamecolorMap() != null)
-            return getNamecolorMap().keySet().size();
-        return 0;
+    public static int getNamecolorAmount() {
+        if (getNamecolorMap() == null)
+            return 0;
+        return getNamecolorMap().keySet().size();
     }
 
     /**
@@ -46,7 +42,7 @@ public class ImportUtil {
      *
      * @return a string with the amount of tags and namecolors to be imported.
      */
-    public String getTagAndNamecolorAmounts() {
+    public static String getTagAndNamecolorAmounts() {
         return getTagAmount() + " tags and " + getNamecolorAmount() + " namecolors";
     }
 
@@ -54,7 +50,7 @@ public class ImportUtil {
      * Adds all tags in the import file.
      *
      */
-    public void addAllTags() {
+    public static void addAllTags() {
         if (getTagMap() == null || getTagMap().isEmpty())
             return;
         getTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
@@ -63,7 +59,7 @@ public class ImportUtil {
             get().getString("tags." + key + ".gui-label")));
     }
 
-    public void addAllNamecolors() {
+    public static void addAllNamecolors() {
         if (getNamecolorMap() == null || getNamecolorMap().isEmpty())
             return;
         getNamecolorMap().keySet().forEach(key -> NameColorHolder.getInstance().add(

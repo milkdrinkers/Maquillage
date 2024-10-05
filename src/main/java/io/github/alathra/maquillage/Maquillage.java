@@ -23,7 +23,6 @@ import org.jetbrains.annotations.NotNull;
 public class Maquillage extends JavaPlugin {
     private static Maquillage instance;
     private ConfigHandler configHandler;
-    private ImportUtil importUtil;
     private TranslationManager translationManager;
     private DatabaseHandler databaseHandler;
     private CommandHandler commandHandler;
@@ -49,7 +48,6 @@ public class Maquillage extends JavaPlugin {
     public void onLoad() {
         instance = this;
         configHandler = new ConfigHandler(instance);
-        importUtil = new ImportUtil();
         translationManager = new TranslationManager(instance);
         databaseHandler = new DatabaseHandler(configHandler, getComponentLogger());
         commandHandler = new CommandHandler(instance);
@@ -151,10 +149,6 @@ public class Maquillage extends JavaPlugin {
     @NotNull
     public ConfigHandler getConfigHandler() {
         return configHandler;
-    }
-
-    public ImportUtil getImportUtil() {
-        return importUtil;
     }
 
     /**
