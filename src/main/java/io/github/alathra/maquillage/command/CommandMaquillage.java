@@ -13,7 +13,8 @@ class CommandMaquillage {
                 CommandReload.registerCommandReload(),
                 CommandCreate.registerCommandCreate(tags, colors),
                 CommandDelete.registerCommandDelete(tags, colors),
-                CommandEdit.registerCommandEdit(tags, colors)
+                CommandEdit.registerCommandEdit(tags, colors),
+                CommandImport.registerCommandImport()
             );
 
          if (tags) {
