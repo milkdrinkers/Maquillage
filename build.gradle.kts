@@ -44,8 +44,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.jetbrains:annotations:24.1.0")
-    annotationProcessor("org.jetbrains:annotations:24.1.0")
+    compileOnly("org.jetbrains:annotations:25.0.0")
+    annotationProcessor("org.jetbrains:annotations:25.0.0")
 
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
     implementation("space.arim.morepaperlib:morepaperlib:latest.release")
@@ -86,7 +86,7 @@ dependencies {
     library("org.mariadb.jdbc:mariadb-java-client:3.4.1")
 
     // Testing (Core)
-    testImplementation("org.jetbrains:annotations:24.1.0")
+    testImplementation("org.jetbrains:annotations:25.0.0")
     testImplementation(platform("org.junit:junit-bom:5.11.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
