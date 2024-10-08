@@ -15,7 +15,7 @@ import org.bukkit.command.CommandSender;
  * Class containing the code for the translation commands.
  */
 class CommandTranslation {
-    private static final String BASE_PERM = "maquillage.command.translation";
+    private static final String BASE_PERM = "maquillage.command.admin.translation";
 
     /**
      * Instantiates a new command tree.

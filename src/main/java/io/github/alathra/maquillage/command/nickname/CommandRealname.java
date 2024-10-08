@@ -13,7 +13,7 @@ public class CommandRealname {
 
     public static CommandAPICommand registerCommandRealname() {
         return new CommandAPICommand("realname")
-            .withPermission("maquillage.realname")
+            .withPermission("maquillage.command.realname")
             .withArguments(List.of(new StringArgument("nickname")))
             .executes((sender, args) -> {
                 String nickname = args.get("nickname").toString();

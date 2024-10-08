@@ -6,7 +6,7 @@ import io.github.alathra.maquillage.Maquillage;
 class CommandReload {
     public static CommandAPICommand registerCommandReload() {
         return new CommandAPICommand("reload")
-            .withPermission("maquillage.reload")
+            .withPermission("maquillage.command.admin.reload")
             .executesPlayer((sender, args) -> {
                 Maquillage.getInstance().onReload();
             });

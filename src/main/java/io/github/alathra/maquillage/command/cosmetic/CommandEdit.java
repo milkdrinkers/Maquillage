@@ -23,7 +23,7 @@ public class CommandEdit {
 
     public static CommandAPICommand registerCommandEdit(boolean tags, boolean colors) {
         CommandAPICommand commandEdit =  new CommandAPICommand("edit")
-            .withPermission("maquillage.edit")
+            .withPermission("maquillage.command.admin.edit")
             .withShortDescription("Edits a Maquillage color or tag.");
 
         if (tags)
@@ -37,7 +37,7 @@ public class CommandEdit {
 
     private static CommandAPICommand registerSubcommandColor() {
         return new CommandAPICommand("color")
-            .withPermission("maquillage.edit.color")
+            .withPermission("maquillage.command.admin.edit.color")
             .withSubcommands(
                 new CommandAPICommand("color")
                     .withArguments(
@@ -93,7 +93,7 @@ public class CommandEdit {
 
     private static CommandAPICommand registerSubcommandTag() {
         return new CommandAPICommand("tag")
-            .withPermission("maquillage.edit.tag")
+            .withPermission("maquillage.command.admin.edit.tag")
             .withSubcommands(
                 new CommandAPICommand("tag")
                     .withArguments(

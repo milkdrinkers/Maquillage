@@ -21,7 +21,7 @@ public class CommandDelete {
 
     public static CommandAPICommand registerCommandDelete(boolean tags, boolean colors) {
         CommandAPICommand commandDelete =  new CommandAPICommand("delete")
-            .withPermission("maquillage.delete")
+            .withPermission("maquillage.command.admin.delete")
             .withShortDescription("Deletes a Maquillage color or tag.");
 
         if (tags)
@@ -35,7 +35,7 @@ public class CommandDelete {
 
     private static CommandAPICommand registerSubcommandColor() {
         return new CommandAPICommand("color")
-            .withPermission("maquillage.delete.color")
+            .withPermission("maquillage.command.admin.delete.color")
             .withArguments(
                 new StringArgument("identifier")
                     .replaceSuggestions(
@@ -57,7 +57,7 @@ public class CommandDelete {
 
     private static CommandAPICommand registerSubcommandTag() {
         return new CommandAPICommand("tag")
-            .withPermission("maquillage.delete.tag")
+            .withPermission("maquillage.command.admin.delete.tag")
             .withArguments(
                 new StringArgument("identifier")
                     .replaceSuggestions(

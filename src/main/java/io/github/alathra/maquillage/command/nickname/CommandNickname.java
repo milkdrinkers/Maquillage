@@ -22,10 +22,10 @@ public class CommandNickname {
     public static CommandAPICommand registerCommandNickname() {
         return new CommandAPICommand("nickname")
             .withAliases("nick")
-            .withPermission("maquillage.nick")
+            .withPermission("maquillage.command.nick")
             .withSubcommands(
                 new CommandAPICommand("set")
-                    .withPermission("maquillage.nick.set")
+                    .withPermission("maquillage.command.nick.set")
                     .withArguments(List.of(
                         new PlayerArgument("player"),
                         new StringArgument("nick")))
@@ -69,7 +69,7 @@ public class CommandNickname {
                         });
                     }),
                 new CommandAPICommand("clear")
-                    .withPermission("maquillage.nick.clear")
+                    .withPermission("maquillage.command.nick.clear")
                     .withArguments(new PlayerArgument("player"))
                     .executes((sender, args) -> {
                         if (!(args.get("player") instanceof Player player))

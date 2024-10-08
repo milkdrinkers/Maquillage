@@ -15,7 +15,7 @@ public class CommandCreate {
 
     public static CommandAPICommand registerCommandCreate(boolean tags, boolean colors) {
         CommandAPICommand commandCreate = new CommandAPICommand("create")
-            .withPermission("maquillage.create")
+            .withPermission("maquillage.command.admin.create")
             .withShortDescription("Creates a new Maquillage color or tag.");
 
         if (tags)
@@ -29,7 +29,7 @@ public class CommandCreate {
 
     private static CommandAPICommand registerSubcommandColor() {
         return new CommandAPICommand("color")
-            .withPermission("maquillage.create.color")
+            .withPermission("maquillage.command.admin.create.color")
             .executesPlayer((sender, args) -> {
                 factory.withFirstPrompt(ColorConversation.newColorPrompt);
 
@@ -40,7 +40,7 @@ public class CommandCreate {
 
     private static CommandAPICommand registerSubcommandTag() {
         return new CommandAPICommand("tag")
-            .withPermission("maquillage.create.tag")
+            .withPermission("maquillage.command.admin.create.tag")
             .executesPlayer((sender, args) -> {
                 factory.withFirstPrompt(TagConversation.newTagPrompt);
 
