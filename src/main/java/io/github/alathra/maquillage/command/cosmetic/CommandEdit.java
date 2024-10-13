@@ -42,11 +42,7 @@ public class CommandEdit {
                 new CommandAPICommand("color")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> NameColorHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorColorConversation.editColorPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
@@ -57,11 +53,7 @@ public class CommandEdit {
                 new CommandAPICommand("label")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> NameColorHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorLabelConversation.editNamePrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
@@ -72,21 +64,13 @@ public class CommandEdit {
                 new CommandAPICommand("permission")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    NameColorHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> NameColorHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditColorPermConversation.editPermPrompt(NameColorHolder.getInstance().getByKey(args.get("key").toString())));
 
                         org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
-                    }),
-                new CommandAPICommand("keys")
-                    .executesPlayer((sender, args) -> {
-                        sender.sendMessage(NameColorHolder.getInstance().getAllKeys().toString());
                     })
             );
     }
@@ -98,11 +82,7 @@ public class CommandEdit {
                 new CommandAPICommand("tag")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> TagHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagTagConversation.editTagPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
@@ -113,11 +93,7 @@ public class CommandEdit {
                 new CommandAPICommand("label")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> TagHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagLabelConversation.editNamePrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
@@ -128,21 +104,13 @@ public class CommandEdit {
                 new CommandAPICommand("permission")
                     .withArguments(
                         new StringArgument("key")
-                            .replaceSuggestions(
-                                ArgumentSuggestions.strings(
-                                    TagHolder.getInstance().getAllKeys()
-                                )
-                            )
+                            .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> TagHolder.getInstance().getAllKeys()))
                     )
                     .executesPlayer((sender, args) -> {
                         factory.withFirstPrompt(EditTagPermConversation.editPermPrompt(TagHolder.getInstance().getByKey(args.get("key").toString())));
 
                         org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
                         conversation.begin();
-                    }),
-                new CommandAPICommand("keys")
-                    .executesPlayer((sender, args) -> {
-                        sender.sendMessage(TagHolder.getInstance().getAllKeys().toString());
                     })
             );
     }

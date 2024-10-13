@@ -38,11 +38,7 @@ public class CommandDelete {
             .withPermission("maquillage.command.admin.delete.color")
             .withArguments(
                 new StringArgument("identifier")
-                    .replaceSuggestions(
-                        ArgumentSuggestions.strings(
-                            NameColorHolder.getInstance().getAllKeys()
-                        )
-                    )
+                    .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> NameColorHolder.getInstance().getAllKeys()))
             )
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("identifier").toString();
@@ -60,11 +56,7 @@ public class CommandDelete {
             .withPermission("maquillage.command.admin.delete.tag")
             .withArguments(
                 new StringArgument("identifier")
-                    .replaceSuggestions(
-                        ArgumentSuggestions.strings(
-                            TagHolder.getInstance().getAllKeys()
-                        )
-                    )
+                    .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> TagHolder.getInstance().getAllKeys()))
             )
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("identifier").toString();
