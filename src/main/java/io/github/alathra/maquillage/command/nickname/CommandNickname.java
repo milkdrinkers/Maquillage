@@ -10,6 +10,7 @@ import io.github.alathra.maquillage.database.DatabaseQueries;
 import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import io.github.alathra.maquillage.utility.Cfg;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
@@ -65,6 +66,10 @@ public class CommandNickname {
 
                         NicknameCooldown.setCooldown(player);
 
+                        sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.success"))
+                            .parseMinimessagePlaceholder("player", player.getName())
+                            .parseMinimessagePlaceholder("nickname", nick).build());
+
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.savePlayerNickname(player, nick);
                         });
@@ -91,6 +96,9 @@ public class CommandNickname {
 
                         if (Cfg.get().getBoolean("module.nickname.set-listname"))
                             player.playerListName(Component.text(player.getName()));
+
+                        sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.cleared"))
+                            .parseMinimessagePlaceholder("player", player.getName()).build());
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.clearPlayerNickname(player);

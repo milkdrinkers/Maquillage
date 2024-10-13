@@ -20,3 +20,16 @@ commands:
         <dark_gray>• <white>reload: <gray><i>Reloads the translation files.
         <dark_gray>• <white>test <node>: <gray><i>Test a translation.
     reloaded: <green>Successfully reloaded translations!
+  module:
+    tag:
+    namecolor:
+    nickname:
+      nickname:
+        set:
+          success: "<green>The nickname for <player> was successfully changed to <nickname>."
+        clear:
+          cleared: "<green>The nickname for <player> was successfully cleared."
+      realname:
+gui:
+  tag:
+  namecolor:
