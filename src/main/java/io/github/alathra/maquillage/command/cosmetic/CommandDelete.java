@@ -8,6 +8,7 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import io.github.alathra.maquillage.utility.conversation.Conversation;
 import io.github.alathra.maquillage.utility.conversation.color.DeleteColorConversation;
 import io.github.alathra.maquillage.utility.conversation.tag.DeleteTagConversation;
@@ -37,13 +38,13 @@ public class CommandDelete {
         return new CommandAPICommand("color")
             .withPermission("maquillage.command.admin.delete.color")
             .withArguments(
-                new StringArgument("identifier")
+                new StringArgument("key")
                     .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> NameColorHolder.getInstance().getAllKeys()))
             )
             .executesPlayer((sender, args) -> {
-                String identifier = args.get("identifier").toString();
+                String identifier = args.get("key").toString();
                 if (!NameColorHolder.getInstance().doesKeyExist(identifier))
-                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no color with that identifier.").build());
+                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.namecolor.delete.no-color")).build());
                 factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByKey(identifier)));
 
                 org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
@@ -55,13 +56,13 @@ public class CommandDelete {
         return new CommandAPICommand("tag")
             .withPermission("maquillage.command.admin.delete.tag")
             .withArguments(
-                new StringArgument("identifier")
+                new StringArgument("key")
                     .replaceSuggestions(ArgumentSuggestions.stringCollection(info -> TagHolder.getInstance().getAllKeys()))
             )
             .executesPlayer((sender, args) -> {
-                String identifier = args.get("identifier").toString();
+                String identifier = args.get("key").toString();
                 if (!TagHolder.getInstance().doesKeyExist(identifier))
-                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>There's no tag with that identifier").build());
+                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.tag.delete.no-tag")).build());
                 factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByKey(identifier)));
 
                 org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);

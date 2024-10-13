@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.utility.conversation.color;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -26,21 +27,21 @@ public class DeleteColorConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = NameColorHolder.getInstance().remove(color);
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The color was successfully deleted!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.delete.success")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not deleted.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.delete.failure")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color was not deleted.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.delete.not-deleted")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Are you sure you want to delete this color: " + color.getColor() + player.getName() + "<white>?").build());
-            player.sendMessage(ColorParser.of("<red>This action is permanent.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.delete.confirm"))
+                .parseMinimessagePlaceholder("namecolor", color.getColor() + player.getName()).build());
             return "YES/NO";
         }
     };

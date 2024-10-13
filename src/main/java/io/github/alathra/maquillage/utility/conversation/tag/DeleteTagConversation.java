@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.utility.conversation.tag;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.tag.Tag;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -26,21 +27,21 @@ public class DeleteTagConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = TagHolder.getInstance().remove(tag);
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The tag was successfully deleted!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.delete.success")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not deleted.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.delete.failure")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The tag was not deleted.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.delete.not-deleted")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Are you sure you want to delete this tag: " + tag.getTag() + "<white>?").build());
-            player.sendMessage(ColorParser.of("<red>This action is permanent.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.delete.confirm"))
+                .parseMinimessagePlaceholder("tag", tag.getTag()).build());
             return "YES/NO";
         }
     };

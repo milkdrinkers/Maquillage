@@ -22,7 +22,29 @@ commands:
     reloaded: <green>Successfully reloaded translations!
   module:
     tag:
+      create:
+      edit:
+      delete:
+        no-tag: "<red>There's no tag with that key."
+        confirm: |
+
+          Are you sure you want to delete this tag: <tag><white>?
+          <red>This action is permanent.
+        not-deleted: "<red>The tag was not deleted."
+        failure: "<red>Something went wrong. The tag was not deleted."
+        success: "<green>The tag was successfully deleted!"
     namecolor:
+      create:
+      edit:
+      delete:
+        no-color: "<red>There's no namecolor with that key."
+        confirm: |
+          
+          Are you sure you want to delete this color: <namecolor><white>?
+          <red>This action is permanent.
+        not-deleted: "<red>The namecolor was not deleted."
+        failure: "<red>Something went wrong. The namecolor was not deleted."
+        success: "<green>The namecolor was successfully deleted!"
     nickname:
       nickname:
         set:
