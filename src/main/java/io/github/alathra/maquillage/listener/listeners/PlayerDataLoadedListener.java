@@ -22,7 +22,7 @@ public class PlayerDataLoadedListener implements Listener {
                 prefix = Cfg.get().getString("module.nickname.prefix.string");
             }
 
-            if (!e.getData().getNicknameString().isEmpty()) {
+            if (e.getData().getNicknameString() != null && !e.getData().getNicknameString().isEmpty()) {
                 e.getPlayer().displayName(Component.text(prefix + e.getData().getNicknameString()));
                 NicknameLookup.getInstance().addNicknameToLookup(e.getData().getNicknameString(), e.getPlayer());
             }
