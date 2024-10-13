@@ -16,14 +16,19 @@ public class PlayerDataLoadedListener implements Listener {
     public static void onPlayerDataLoaded(PlayerDataLoadedEvent e) {
         PlayerData data = e.getData();
 
-        if (Cfg.get().getBoolean("module.nickname.set-displayname") && Cfg.get().getBoolean("module.nickname.enabled")) {
+        if (Cfg.get().getBoolean("module.nickname.enabled")) {
             String prefix = "";
             if (Cfg.get().getBoolean("module.nickname.prefix.enabled")) {
                 prefix = Cfg.get().getString("module.nickname.prefix.string");
             }
 
             if (e.getData().getNicknameString() != null && !e.getData().getNicknameString().isEmpty()) {
-                e.getPlayer().displayName(Component.text(prefix + e.getData().getNicknameString()));
+                if (Cfg.get().getBoolean("module.nickname.set-displayname"))
+                    e.getPlayer().displayName(Component.text(prefix + e.getData().getNicknameString()));
+
+                if (Cfg.get().getBoolean("module.nickname.set-listname"))
+                    e.getPlayer().playerListName(Component.text(prefix + e.getData().getNicknameString()));
+
                 NicknameLookup.getInstance().addNicknameToLookup(e.getData().getNicknameString(), e.getPlayer());
             }
         }

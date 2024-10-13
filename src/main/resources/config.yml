@@ -19,4 +19,5 @@ module:
       enabled: true
       string: ""
     set-displayname: true # Sets the displayname to the nickname. Disable this if you have another plugin which modifies the displayname
+    set-listname: true # Sets the listname (shown in the tab-menu) for the player. Disable this if you have another plugin which modifies the listname
     length: 20 # The maximum allowed length for nicknames. Allowed range: 1-255

@@ -53,14 +53,15 @@ public class CommandNickname {
 
                         NicknameLookup.getInstance().addNicknameToLookup(nick, player);
 
-                        if (Cfg.get().getBoolean("module.nickname.set-displayname")) {
-                            String prefix = "";
-                            if (Cfg.get().getBoolean("module.nickname.prefix.enabled")){
-                                prefix = Cfg.get().getString("module.nickname.prefix.string");
-                            }
+                        String prefix = "";
+                        if (Cfg.get().getBoolean("module.nickname.prefix.enabled"))
+                            prefix = Cfg.get().getString("module.nickname.prefix.string");
 
-                            player.displayName(Component.text(prefix + nick));
-                        }
+                        if (Cfg.get().getBoolean("module.nickname.set-displayname"))
+                            player.displayName(Component.text(prefix + data.getNicknameString()));
+
+                        if (Cfg.get().getBoolean("module.nickname.set-listname"))
+                            player.playerListName(Component.text(prefix + data.getNicknameString()));
 
                         NicknameCooldown.setCooldown(player);
 
@@ -85,9 +86,11 @@ public class CommandNickname {
                         data.clearNickname();
                         PlayerDataHolder.getInstance().setPlayerData(player, data);
 
-                        if (Cfg.get().getBoolean("module.nickname.set-displayname")) {
+                        if (Cfg.get().getBoolean("module.nickname.set-displayname"))
                             player.displayName(Component.text(player.getName()));
-                        }
+
+                        if (Cfg.get().getBoolean("module.nickname.set-listname"))
+                            player.playerListName(Component.text(player.getName()));
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             DatabaseQueries.clearPlayerNickname(player);
