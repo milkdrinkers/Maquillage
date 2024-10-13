@@ -32,21 +32,22 @@ public class CommandNickname {
                         new StringArgument("nick")))
                     .executes((sender, args) -> {
                         if (!(args.get("player") instanceof Player player))
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>The player wasn't found.").build());
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.player-not-found")).build());
 
                         if (!Maquillage.getVaultHook().getPermissions().has(player, "maquillage.nick.admin")) {
                             if (NicknameCooldown.hasCooldown(player))
-                                throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>This command has a cooldown. Try again in a few seconds.").build());
+                                throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
                         }
 
                         if (!(args.get("nick") instanceof String nick))
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>You need to input a nickname.").build());
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.no-nickname")).build());
 
                         if(nick.length() > Cfg.get().getInt("module.nickname.length"))
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>That nickname is too long. The maximum length is " + Cfg.get().getInt("module.nickname.length") + " characters").build());
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.too-long"))
+                                .parseMinimessagePlaceholder("characters", String.valueOf(Cfg.get().getInt("module.nickname.length"))).build());
 
                         if (nick.matches("[^a-zA-Z0-9_ ]"))
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>That nickname contains illegal characters. Only A-Z, 0-9 and _ are allowed.").build());
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.illegal-characters")).build());
 
                         PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
                         data.setNickname(nick);
@@ -79,12 +80,12 @@ public class CommandNickname {
                     .withArguments(new PlayerArgument("player"))
                     .executes((sender, args) -> {
                         if (!(args.get("player") instanceof Player player))
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>The player wasn't found.").build());
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.player-not-found")).build());
 
                         PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
 
-                        if (data.getNickname().isEmpty())
-                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of("<red>That player doesn't appear to have a nickname.").build());
+                        if (data.getNickname() == null || data.getNickname().isEmpty())
+                            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.no-nickname")).build());
 
                         NicknameLookup.getInstance().removeNicknameFromLookup(data.getNickname().get().getString());
 

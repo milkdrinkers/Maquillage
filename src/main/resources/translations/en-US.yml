@@ -26,10 +26,18 @@ commands:
     nickname:
       nickname:
         set:
+          player-not-found: "<red>The player wasn't found."
+          cooldown: "<red>This command has a cooldown. Try again in a few seconds."
+          no-nickname: "<red>You need to input a nickname."
+          too-long: "<red>That nickname is too long. The maximum length is <characters> characters."
+          illegal-characters: "<red>That nickname contains illegal characters. Only A-Z, 0-9 and _ are allowed."
           success: "<green>The nickname for <player> was successfully changed to <nickname>."
         clear:
+          player-not-found: "<red>The player wasn't found."
+          no-nickname: "<red>That player doesn't appear to have a nickname."
           cleared: "<green>The nickname for <player> was successfully cleared."
       realname:
+        realname: "<green>The username for <red><nickname><green> is <red><player>."
 gui:
   tag:
   namecolor:
