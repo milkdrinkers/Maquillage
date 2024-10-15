@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.utility.conversation.color;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -27,8 +28,9 @@ public class EditColorColorConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current color is " + currentColor + player.getName()).build());
-            return "What do you want the new color to be?";
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.current-color"))
+                .parseMinimessagePlaceholder("namecolor", color.getColor() + player.getName()).build());
+            return Translation.of("commands.module.namecolor.edit.color.current-color-question");
         }
 
         @Override
@@ -45,21 +47,22 @@ public class EditColorColorConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = NameColorHolder.getInstance().update(updatedColor, color.getPerm(), color.getLabel(), color.getDatabaseId());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The color was successfully updated!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.success")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not updated.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.failure")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color was not updated.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.not-updated")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the color to this: " + updatedColor + player.getName() + "<white>?").build());
-            return "YES/NO?";
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.confirm"))
+                .parseMinimessagePlaceholder("namecolor", updatedColor + player.getName()).build());
+            return "YES/NO";
         }
     };
 }

@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.utility.conversation.tag;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.tag.Tag;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -27,8 +28,9 @@ public class EditTagTagConversation {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("The current tag is " + currentTag).build());
-            return "What do you want the new tag to be?";
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.tag.current-tag"))
+                .parseMinimessagePlaceholder("tag", currentTag).build());
+            return Translation.of("commands.module.tag.edit.tag.current-tag-question");
         }
 
         @Override
@@ -45,21 +47,22 @@ public class EditTagTagConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = TagHolder.getInstance().update(updatedTag, tag.getPerm(), tag.getLabel(), tag.getDatabaseId());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The tag was successfully updated!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.tag.success")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not updated.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.tag.failure")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The tag was not updated.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.tag.not-updated")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the tag to this: " + updatedTag + "<white>?").build());
-            return "YES/NO?";
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.tag.confirm"))
+                .parseMinimessagePlaceholder("tag", updatedTag).build());
+            return "YES/NO";
         }
     };
 }

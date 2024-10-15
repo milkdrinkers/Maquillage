@@ -24,6 +24,28 @@ commands:
     tag:
       create:
       edit:
+        tag:
+          current-tag: "The current tag is <tag>."
+          current-tag-question: "What do you want the new tag to be?"
+          confirm: "Do you want to update the tag to this: <tag><white>?"
+          not-updated: "<red>The tag was not updated."
+          failure: "<red>Something went wrong. The tag was not updated."
+          success: "<green>The tag was successfully updated!"
+        label:
+          current-label: "The current label for <tag> is <label>."
+          current-label-question: "What do you want the new label to be?"
+          confirm: "Do you want to update the label of this tag <tag><white> to be <label>?"
+          not-updated: "<red>The tag label was not updated."
+          failure: "<red>Something went wrong. The tag label was not updated."
+          success: "<green>The tag label was successfully updated!"
+        perm:
+          current-perm: "The current permission node for <tag><white> is <perm>."
+          current-no-perm: "The tag <tag><white> is currently permissionless."
+          current-perm-question: "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\""
+          confirm: "Do you want to update the tag to this: <perm>?"
+          not-updated: "<red>The permission was not updated."
+          failure: "<red>Something went wrong. The permission was not updated."
+          success: "<green>The permission was successfully updated!"
       delete:
         no-tag: "<red>There's no tag with that key."
         confirm: |
@@ -36,6 +58,28 @@ commands:
     namecolor:
       create:
       edit:
+        color:
+          current-color: "The current namecolor is <namecolor>."
+          current-color-question: "What do you want the new namecolor to be?"
+          confirm: "Do you want to update the namecolor to this: <namecolor><white>?"
+          not-updated: "<red>The namecolor was not updated."
+          failure: "<red>Something went wrong. The namecolor was not updated."
+          success: "<green>The namecolor was successfully updated!"
+        label:
+          current-label: "The current label for <namecolor> is <label>."
+          current-label-question: "What do you want the new label to be?"
+          confirm: "Do you want to update the label of this namecolor <namecolor><white> to be <label>?"
+          not-updated: "<red>The namecolor label was not updated."
+          failure: "<red>Something went wrong. The namecolor label was not updated."
+          success: "<green>The namecolor label was successfully updated!"
+        perm:
+          current-perm: "The current permission node for <namecolor><white> is <perm>."
+          current-no-perm: "The namecolor <namecolor><white> is currently permissionless."
+          current-perm-question: "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.namecolor.[your input]\""
+          confirm: "Do you want to update the permission to this: <perm>?"
+          not-updated: "<red>The permission was not updated."
+          failure: "<red>Something went wrong. The permission was not updated."
+          success: "<green>The permission was successfully updated!"
       delete:
         no-color: "<red>There's no namecolor with that key."
         confirm: |

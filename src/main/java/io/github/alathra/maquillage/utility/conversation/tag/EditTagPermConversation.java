@@ -3,6 +3,7 @@ package io.github.alathra.maquillage.utility.conversation.tag;
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.tag.Tag;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;
@@ -29,13 +30,16 @@ public class EditTagPermConversation {
             Player player = (Player) conversationContext.getForWhom();
 
             if (currentPerm.isEmpty()) {
-                player.sendMessage(ColorParser.of("The tag " + tag.getTag() + "<white> is permissionless").build());
+                player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.current-no-perm"))
+                    .parseMinimessagePlaceholder("tag", tag.getTag()).build());
             } else {
-                player.sendMessage(ColorParser.of("The current permission node for " + tag.getTag() + "<white> is " + currentPerm).build());
+                player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.current-perm"))
+                    .parseMinimessagePlaceholder("tag", tag.getTag())
+                    .parseMinimessagePlaceholder("perm", currentPerm).build());
             }
 
 
-            return "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"";
+            return Translation.of("commands.module.tag.edit.perm.current-perm-question");
         }
 
         @Override
@@ -59,20 +63,22 @@ public class EditTagPermConversation {
             if (s.equalsIgnoreCase("YES")) {
                 boolean success = TagHolder.getInstance().update(tag.getTag(), updatedPerm, tag.getLabel(), tag.getDatabaseId());
                 if (success) {
-                    player.sendMessage(ColorParser.of("<green>The permission node was successfully updated!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.success")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The permission node was not updated.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.failure")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The permission node was not updated.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.not-updated")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
-            player.sendMessage(ColorParser.of("Do you want to update the permission node for " + tag.getTag() + "<white> to " + updatedPerm + "?").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.confirm"))
+                .parseMinimessagePlaceholder("tag", tag.getTag())
+                .parseMinimessagePlaceholder("perm", updatedPerm).build());
             return "YES/NO?";
         }
     };
