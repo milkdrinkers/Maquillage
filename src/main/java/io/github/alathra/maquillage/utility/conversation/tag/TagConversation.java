@@ -2,6 +2,7 @@ package io.github.alathra.maquillage.utility.conversation.tag;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -16,7 +17,7 @@ public class TagConversation {
     public static Prompt newTagPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired tag.";
+            return Translation.of("commands.module.tag.create.input-tag");
         }
 
         @Override
@@ -29,7 +30,7 @@ public class TagConversation {
     static Prompt labelPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired label.";
+            return Translation.of("commands.module.tag.create.input-label");
         }
 
         @Override
@@ -42,7 +43,7 @@ public class TagConversation {
     static Prompt permissionPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"";
+            return Translation.of("commands.module.tag.create.input-perm");
         }
 
         @Override
@@ -67,13 +68,13 @@ public class TagConversation {
             if (input.equalsIgnoreCase("YES")) {
                 int ID = TagHolder.getInstance().add(tag, permission, label);
                 if (ID == -1) {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The tag was not saved.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.failure")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<green>The tag was successfully saved!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.success")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The tag was not saved.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.not-saved")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
@@ -81,7 +82,10 @@ public class TagConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
-            player.sendMessage(ColorParser.of("Do you want to save the tag " + tag + "<white> with the label " + label + "<white> and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.input-tag"))
+                .parseMinimessagePlaceholder("tag", tag)
+                .parseMinimessagePlaceholder("label", label)
+                .parseMinimessagePlaceholder("perm", permission).build());
             return "YES/NO?";
         }
     };

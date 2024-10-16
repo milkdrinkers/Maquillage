@@ -2,6 +2,7 @@ package io.github.alathra.maquillage.utility.conversation.color;
 
 import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public class ColorConversation {
     public static Prompt newColorPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired color.";
+            return Translation.of("commands.module.namecolor.create.input-namecolor");
         }
 
         @Override
@@ -41,7 +42,7 @@ public class ColorConversation {
     static Prompt labelPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired label.";
+            return Translation.of("commands.module.namecolor.create.input-label");
         }
 
         @Override
@@ -54,7 +55,7 @@ public class ColorConversation {
     static Prompt permissionPrompt = new StringPrompt() {
         @Override
         public @NotNull String getPromptText(@NotNull ConversationContext context) {
-            return "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.namecolor.[your input]\"";
+            return Translation.of("commands.module.namecolor.create.input-perm");
         }
 
         @Override
@@ -79,13 +80,13 @@ public class ColorConversation {
             if (input.equalsIgnoreCase("YES")) {
                 int ID = NameColorHolder.getInstance().add(color, permission, label);
                 if (ID == -1) {
-                    player.sendMessage(ColorParser.of("<red>Something went wrong. The color was not saved.").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.failure")).build());
                 } else {
-                    player.sendMessage(ColorParser.of("<green>The color was successfully saved!").build());
+                    player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.success")).build());
                 }
                 return Prompt.END_OF_CONVERSATION;
             }
-            player.sendMessage(ColorParser.of("<red>The color was not saved.").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.not-saved")).build());
             return Prompt.END_OF_CONVERSATION;
         }
 
@@ -102,7 +103,10 @@ public class ColorConversation {
             if (colorIsRainbow)
                 correctGradients = "</rainbow>";
 
-            player.sendMessage(ColorParser.of("Do you want to save this color " + colorName + correctGradients + "<white> with the label " + label + "<white> and the permission node " + permission + "?").build());
+            player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.confirm"))
+                .parseMinimessagePlaceholder("namecolor", colorName + correctGradients)
+                .parseMinimessagePlaceholder("label", label)
+                .parseMinimessagePlaceholder("perm", permission).build());
             return "YES/NO?";
         }
     };

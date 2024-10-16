@@ -23,6 +23,13 @@ commands:
   module:
     tag:
       create:
+        input-tag: "Input the desired tag."
+        input-label: "Input the desired label. This is shown in the GUI where player's choose a tag."
+        input-perm: "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\""
+        confirm: "Do you want to save the tag <tag><white> with the label <label><white> and the permission node <perm>?"
+        not-saved: "<red>The tag was not saved."
+        failure: "<red>Something went wrong. The tag was not saved."
+        success: "<green>The tag was successfully saved!"
       edit:
         tag:
           current-tag: "The current tag is <tag>."
@@ -57,6 +64,13 @@ commands:
         success: "<green>The tag was successfully deleted!"
     namecolor:
       create:
+        input-namecolor: "Input the desired namecolor."
+        input-label: "Input the desired label. This is shown in the GUI where player's choose a namecolor."
+        input-perm: "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.namecolor.[your input]\""
+        confirm: "Do you want to save the namecolor <namecolor><white> with the label <label><white> and the permission node <perm>?"
+        not-saved: "<red>The namecolor was not saved."
+        failure: "<red>Something went wrong. The namecolor was not saved."
+        success: "<green>The namecolor was successfully saved!"
       edit:
         color:
           current-color: "The current namecolor is <namecolor>."
