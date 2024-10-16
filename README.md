@@ -25,13 +25,13 @@ Maquillage is entirely modular, and disabling any of the modules will not affect
 
 ### PlaceholderAPI
 Maquillage uses PlaceholderAPI (PAPI) to provide parseable strings. These are the available placeholders:
-````
+```
 %maquillage_namecolor% - The player's selected namecolor, followed by their username.
-%maquillage_namecolor_nickname& - The player's selected namecolor, followed by their Maquillage nickname.
+%maquillage_namecolor_nickname% - The player's selected namecolor, followed by their Maquillage nickname.
 %maquillage_namecolor_essentialsnick% - The player's selected namecolor, followed by their EssentialsX nickname.
 %maquillage_tag% - The player's selected tag, with a trailing blankspace.
 %maquillage_tag_nospace% - The player's selected tag, without a trailing blankspace.
-````
+```
 
 ## Cosmetic import examples
 The following examples can be used in `import.yml` to bulk-import cosmetics by running the command `"/maquillage import"`.
