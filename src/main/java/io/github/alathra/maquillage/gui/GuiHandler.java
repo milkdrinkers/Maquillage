@@ -5,6 +5,7 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import org.bukkit.entity.Player;
 
 public class GuiHandler {
@@ -17,9 +18,9 @@ public class GuiHandler {
     public static PaginatedGui buildGui(MaquillageGuiType type) {
         switch (type) {
             case TAG, COLOR -> {
-                // TODO: make title configurable
                 return Gui.paginated()
-                    .title(ColorParser.of("<white>Select your " + type.toString().toLowerCase()).build())
+                    .title(ColorParser.of(Translation.of("gui.title")).
+                        parseMinimessagePlaceholder("cosmetic", type.toString().toLowerCase()).build())
                     .rows(6)
                     .disableItemPlace()
                     .disableItemSwap()

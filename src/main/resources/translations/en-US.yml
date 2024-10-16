@@ -119,5 +119,9 @@ commands:
       realname:
         realname: "<green>The username for <red><nickname><green> is <red><player>."
 gui:
-  tag:
-  namecolor:
+  title: "<white>Select your <cosmetic>"
+  clear: "<red>Click to clear your <cosmetic>."
+  next-page: "<green>Next page"
+  previous-page: "<red>Previous page"
+  select-tag: "<grey>Click this to select the tag."
+  select-namecolor: "<grey>Click this to select the namecolor."

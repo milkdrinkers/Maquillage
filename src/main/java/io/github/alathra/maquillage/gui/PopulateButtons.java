@@ -8,6 +8,7 @@ import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -29,7 +30,8 @@ public class PopulateButtons {
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
-        skullMeta.lore(Collections.singletonList(ColorParser.of("<red>Click to clear your " + type.toString().toLowerCase()).build()));
+        skullMeta.lore(Collections.singletonList(ColorParser.of(Translation.of("gui.clear"))
+            .parseMinimessagePlaceholder("cosmetic", type.toString().toLowerCase()).build()));
 
         // Sets head name to match selected tag and color
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
@@ -60,7 +62,7 @@ public class PopulateButtons {
     private static void arrowButtons(PaginatedGui gui) {
         ItemStack nextPage = new ItemStack(Material.ARROW);
         ItemMeta nextPageMeta = nextPage.getItemMeta();
-        nextPageMeta.displayName(ColorParser.of("<green>Next page").build().decoration(TextDecoration.ITALIC, false));
+        nextPageMeta.displayName(ColorParser.of(Translation.of("gui.next-page")).build().decoration(TextDecoration.ITALIC, false));
         nextPage.setItemMeta(nextPageMeta);
         gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> {
             gui.next();
@@ -69,7 +71,7 @@ public class PopulateButtons {
 
         ItemStack prevPage = new ItemStack(Material.ARROW);
         ItemMeta prevPageMeta = prevPage.getItemMeta();
-        prevPageMeta.displayName(ColorParser.of("<red>Previous page").build().decoration(TextDecoration.ITALIC, false));
+        prevPageMeta.displayName(ColorParser.of(Translation.of("gui.previous-page")).build().decoration(TextDecoration.ITALIC, false));
         prevPage.setItemMeta(prevPageMeta);
         gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> {
             gui.previous();

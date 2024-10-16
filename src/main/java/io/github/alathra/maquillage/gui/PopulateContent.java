@@ -9,6 +9,7 @@ import io.github.alathra.maquillage.module.cosmetic.tag.Tag;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
+import io.github.alathra.maquillage.translation.Translation;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
@@ -88,7 +89,7 @@ public class PopulateContent {
         String tag = playerData.getTag().map(tag1 -> tag1.getTag() + "<white> ").orElse("");
         loreList.add(ColorParser.of(tag + color.getColor() + p.getName()).build().decoration(TextDecoration.ITALIC, false));
         // Add a component to the list that describes action if clicked
-        loreList.add(ColorParser.of("<grey>Click this to select the color.").build());
+        loreList.add(ColorParser.of(Translation.of("gui.select-namecolor")).build());
         colorItemMeta.lore(loreList);
         colorItem.setItemMeta(colorItemMeta);
         gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
@@ -120,7 +121,7 @@ public class PopulateContent {
         String color = playerData.getNameColor().map(NameColor::getColor).orElse("<white>");
         loreList.add(ColorParser.of(tag.getTag() + color + " " + p.getName()).build().decoration(TextDecoration.ITALIC, false));
         // Add a component to the list that describes action if clicked
-        loreList.add(ColorParser.of("<grey>Click this to select the tag.").build());
+        loreList.add(ColorParser.of(Translation.of("gui.select-tag")).build());
         tagItemMeta.lore(loreList);
         tagItem.setItemMeta(tagItemMeta);
         gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
