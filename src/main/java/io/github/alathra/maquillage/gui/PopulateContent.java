@@ -100,6 +100,8 @@ public class PopulateContent {
                 GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.COLOR, gui, p);
             } else {
                 p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+                gui.close(p);
+                p.sendMessage(ColorParser.of(Translation.of("gui.on-cooldown")).build());
             }
         }));
     }
@@ -132,6 +134,8 @@ public class PopulateContent {
                 GuiHandler.reloadGui(GuiHandler.MaquillageGuiType.TAG, gui, p);
             } else {
                 p.playSound(p, Sound.ENTITY_ENDERMAN_TELEPORT, SoundCategory.AMBIENT, 1, 1);
+                gui.close(p);
+                p.sendMessage(ColorParser.of(Translation.of("gui.on-cooldown")).build());
             }
         }));
     }

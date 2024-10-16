@@ -125,3 +125,4 @@ gui:
   previous-page: "<red>Previous page"
   select-tag: "<grey>Click this to select the tag."
   select-namecolor: "<grey>Click this to select the namecolor."
+  on-cooldown: "<red>You are on cooldown. Try again in a few seconds."
