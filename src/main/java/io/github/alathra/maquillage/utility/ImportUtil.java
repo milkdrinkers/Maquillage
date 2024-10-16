@@ -17,6 +17,10 @@ public class ImportUtil {
         return Maquillage.getInstance().getConfigHandler().getSupremeConfig();
     }
 
+    public static Config getAlonso() {
+        return Maquillage.getInstance().getConfigHandler().getAlonsoConfig();
+    }
+
     public static Map<?, ?> getTagMap() {
         if (getImport() == null)
             return null;
@@ -27,6 +31,12 @@ public class ImportUtil {
         if (getSupreme() == null)
             return null;
         return getSupreme().getMap("tags");
+    }
+
+    public static Map<?, ?> getAlonsoTagMap() {
+        if (getAlonso() == null)
+            return null;
+        return getAlonso().getMap("tags");
     }
 
     public static Map<?, ?> getNamecolorMap() {
@@ -45,6 +55,12 @@ public class ImportUtil {
         if (getSupremeTagMap() == null)
             return 0;
         return getSupremeTagMap().keySet().size();
+    }
+
+    public static int getAlonsoTagAmount() {
+        if (getAlonsoTagMap() == null)
+            return 0;
+        return getAlonsoTagMap().keySet().size();
     }
 
     public static int getNamecolorAmount() {
@@ -91,6 +107,16 @@ public class ImportUtil {
             getSupreme().getString("tags." + key + ".tag"),
             getSupreme().getString("tags." + key + ".permission"),
             getSupreme().getString("tags." + key + ".displayname")
+        ));
+    }
+
+    public static void addAlonsoTags() {
+        if (getAlonsoTagMap() == null || getAlonsoTagMap().isEmpty())
+            return;
+        getAlonsoTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
+            getAlonso().getString("Tags." + key + ".Tag"),
+            getAlonso().getString("Tags." + key + ".Permission"),
+            getAlonso().getString("Tags." + key + ".Displayname")
         ));
     }
 

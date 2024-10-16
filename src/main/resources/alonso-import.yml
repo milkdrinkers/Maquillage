@@ -1,0 +1,14 @@
+# If you have previously used Supreme Tags and want to import your tags to Maquillage you can use this file.
+# Simply paste your entire "tags" section below, making sure that you don't change any of the spacing.
+#
+# You may want to look over your permission nodes to not end up with unnecessarily long permission nodes.
+# Your permission nodes will end up being "maquillage.tag.<your input>". If you leave it blank or as "none", the tag will be permissionless.
+#
+# The following fields will be ignored, but can safely be kept in the file: Material, Custom-model-data, Texture, Lore, No-permission-message, Not-enough-money-message.
+#
+# Once you have added all of your tags here, you can run the command "/maquillage import supremetags" to import all of the tags.
+# If you remove a tag from this file after importing, it will not be removed from the database.
+# You will either need to use in-game commands or manually modify the database to remove them.
+# If you run the command multiple times you will get duplicate tags.
+
+Tags: # Paste in your tags here! Copy from the line "Tags" (line 4 by default) of AlonsoTags' "tags.yml" and to the very bottom of the file. Paste replacing this line.
