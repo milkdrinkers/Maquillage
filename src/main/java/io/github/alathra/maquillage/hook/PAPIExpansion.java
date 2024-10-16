@@ -2,6 +2,7 @@ package io.github.alathra.maquillage.hook;
 
 import com.earth2me.essentials.Essentials;
 import io.github.alathra.maquillage.Maquillage;
+import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -50,6 +51,19 @@ public class PAPIExpansion extends PlaceholderExpansion {
     public @Nullable String onPlaceholderRequest(Player p, @NotNull String params) {
         return switch (params) {
             case "namecolor" -> getNameColor(p, p.getName());
+            case "namecolor_nickname" -> {
+                PlayerData data = PlayerDataHolder.getInstance().getPlayerData(p);
+
+                String name = null;
+
+                if (data.getNicknameString() != null && !data.getNicknameString().isEmpty()) {
+                    name = data.getNicknameString();
+                } else {
+                    name = p.getName();
+                }
+
+                yield getNameColor(p, name);
+            }
             case "namecolor_essentialsnick" -> {
                 String newName = null;
 
