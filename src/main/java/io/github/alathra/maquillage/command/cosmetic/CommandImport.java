@@ -17,10 +17,22 @@ public class CommandImport {
         return new CommandAPICommand("import")
             .withPermission("maquillage.import")
             .withShortDescription("Imports cosmetics from the import.yml file.")
+            .withSubcommand(registerCommandImportSupreme())
             .executesPlayer((sender, args) -> {
                 ImportUtil.addAllTags();
                 ImportUtil.addAllNamecolors();
                 sender.sendMessage(ColorParser.of("<green>Attempted to import " + ImportUtil.getTagAndNamecolorAmounts() + ".").build());
+            });
+    }
+
+    public static CommandAPICommand registerCommandImportSupreme() {
+        return new CommandAPICommand("supremetags")
+            .withPermission("maquillage.import")
+            .withShortDescription("Imports cosmetics from the supreme-import.yml file.")
+            .executesPlayer((sender, args) -> {
+                ImportUtil.addAllTags();
+                ImportUtil.addAllNamecolors();
+                sender.sendMessage(ColorParser.of("<green>Attempted to import " + ImportUtil.getSupremeTagAmount() + ".").build());
             });
     }
 
