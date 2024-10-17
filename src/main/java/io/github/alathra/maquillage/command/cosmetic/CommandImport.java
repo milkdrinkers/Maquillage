@@ -17,6 +17,9 @@ public class CommandImport {
         return new CommandAPICommand("import")
             .withPermission("maquillage.import")
             .withShortDescription("Imports cosmetics from the import.yml file.")
+            .withSubcommands(
+                registerCommandImportSupreme(),
+                registerCommandImportAlonso())
             .executesPlayer((sender, args) -> {
                 ImportUtil.addAllTags();
                 ImportUtil.addAllNamecolors();
@@ -24,4 +27,23 @@ public class CommandImport {
             });
     }
 
+    public static CommandAPICommand registerCommandImportSupreme() {
+        return new CommandAPICommand("supremetags")
+            .withPermission("maquillage.import")
+            .withShortDescription("Imports cosmetics from the supreme-import.yml file.")
+            .executesPlayer((sender, args) -> {
+                ImportUtil.addSupremeTags();
+                sender.sendMessage(ColorParser.of("<green>Attempted to import " + ImportUtil.getSupremeTagAmount() + ".").build());
+            });
+    }
+
+    public static CommandAPICommand registerCommandImportAlonso() {
+        return new CommandAPICommand("alonsotags")
+            .withPermission("maquillage.import")
+            .withShortDescription("Imports cosmetics from the alonso-import.yml file.")
+            .executesPlayer((sender, args) -> {
+                ImportUtil.addAlonsoTags();
+                sender.sendMessage(ColorParser.of("<green>Attempted to import " + ImportUtil.getAlonsoTagAmount() + ".").build());
+            });
+    }
 }

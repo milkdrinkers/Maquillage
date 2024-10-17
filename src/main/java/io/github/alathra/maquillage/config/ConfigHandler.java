@@ -15,6 +15,8 @@ public class ConfigHandler implements Reloadable {
     private Config cfg;
     private Config databaseCfg;
     private Config importCfg;
+    private Config supremeCfg;
+    private Config alonsoCfg;
 
     /**
      * Instantiates a new Config handler.
@@ -30,6 +32,8 @@ public class ConfigHandler implements Reloadable {
         cfg = new Config("config", plugin.getDataFolder().getPath(), plugin.getResource("config.yml")); // Create a config file from the template in our resources folder
         databaseCfg = new Config("database", plugin.getDataFolder().getPath(), plugin.getResource("database.yml"));
         importCfg = new Config("import", plugin.getDataFolder().getPath(), plugin.getResource("import.yml"));
+        supremeCfg = new Config("supreme-import", plugin.getDataFolder().getPath(), plugin.getResource("supreme-import.yml"));
+        alonsoCfg = new Config("alonso-import", plugin.getDataFolder().getPath(), plugin.getResource("alonso-import.yml"));
     }
 
     @Override
@@ -65,5 +69,13 @@ public class ConfigHandler implements Reloadable {
      */
     public Config getImportConfig() {
         return importCfg;
+    }
+
+    public Config getSupremeConfig() {
+        return supremeCfg;
+    }
+
+    public Config getAlonsoConfig() {
+        return alonsoCfg;
     }
 }

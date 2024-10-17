@@ -1,0 +1,14 @@
+# If you have previously used Supreme Tags and want to import your tags to Maquillage you can use this file.
+# Simply paste your entire "tags" section below, making sure that you don't change any of the spacing.
+#
+# You may want to look over your permission nodes to not end up with unnecessarily long permission nodes.
+# Your permission nodes will end up being "maquillage.tag.<your input>". If you leave it blank, the tag will be permissionless.
+#
+# The following fields will be ignored, but can safely be kept in the file: description, category, display-item, cost.
+#
+# Once you have added all of your tags here, you can run the command "/maquillage import supremetags" to import all of the tags.
+# If you remove a tag from this file after importing, it will not be removed from the database.
+# You will either need to use in-game commands or manually modify the database to remove them.
+# If you run the command multiple times you will get duplicate tags.
+
+tags: # Paste in your tags here! Copy from the line "tags" (line 7 by default) of SupremeTags' "tags.yml" and to the very bottom of the file. Paste replacing this line.

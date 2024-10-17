@@ -9,26 +9,58 @@ import java.util.Map;
 
 public class ImportUtil {
 
-    public static Config get() {
+    public static Config getImport() {
         return Maquillage.getInstance().getConfigHandler().getImportConfig();
     }
 
+    public static Config getSupreme() {
+        return Maquillage.getInstance().getConfigHandler().getSupremeConfig();
+    }
+
+    public static Config getAlonso() {
+        return Maquillage.getInstance().getConfigHandler().getAlonsoConfig();
+    }
+
     public static Map<?, ?> getTagMap() {
-        if (get() == null)
+        if (getImport() == null)
             return null;
-        return get().getMap("tags");
+        return getImport().getMap("tags");
+    }
+
+    public static Map<?, ?> getSupremeTagMap() {
+        if (getSupreme() == null)
+            return null;
+        return getSupreme().getMap("tags");
+    }
+
+    public static Map<?, ?> getAlonsoTagMap() {
+        if (getAlonso() == null)
+            return null;
+        return getAlonso().getMap("tags");
     }
 
     public static Map<?, ?> getNamecolorMap() {
-        if (get() == null)
+        if (getImport() == null)
             return null;
-        return get().getMap("namecolors");
+        return getImport().getMap("namecolors");
     }
 
     public static int getTagAmount() {
         if (getTagMap() == null)
             return 0;
         return getTagMap().keySet().size();
+    }
+
+    public static int getSupremeTagAmount() {
+        if (getSupremeTagMap() == null)
+            return 0;
+        return getSupremeTagMap().keySet().size();
+    }
+
+    public static int getAlonsoTagAmount() {
+        if (getAlonsoTagMap() == null)
+            return 0;
+        return getAlonsoTagMap().keySet().size();
     }
 
     public static int getNamecolorAmount() {
@@ -54,18 +86,38 @@ public class ImportUtil {
         if (getTagMap() == null || getTagMap().isEmpty())
             return;
         getTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
-            get().getString("tags." + key + ".tag"),
-            get().getString("tags." + key + ".permission-node"),
-            get().getString("tags." + key + ".gui-label")));
+            getImport().getString("tags." + key + ".tag"),
+            getImport().getString("tags." + key + ".permission-node"),
+            getImport().getString("tags." + key + ".gui-label")));
     }
 
     public static void addAllNamecolors() {
         if (getNamecolorMap() == null || getNamecolorMap().isEmpty())
             return;
         getNamecolorMap().keySet().forEach(key -> NameColorHolder.getInstance().add(
-            get().getString("namecolors." + key + ".color"),
-            get().getString("namecolors." + key + ".permission-node"),
-            get().getString("namecolors." + key + ".gui-label")));
+            getImport().getString("namecolors." + key + ".color"),
+            getImport().getString("namecolors." + key + ".permission-node"),
+            getImport().getString("namecolors." + key + ".gui-label")));
+    }
+
+    public static void addSupremeTags() {
+        if (getSupremeTagMap() == null || getSupremeTagMap().isEmpty())
+            return;
+        getSupremeTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
+            getSupreme().getString("tags." + key + ".tag"),
+            getSupreme().getString("tags." + key + ".permission"),
+            getSupreme().getString("tags." + key + ".displayname")
+        ));
+    }
+
+    public static void addAlonsoTags() {
+        if (getAlonsoTagMap() == null || getAlonsoTagMap().isEmpty())
+            return;
+        getAlonsoTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
+            getAlonso().getString("Tags." + key + ".Tag"),
+            getAlonso().getString("Tags." + key + ".Permission"),
+            getAlonso().getString("Tags." + key + ".Displayname")
+        ));
     }
 
 }
