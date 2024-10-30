@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
 import org.jooq.Record;
 
+import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -48,8 +49,13 @@ public abstract class DatabaseQueries {
             if (record == null)
                 throw new SQLException("Failed to save new tag. The returned tag id was null!");
 
-            return record.component1();
-        } catch (SQLException e) {
+            if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.component1() != null) {
+                return record.component1(); // For H2, MySQL, MariaDB
+            } else {
+                return context.lastID().intValue(); // For SQLite
+            }
+            
+        } catch (SQLException | ArithmeticException e) {
             Logger.get().error("SQL Query threw an error!", e);
             return -1;
         }
@@ -117,9 +123,13 @@ public abstract class DatabaseQueries {
             if (record == null)
                 throw new SQLException("Failed to save new color. The returned color id was null!");
 
-            return record.component1();
+            if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.component1() != null) {
+                return record.component1(); // For H2, MySQL, MariaDB
+            } else {
+                return context.lastID().intValue(); // For SQLite
+            }
 
-        } catch (SQLException e) {
+        } catch (SQLException | ArithmeticException e) {
             Logger.get().error("SQL Query threw an error!", e);
             return -1;
         }

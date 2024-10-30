@@ -36,6 +36,11 @@ public abstract class DB {
         return Maquillage.getInstance().getDataHandler().getJooqContext().createContext(con);
     }
 
+    @NotNull
+    public static DatabaseHandler getHandler() {
+        return Maquillage.getInstance().getDataHandler();
+    }
+
     /**
      * Convenience method for {@link DatabaseHandler#getDB()} to getConnection {@link DatabaseType}
      *
