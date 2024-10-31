@@ -83,7 +83,7 @@ dependencies {
     library("com.h2database:h2:2.3.232")
     library("org.xerial:sqlite-jdbc:3.47.0.0")
     library("com.mysql:mysql-connector-j:9.1.0")
-    library("org.mariadb.jdbc:mariadb-java-client:3.4.1")
+    library("org.mariadb.jdbc:mariadb-java-client:3.5.0")
 
     // Testing (Core)
     testImplementation("org.jetbrains:annotations:26.0.1")
@@ -106,7 +106,7 @@ dependencies {
     testImplementation("com.h2database:h2:2.3.232")
     testImplementation("org.xerial:sqlite-jdbc:3.47.0.0")
     testImplementation("com.mysql:mysql-connector-j:9.1.0")
-    testImplementation("org.mariadb.jdbc:mariadb-java-client:3.4.1")
+    testImplementation("org.mariadb.jdbc:mariadb-java-client:3.5.0")
 }
 
 tasks {
