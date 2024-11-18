@@ -73,7 +73,7 @@ dependencies {
     }
 
     // Database Dependencies (Core)
-    implementation("com.zaxxer:HikariCP:6.0.0")
+    implementation("com.zaxxer:HikariCP:6.2.0")
     library("org.flywaydb:flyway-core:10.20.1")
     library("org.flywaydb:flyway-mysql:10.20.1")
     library("org.jooq:jooq:3.19.14")
@@ -97,7 +97,7 @@ dependencies {
     testImplementation("org.testcontainers:mariadb")
 
     // Testing (Database Dependencies)
-    testImplementation("com.zaxxer:HikariCP:6.0.0")
+    testImplementation("com.zaxxer:HikariCP:6.2.0")
     testImplementation("org.flywaydb:flyway-core:10.20.1")
     testImplementation("org.flywaydb:flyway-mysql:10.20.1")
     testImplementation("org.jooq:jooq:3.19.14")
