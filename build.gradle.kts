@@ -8,7 +8,7 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
     id("net.minecrell.plugin-yml.bukkit") version "0.6.0" // Automatic plugin.yml generation
     id("org.flywaydb.flyway") version "10.20.1" // Database migrations
-    id("org.jooq.jooq-codegen-gradle") version "3.19.14"
+    id("org.jooq.jooq-codegen-gradle") version "3.19.15"
 
     eclipse
     idea
@@ -76,7 +76,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:6.0.0")
     library("org.flywaydb:flyway-core:10.20.1")
     library("org.flywaydb:flyway-mysql:10.20.1")
-    library("org.jooq:jooq:3.19.14")
+    library("org.jooq:jooq:3.19.15")
     jooqCodegen("com.h2database:h2:2.3.232")
 
     // Database Dependencies (JDBC Drivers)
@@ -100,7 +100,7 @@ dependencies {
     testImplementation("com.zaxxer:HikariCP:6.0.0")
     testImplementation("org.flywaydb:flyway-core:10.20.1")
     testImplementation("org.flywaydb:flyway-mysql:10.20.1")
-    testImplementation("org.jooq:jooq:3.19.14")
+    testImplementation("org.jooq:jooq:3.19.15")
 
     // Testing (JDBC Drivers)
     testImplementation("com.h2database:h2:2.3.232")
