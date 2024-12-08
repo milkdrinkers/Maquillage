@@ -56,13 +56,16 @@ public abstract class Queries {
                     .returningResult(TAGS.ID)
                     .fetchOne();
 
-                if (record == null)
-                    throw new SQLException("Failed to save new tag. The returned tag id was null!");
-
-                if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record.value1() != null) {
+                if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    return context.lastID().intValue(); // For SQLite
+                    final int rowId = context.lastID().intValue();
+                    context // Update ID field for SQLite
+                        .update(TAGS)
+                        .set(TAGS.ID, rowId)
+                        .where("rowid = ?", rowId)
+                        .execute();
+                    return rowId; // For SQLite
                 }
 
             } catch (SQLException | ArithmeticException e) {
@@ -290,13 +293,16 @@ public abstract class Queries {
                     .returningResult(COLORS.ID)
                     .fetchOne();
 
-                if (record == null)
-                    throw new SQLException("Failed to save new color. The returned color id was null!");
-
-                if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record.value1() != null) {
+                if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    return context.lastID().intValue(); // For SQLite
+                    final int rowId = context.lastID().intValue();
+                    context // Update ID field for SQLite
+                        .update(COLORS)
+                        .set(COLORS.ID, rowId)
+                        .where("rowid = ?", rowId)
+                        .execute();
+                    return rowId; // For SQLite
                 }
 
             } catch (SQLException | ArithmeticException e) {
