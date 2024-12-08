@@ -17,7 +17,6 @@ import java.util.Map;
 public class MigrationHandler {
     // List of Java migrations
     private final List<Class<? extends JavaMigration>> migrations = List.of(
-
     );
 
     private final DataSource dataSource;
@@ -27,7 +26,7 @@ public class MigrationHandler {
     /**
      * Instantiates a new Database migration handler.
      *
-     * @param dataSource   the data source
+     * @param dataSource     the data source
      * @param databaseConfig the database config
      */
     public MigrationHandler(DataSource dataSource, DatabaseConfig databaseConfig) {
@@ -51,7 +50,6 @@ public class MigrationHandler {
             .javaMigrationClassProvider(javaMigrationClassProvider)
             .dataSource(dataSource)
             .locations(
-                "classpath:database-migrations",
                 "db/migration"
             )
             .table(databaseConfig.getTablePrefix() + "schema_history") // Configure tables and migrations

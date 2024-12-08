@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.utility;
 
-import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.database.DatabaseType;
+import io.github.alathra.maquillage.database.handler.DatabaseHolder;
+import io.github.alathra.maquillage.database.handler.DatabaseType;
 import io.github.alathra.maquillage.database.handler.DatabaseHandler;
 import io.github.alathra.maquillage.database.jooq.JooqContext;
 import org.jetbrains.annotations.NotNull;
@@ -12,8 +12,31 @@ import java.sql.SQLException;
 
 /**
  * Convenience class for accessing methods in {@link DatabaseHandler#getConnection}
+ * This class abstracts away accessing the {@link DatabaseHolder} singleton
  */
 public abstract class DB {
+    /**
+     * Convenience method for {@link DatabaseHolder#setDatabaseHandler(DatabaseHandler)}
+     * Used to set the globally used database handler instance for the plugin
+     */
+    public static void init(DatabaseHandler handler) {
+        DatabaseHolder.getInstance().setDatabaseHandler(handler);
+    }
+
+    /**
+     * Convenience method for {@link DatabaseHandler#isReady()}
+     *
+     * @return if the database is ready
+     */
+    public static boolean isReady() {
+        DatabaseHandler handler = DatabaseHolder.getInstance().getDatabaseHandler();
+        if (handler == null)
+            return false;
+
+        return handler.isReady();
+
+    }
+
     /**
      * Convenience method for {@link DatabaseHandler#getConnection} to getConnection {@link Connection}
      *
@@ -22,7 +45,7 @@ public abstract class DB {
      */
     @NotNull
     public static Connection getConnection() throws SQLException {
-        return Maquillage.getInstance().getDataHandler().getConnection();
+        return DatabaseHolder.getInstance().getDatabaseHandler().getConnection();
     }
 
     /**
@@ -33,12 +56,16 @@ public abstract class DB {
      */
     @NotNull
     public static DSLContext getContext(Connection con) {
-        return Maquillage.getInstance().getDataHandler().getJooqContext().createContext(con);
+        return DatabaseHolder.getInstance().getDatabaseHandler().getJooqContext().createContext(con);
     }
 
+    /**
+     * Convenience method for accessing the {@link DatabaseHandler} instance
+     * @return the database handler
+     */
     @NotNull
     public static DatabaseHandler getHandler() {
-        return Maquillage.getInstance().getDataHandler();
+        return DatabaseHolder.getInstance().getDatabaseHandler();
     }
 
     /**
@@ -47,6 +74,6 @@ public abstract class DB {
      * @return the database
      */
     public static DatabaseType getDB() {
-        return Maquillage.getInstance().getDataHandler().getDB();
+        return DatabaseHolder.getInstance().getDatabaseHandler().getDB();
     }
 }

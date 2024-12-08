@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.database.pool;
 
 import com.zaxxer.hikari.HikariConfig;
-import io.github.alathra.maquillage.database.DatabaseType;
+import io.github.alathra.maquillage.database.handler.DatabaseType;
 import io.github.alathra.maquillage.database.config.DatabaseConfig;
 import io.github.alathra.maquillage.database.config.DatabaseConfigBuilder;
 import io.github.alathra.maquillage.database.exception.DatabaseInitializationException;
@@ -9,7 +9,7 @@ import io.github.alathra.maquillage.database.exception.DatabaseInitializationExc
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static io.github.alathra.maquillage.database.DatabaseType.SQLITE;
+import static io.github.alathra.maquillage.database.handler.DatabaseType.SQLITE;
 
 public abstract class ConnectionPoolConfigFactory {
     public static HikariConfig get() throws DatabaseInitializationException {

@@ -6,7 +6,7 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.database.DatabaseQueries;
+import io.github.alathra.maquillage.database.Queries;
 import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
@@ -72,7 +72,7 @@ public class CommandNickname {
                             .parseMinimessagePlaceholder("nickname", nick).build());
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
-                            DatabaseQueries.savePlayerNickname(player, nick);
+                            Queries.Nickname.savePlayerNickname(player, nick);
                         });
                     }),
                 new CommandAPICommand("clear")
@@ -102,7 +102,7 @@ public class CommandNickname {
                             .parseMinimessagePlaceholder("player", player.getName()).build());
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
-                            DatabaseQueries.clearPlayerNickname(player);
+                            Queries.Nickname.clearPlayerNickname(player);
                         });
                     })
             );

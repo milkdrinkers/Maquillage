@@ -1,7 +1,8 @@
 package io.github.alathra.maquillage.database;
 
-import io.github.alathra.maquillage.database.handler.DatabaseHandler;
 import io.github.alathra.maquillage.database.config.DatabaseConfigBuilder;
+import io.github.alathra.maquillage.database.handler.DatabaseHandlerBuilder;
+import io.github.alathra.maquillage.utility.DB;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -13,8 +14,8 @@ public abstract class AbstractExternalDatabaseTest extends AbstractDatabaseTest 
     @Container
     public static GenericContainer<?> container;
 
-    public AbstractExternalDatabaseTest(String jdbcPrefix, DatabaseType requiredDatabaseType, GenericContainer<?> container) {
-        super(jdbcPrefix, requiredDatabaseType);
+    AbstractExternalDatabaseTest(GenericContainer<?> container, DatabaseTestParams testConfig) {
+        super(testConfig);
         AbstractExternalDatabaseTest.container = container;
         container.start();
     }
@@ -25,17 +26,23 @@ public abstract class AbstractExternalDatabaseTest extends AbstractDatabaseTest 
         Assertions.assertTrue(container.isRunning());
 
         databaseConfig = new DatabaseConfigBuilder()
-            .withDatabaseType(jdbcPrefix)
+            .withDatabaseType(getTestConfig().jdbcPrefix())
             .withDatabase("testing")
             .withHost(container.getHost())
             .withPort(container.getFirstMappedPort())
             .withUsername("root")
             .withPassword("")
+            .withTablePrefix(getTestConfig().tablePrefix())
             .build();
-        Assertions.assertEquals(requiredDatabaseType, databaseConfig.getDatabaseType());
+        Assertions.assertEquals(getTestConfig().requiredDatabaseType(), databaseConfig.getDatabaseType());
 
-        databaseHandler = new DatabaseHandler(databaseConfig, logger);
-        databaseHandler.startup();
+        DB.init(
+            new DatabaseHandlerBuilder()
+                .withDatabaseConfig(databaseConfig)
+                .withLogger(logger)
+                .build()
+        );
+        DB.getHandler().startup();
     }
 
     @AfterAll

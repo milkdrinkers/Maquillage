@@ -4,6 +4,7 @@ import com.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.maquillage.command.CommandHandler;
 import io.github.alathra.maquillage.config.ConfigHandler;
 import io.github.alathra.maquillage.database.handler.DatabaseHandler;
+import io.github.alathra.maquillage.database.handler.DatabaseHandlerBuilder;
 import io.github.alathra.maquillage.database.sync.SyncHandler;
 import io.github.alathra.maquillage.hook.BStatsHook;
 import io.github.alathra.maquillage.hook.EssentialsHook;
@@ -14,7 +15,7 @@ import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.alathra.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.alathra.maquillage.translation.TranslationManager;
 import io.github.alathra.maquillage.updatechecker.UpdateChecker;
-import io.github.alathra.maquillage.utility.ImportUtil;
+import io.github.alathra.maquillage.utility.DB;
 import io.github.alathra.maquillage.utility.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +25,6 @@ public class Maquillage extends JavaPlugin {
     private static Maquillage instance;
     private ConfigHandler configHandler;
     private TranslationManager translationManager;
-    private DatabaseHandler databaseHandler;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
     private UpdateChecker updateChecker;
@@ -49,7 +49,12 @@ public class Maquillage extends JavaPlugin {
         instance = this;
         configHandler = new ConfigHandler(instance);
         translationManager = new TranslationManager(instance);
-        databaseHandler = new DatabaseHandler(configHandler, getComponentLogger());
+        DB.init(
+            new DatabaseHandlerBuilder()
+                .withConfigHandler(configHandler)
+                .withLogger(getComponentLogger())
+                .build()
+        );
         commandHandler = new CommandHandler(instance);
         listenerHandler = new ListenerHandler(instance);
         updateChecker = new UpdateChecker();
@@ -61,7 +66,7 @@ public class Maquillage extends JavaPlugin {
 
         configHandler.onLoad();
         translationManager.onLoad();
-        databaseHandler.onLoad();
+        DB.getHandler().onLoad();
         commandHandler.onLoad();
         listenerHandler.onLoad();
         updateChecker.onLoad();
@@ -75,7 +80,7 @@ public class Maquillage extends JavaPlugin {
     public void onEnable() {
         configHandler.onEnable();
         translationManager.onEnable();
-        databaseHandler.onEnable();
+        DB.getHandler().onEnable();
         commandHandler.onEnable();
         listenerHandler.onEnable();
         updateChecker.onEnable();
@@ -84,7 +89,7 @@ public class Maquillage extends JavaPlugin {
         essentialsHook.onEnable();
         papiHook.onEnable();
 
-        if (!databaseHandler.isRunning()) {
+        if (!DB.isReady()) {
             Logger.get().warn(ColorParser.of("<yellow>Database handler failed to start. Database support has been disabled.").build());
             Bukkit.getPluginManager().disablePlugin(this);
         }
@@ -112,7 +117,7 @@ public class Maquillage extends JavaPlugin {
     public void onDisable() {
         configHandler.onDisable();
         translationManager.onDisable();
-        databaseHandler.onDisable();
+        DB.getHandler().onDisable();
         commandHandler.onDisable();
         listenerHandler.onDisable();
         updateChecker.onDisable();
@@ -129,16 +134,6 @@ public class Maquillage extends JavaPlugin {
         onDisable();
         onLoad();
         onEnable();
-    }
-
-    /**
-     * Gets data handler.
-     *
-     * @return the data handler
-     */
-    @NotNull
-    public DatabaseHandler getDataHandler() {
-        return databaseHandler;
     }
 
     /**

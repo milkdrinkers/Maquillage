@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.listener.listeners;
 
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.database.DatabaseQueries;
+import io.github.alathra.maquillage.database.Queries;
 import io.github.alathra.maquillage.event.PlayerDataLoadedEvent;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataBuilder;
@@ -12,8 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.jooq.Record1;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class PlayerJoinListener implements Listener {
@@ -36,33 +36,16 @@ public class PlayerJoinListener implements Listener {
 
     private CompletableFuture<PlayerData> loadPlayerData(Player p) {
         return CompletableFuture.supplyAsync(() -> {
-            Record1<Integer> colorRecord = DatabaseQueries.loadPlayerColor(p);
-            int colorID;
-            if (colorRecord == null)
-                colorID = -1;
-            else
-                colorID = colorRecord.component1();
-
-            Record1<Integer> tagRecord = DatabaseQueries.loadPlayerTag(p);
-            int tagID;
-            if (tagRecord == null)
-                tagID = -1;
-            else
-                tagID = tagRecord.component1();
-
-            Record1<String> nicknameRecord = DatabaseQueries.loadPlayerNickname(p);
-            String nick;
-            if (nicknameRecord == null)
-                nick = null;
-            else
-                nick = nicknameRecord.component1();
+            final Optional<Integer> namecolorId = Queries.NameColor.Players.loadPlayerColor(p);
+            final Optional<Integer> tagId = Queries.Tag.Players.loadPlayerTag(p);
+            final Optional<String> nickname = Queries.Nickname.loadPlayerNickname(p);
 
             return new PlayerDataBuilder()
                 .withUuid(p.getUniqueId())
                 .withPlayer(p)
-                .withNameColorId(colorID)
-                .withTagId(tagID)
-                .withNickname(nick)
+                .withNameColorId(namecolorId.orElse(-1))
+                .withTagId(tagId.orElse(-1))
+                .withNickname(nickname.orElse(null))
                 .build();
         });
     }

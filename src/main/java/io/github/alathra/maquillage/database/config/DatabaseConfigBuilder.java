@@ -1,6 +1,6 @@
 package io.github.alathra.maquillage.database.config;
 
-import io.github.alathra.maquillage.database.DatabaseType;
+import io.github.alathra.maquillage.database.handler.DatabaseType;
 import org.jetbrains.annotations.Nullable;
 
 import java.nio.file.Path;

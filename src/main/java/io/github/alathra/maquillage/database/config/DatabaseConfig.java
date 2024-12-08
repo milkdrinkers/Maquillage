@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.database.config;
 
 import com.github.milkdrinkers.crate.Config;
-import io.github.alathra.maquillage.database.DatabaseType;
+import io.github.alathra.maquillage.database.handler.DatabaseType;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
 
@@ -56,7 +56,7 @@ public class DatabaseConfig {
      * @param connectionTimeout    the connection timeout
      * @param connectionProperties the connection properties
      */
-     DatabaseConfig(
+    DatabaseConfig(
         DatabaseType databaseType,
         String tablePrefix,
         @Nullable Path path,

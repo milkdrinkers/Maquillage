@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.module.cosmetic.tag;
 
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.database.DatabaseQueries;
+import io.github.alathra.maquillage.database.Queries;
 import io.github.alathra.maquillage.database.sync.SyncHandler;
 import io.github.alathra.maquillage.gui.GuiCooldown;
 import io.github.alathra.maquillage.module.cosmetic.BaseCosmeticHolder;
@@ -11,7 +11,6 @@ import io.github.alathra.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record4;
-import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
@@ -74,7 +73,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public int add(String value, String perm, String label) {
-        int databaseId = DatabaseQueries.saveTag(value, perm, label);
+        int databaseId = Queries.Tag.saveTag(value, perm, label);
         if (databaseId != -1) {
             cacheAdd(
                 new TagBuilder()
@@ -91,7 +90,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public boolean remove(Tag value) {
-        boolean success = DatabaseQueries.removeTag(value.getDatabaseId());
+        boolean success = Queries.Tag.removeTag(value.getDatabaseId());
         if (!success)
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
@@ -102,7 +101,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public boolean update(String value, String perm, String label, int databaseId) {
-        boolean success = DatabaseQueries.updateTag(value, perm, label, databaseId);
+        boolean success = Queries.Tag.updateTag(value, perm, label, databaseId);
         if (!success)
             return false;
 
@@ -125,7 +124,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void loadAll() {
-        Result<Record4<Integer, String, String, String>> result = DatabaseQueries.loadAllTags();
+        Result<Record4<Integer, String, String, String>> result = Queries.Tag.loadAllTags();
 
         if (result == null)
             return;
@@ -181,7 +180,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         if (playerData != null)
             playerData.clearTag();
 
-        DatabaseQueries.removePlayerTag(uuid);
+        Queries.Tag.Players.removePlayerTag(uuid);
     }
 
     public static void clearPlayerTag(Player p) {
@@ -206,7 +205,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
         final int tagID = tag.getDatabaseId();
         playerData.setTag(tag);
-        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerTag(uuid, tagID));
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> Queries.Tag.Players.savePlayerTag(uuid, tagID));
 
         return true;
     }

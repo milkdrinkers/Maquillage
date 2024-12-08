@@ -1,4 +1,4 @@
-package io.github.alathra.maquillage.database;
+package io.github.alathra.maquillage.database.handler;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 import com.mysql.jdbc.Driver;
@@ -29,23 +29,23 @@ public enum DatabaseType {
      * MariaDB database type.
      */
     MARIADB("MariaDB", org.mariadb.jdbc.Driver.class.getName(), MariaDbDataSource.class.getName(), "mariadb", '?', '&'),
-	;
+    ;
 
     private final String driverName;
     private final String driverClassName;
-	private final String dataSourceClassName;
-	private final String jdbcPrefix;
-	private final char jdbcPropertyPrefix;
-	private final char jdbcPropertySeparator;
+    private final String dataSourceClassName;
+    private final String jdbcPrefix;
+    private final char jdbcPropertyPrefix;
+    private final char jdbcPropertySeparator;
 
-	DatabaseType(String driverName, String driverClassName, String dataSourceClassName, String jdbcPrefix, char jdbcPropertyPrefix, char jdbcPropertySeparator) {
-		this.driverName = driverName;
-		this.driverClassName = driverClassName;
-		this.dataSourceClassName = dataSourceClassName;
+    DatabaseType(String driverName, String driverClassName, String dataSourceClassName, String jdbcPrefix, char jdbcPropertyPrefix, char jdbcPropertySeparator) {
+        this.driverName = driverName;
+        this.driverClassName = driverClassName;
+        this.dataSourceClassName = dataSourceClassName;
         this.jdbcPrefix = jdbcPrefix;
-		this.jdbcPropertyPrefix = jdbcPropertyPrefix;
-		this.jdbcPropertySeparator = jdbcPropertySeparator;
-	}
+        this.jdbcPropertyPrefix = jdbcPropertyPrefix;
+        this.jdbcPropertySeparator = jdbcPropertySeparator;
+    }
 
     /**
      * Gets driver name.
@@ -108,14 +108,14 @@ public enum DatabaseType {
      * @return the string
      */
     public String formatJdbcConnectionProperties(Map<String, Object> properties) {
-		if (properties.isEmpty()) return "";
+        if (properties.isEmpty()) return "";
 
         List<String> connectionProperties = properties.entrySet().stream()
             .map(map -> "%s=%s".formatted(map.getKey(), map.getValue()))
             .toList();
 
-		return String.join(Character.toString(getJdbcPropertySeparator()), connectionProperties);
-	}
+        return String.join(Character.toString(getJdbcPropertySeparator()), connectionProperties);
+    }
 
 
     /**
@@ -125,8 +125,8 @@ public enum DatabaseType {
      * @return the database type or null
      */
     @Nullable
-    public static io.github.alathra.maquillage.database.DatabaseType getDatabaseTypeFromJdbcPrefix(String prefix) {
-        for (io.github.alathra.maquillage.database.DatabaseType type : io.github.alathra.maquillage.database.DatabaseType.values()) {
+    public static DatabaseType getDatabaseTypeFromJdbcPrefix(String prefix) {
+        for (DatabaseType type : DatabaseType.values()) {
             if (type.equals(prefix.toLowerCase())) {
                 return type;
             }
@@ -146,7 +146,7 @@ public enum DatabaseType {
      * @param DatabaseType the database type
      * @return boolean
      */
-    public boolean equals(io.github.alathra.maquillage.database.DatabaseType DatabaseType) {
+    public boolean equals(DatabaseType DatabaseType) {
         return this.equals(DatabaseType.getDriverName());
     }
 
@@ -193,7 +193,7 @@ public enum DatabaseType {
      */
     public String getDefaultConnectionProperties() {
         return getJdbcPropertyPrefix() + switch (this) {
-            case H2 -> io.github.alathra.maquillage.database.DatabaseType.H2.formatJdbcConnectionProperties(
+            case H2 -> DatabaseType.H2.formatJdbcConnectionProperties(
                 Map.of(
                     "AUTO_SERVER", "TRUE",
                     "MODE", "MySQL",  // MySQL support mode
@@ -202,7 +202,7 @@ public enum DatabaseType {
                 )
             );
             case SQLITE -> "";
-            case MYSQL -> io.github.alathra.maquillage.database.DatabaseType.MYSQL.formatJdbcConnectionProperties(
+            case MYSQL -> DatabaseType.MYSQL.formatJdbcConnectionProperties(
                 Map.of(
                     // Base settings
                     "useUnicode", true,
@@ -223,7 +223,7 @@ public enum DatabaseType {
                     "dumpQueriesOnException", true
                 )
             );
-            case MARIADB -> io.github.alathra.maquillage.database.DatabaseType.MARIADB.formatJdbcConnectionProperties(
+            case MARIADB -> DatabaseType.MARIADB.formatJdbcConnectionProperties(
                 Map.of(
                     // Base settings
                     "useUnicode", true,

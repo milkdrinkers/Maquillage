@@ -1,7 +1,7 @@
 package io.github.alathra.maquillage.module.cosmetic.namecolor;
 
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.database.DatabaseQueries;
+import io.github.alathra.maquillage.database.Queries;
 import io.github.alathra.maquillage.database.sync.SyncHandler;
 import io.github.alathra.maquillage.gui.GuiCooldown;
 import io.github.alathra.maquillage.module.cosmetic.BaseCosmeticHolder;
@@ -11,7 +11,6 @@ import io.github.alathra.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jooq.Record4;
-import org.jooq.Record5;
 import org.jooq.Result;
 
 import java.util.HashMap;
@@ -73,7 +72,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public int add(String value, String perm, String label) {
-        int databaseId = DatabaseQueries.saveColor(value, perm, label);
+        int databaseId = Queries.NameColor.saveColor(value, perm, label);
         if (databaseId != -1) {
             cacheAdd(
                 new NameColorBuilder()
@@ -90,7 +89,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public boolean remove(NameColor value) {
-        boolean success = DatabaseQueries.removeColor(value.getDatabaseId());
+        boolean success = Queries.NameColor.removeColor(value.getDatabaseId());
         if (!success)
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
@@ -101,7 +100,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public boolean update(String value, String perm, String label, int databaseId) {
-        boolean success = DatabaseQueries.updateColor(value, perm, label, databaseId);
+        boolean success = Queries.NameColor.updateColor(value, perm, label, databaseId);
         if (!success)
             return false;
 
@@ -124,7 +123,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void loadAll() {
-        Result<Record4<Integer, String, String, String>> result = DatabaseQueries.loadAllColors();
+        Result<Record4<Integer, String, String, String>> result = Queries.NameColor.loadAllColors();
 
         if (result == null)
             return;
@@ -180,7 +179,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         if (playerData != null)
             playerData.clearNameColor();
 
-        DatabaseQueries.removePlayerColor(uuid);
+        Queries.NameColor.Players.removePlayerColor(uuid);
     }
 
     public static void clearPlayerColor(Player p) {
@@ -205,7 +204,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
         final int databaseId = nameColor.getDatabaseId();
         playerData.setNameColor(nameColor);
-        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.savePlayerColor(uuid, databaseId));
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> Queries.NameColor.Players.savePlayerColor(uuid, databaseId));
 
         return true;
     }

@@ -2,7 +2,7 @@ package io.github.alathra.maquillage.database.sync;
 
 import io.github.alathra.maquillage.Maquillage;
 import io.github.alathra.maquillage.Reloadable;
-import io.github.alathra.maquillage.database.DatabaseQueries;
+import io.github.alathra.maquillage.database.Queries;
 import io.github.alathra.maquillage.database.schema.Tables;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.alathra.maquillage.module.cosmetic.namecolor.NameColorBuilder;
@@ -58,7 +58,7 @@ public class SyncHandler implements Reloadable {
     private int latestSyncId = -1;
 
     private void runCleanUp() {
-        DatabaseQueries.cleanUpSyncMessages();
+        Queries.Sync.cleanUpSyncMessages();
     }
 
     private void sync() {
@@ -134,15 +134,15 @@ public class SyncHandler implements Reloadable {
     }
 
     private CompletableFuture<Result<Record3<Integer, String, LocalDateTime>>> fetchSyncMessages() {
-        return CompletableFuture.supplyAsync(() -> DatabaseQueries.fetchSyncMessages(latestSyncId));
+        return CompletableFuture.supplyAsync(() -> Queries.Sync.fetchSyncMessages(latestSyncId));
     }
 
     private CompletableFuture<Record> fetchColor(final int id) {
-        return CompletableFuture.supplyAsync(() -> DatabaseQueries.loadColor(id));
+        return CompletableFuture.supplyAsync(() -> Queries.NameColor.loadColor(id));
     }
 
     private CompletableFuture<Record> fetchTag(final int id) {
-        return CompletableFuture.supplyAsync(() -> DatabaseQueries.loadTag(id));
+        return CompletableFuture.supplyAsync(() -> Queries.Tag.loadTag(id));
     }
 
     public int getLatestSyncId() {
@@ -153,8 +153,7 @@ public class SyncHandler implements Reloadable {
         this.latestSyncId = latestSyncId;
     }
 
-    public void saveSyncMessage(SyncAction action, SyncType type, final int id) {
-        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> DatabaseQueries.saveSyncMessage(action.name() + " " + type.name() + " " + id));
+    public void saveSyncMessage(final SyncAction action, final SyncType type, final int id) {
+        Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> Queries.Sync.saveSyncMessage(action, type, id));
     }
-
 }
