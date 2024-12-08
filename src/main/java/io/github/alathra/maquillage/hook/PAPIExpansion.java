@@ -2,11 +2,9 @@ package io.github.alathra.maquillage.hook;
 
 import com.earth2me.essentials.Essentials;
 import io.github.alathra.maquillage.Maquillage;
-import io.github.alathra.maquillage.module.nickname.NicknameLookup;
 import io.github.alathra.maquillage.player.PlayerData;
 import io.github.alathra.maquillage.player.PlayerDataHolder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import net.ess3.api.IUser;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -70,8 +68,7 @@ public class PAPIExpansion extends PlaceholderExpansion {
                 // Use essentials nickname if essentials is loaded
                 if (Maquillage.getEssentialsHook().isHookLoaded()) {
                     Essentials essentials = Maquillage.getEssentialsHook().getHook();
-                    IUser user = essentials.getUser(p);
-                    String nickname = user.getFormattedNickname();
+                    String nickname = essentials.getUser(p).getFormattedNickname();
 
                     if (nickname != null)
                         newName = nickname;
