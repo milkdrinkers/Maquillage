@@ -3,6 +3,8 @@ import java.time.Instant
 
 plugins {
     `java-library`
+    `maven-publish`
+    signing
 
     alias(libs.plugins.shadow) // Shades and relocates dependencies, see https://gradleup.com/shadow/
     alias(libs.plugins.run.paper) // Built in test server using runServer and runMojangMappedServer tasks
@@ -252,4 +254,66 @@ fun applyCustomVersion() {
 
     // Strip prefixed "v" from version tag
     rootProject.version = (if (ver.first().equals('v', true)) ver.substring(1) else ver.uppercase()).uppercase()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "io.github.alathra"
+            artifactId = "maquillage"
+            version = "${rootProject.version}"
+
+            pom {
+                name.set(rootProject.name)
+                description.set(rootProject.description.orEmpty())
+                url.set("https://github.com/Alathra/Maquillage")
+                licenses {
+                    license {
+                        name.set("GNU General Public License Version 3")
+                        url.set("https://www.gnu.org/licenses/gpl-3.0.en.html#license-text")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("rooooose-b")
+                        name.set("Rose")
+                        url.set("https://github.com/rooooose-b")
+                        organization.set("Alathra")
+                        organizationUrl.set("https://github.com/Alathra")
+                    }
+                    developer {
+                        id.set("darksaid98")
+                        name.set("darksaid98")
+                        email.set("darksaid9889@gmail.com")
+                        url.set("https://github.com/darksaid98")
+                        organization.set("Alathra")
+                        organizationUrl.set("https://github.com/Alathra")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git://github.com/Alathra/Maquillage.git")
+                    developerConnection.set("scm:git:ssh://github.com:Alathra/Maquillage.git")
+                    url.set("https://github.com/Alathra/Maquillage")
+                }
+            }
+
+            from(components["java"])
+        }
+    }
+
+    repositories {
+        maven {
+            name = "central"
+            url = uri("https://central.sonatype.com")
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(System.getenv("GPG_KEY"), System.getenv("GPG_PASSWORD"))
+    sign(publishing.publications["maven"])
 }

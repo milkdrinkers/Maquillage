@@ -107,7 +107,12 @@ jobs:
           echo "CUSTOM_VERSION=${{ github.ref_name }}" >> $GITHUB_ENV
 
       - name: Build with Gradle
-        run: ./gradlew build -PaltVer=${{ env.CUSTOM_VERSION }} -x test --info
+        run: ./gradlew build publishAllPublicationsToCentralRepository -PaltVer=${{ env.CUSTOM_VERSION }} -x test --info
+        env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          GPG_KEY: ${{ secrets.OSSRH_GPG_SECRET_KEY }}
+          GPG_PASSWORD: ${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }}
 
       - name: Generate Build Provenance Attestations
         uses: actions/attest-build-provenance@v2
