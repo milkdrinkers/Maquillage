@@ -57,9 +57,7 @@ dependencies {
         exclude("net.kyori")
     }
     implementation(libs.commandapi.shade)
-    implementation(libs.triumph.gui) {
-        exclude("net.kyori")
-    }
+    implementation(libs.triumph.gui)
 
     // Plugin Dependencies
     implementation(libs.bstats)
@@ -160,7 +158,7 @@ tasks {
 
     runServer {
         // Configure the Minecraft version for our task.
-        minecraftVersion("1.19.4")
+        minecraftVersion("1.21.1")
 
         // IntelliJ IDEA debugger setup: https://docs.papermc.io/paper/dev/debugging#using-a-remote-debugger
         jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true", "-DIReallyKnowWhatIAmDoingISwear", "-Dpaper.playerconnection.keepalive=6000")
@@ -169,13 +167,16 @@ tasks {
 
         // Automatically install dependencies
         downloadPlugins {
-//            modrinth("carbon", "2.1.0-beta.21")
-//            github("jpenilla", "MiniMOTD", "v2.0.13", "minimotd-bukkit-2.0.13.jar")
-//            hangar("squaremap", "1.2.0")
-//            url("https://download.luckperms.net/1515/bukkit/loader/LuckPerms-Bukkit-5.4.102.jar")
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
-            github("PlaceholderAPI", "PlaceholderAPI", "2.11.4", "PlaceholderAPI-2.11.4.jar")
+            url("https://ci.extendedclip.com/job/PlaceholderAPI/197/artifact/build/libs/PlaceholderAPI-2.11.6.jar")
+            github("EssentialsX", "Essentials", "2.20.1", "EssentialsX-2.20.1.jar")
         }
+    }
+}
+
+tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
+    javaLauncher = javaToolchains.launcherFor {
+        languageVersion = JavaLanguageVersion.of(21) // Set runServer java to the required Minecraft version
     }
 }
 
