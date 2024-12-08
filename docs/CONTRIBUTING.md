@@ -36,9 +36,9 @@ Our project adheres to the [Semantic Versioning 2.0.0 specification](https://sem
 
 ### Style Guide
 
-Large refactors breaking the style defined in the `.editorconfig` file are frowned upon. 
+Large refactors breaking the style defined in the `.editorconfig` file are frowned upon.
 When contributing ensure your code follows existing conventions and styling. (*Any issues that arise will be noted in your pull request.*)
 
 ## Licensing
 
-You must agree that your patch will be licensed under the main license found in this repository, and if we change the license, we will assume that you agreed with the change unless you object to the changes in time.
+All contributors agree to adhere to the terms and conditions of our [Contributor License Agreement (CLA)](CONTRIBUTOR_LICENSE_AGREEMENT.md).
