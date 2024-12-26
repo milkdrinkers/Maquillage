@@ -15,7 +15,7 @@ public class TagBuilder {
     }
 
     public TagBuilder withPerm(String perm) {
-        if (!perm.isEmpty())
+        if (!perm.isEmpty() && !perm.startsWith("maquillage.tag."))
             perm = "maquillage.tag." + perm;
 
         this.perm = perm;
