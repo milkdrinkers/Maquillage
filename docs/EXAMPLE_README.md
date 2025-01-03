@@ -18,7 +18,27 @@
     <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Alathra/Template-Gradle-Plugin?style=for-the-badge&labelColor=141417">
 </p>
 
-Write your description of what your plugin is for here! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam facilisis a justo sit amet suscipit. Integer nec ipsum tincidunt, pretium lectus quis, feugiat elit. Phasellus nisl purus, ullamcorper a magna vel, commodo scelerisque ante. Nam mollis nulla non risus accumsan, ut porttitor justo gravida. Aenean turpis elit, porta sit amet diam sit amet, congue hendrerit est. Mauris pharetra elit lacus, id dictum diam facilisis vitae. Curabitur non finibus ex.
+Maquillage is a plugin that lets you add tags and name colors that players can select through a GUI. You can add tags and name colors either through in-game commands or by importing them (see below).
+
+Maquillage also supports nicknames, either through Maquillage itself, but it also has placeholders that support [EssentialsX](https://essentialsx.net/) nicknames.
+
+To have Maquillage cosmetics appear in chat, you need a chat plugin that supports MiniMessage. Examples of this include [EssentialsX](https://essentialsx.net/) and [SunLight](https://www.spigotmc.org/resources/sunlight-%E2%AD%90-best-z-essentials-cmi-alternative.67733/). For Maquillage cosmetics in the tab-menu you need a tab-plugin that support MiniMessage, and an example of that is [TAB](https://www.spigotmc.org/resources/tab-1-5-1-21-1.57806/).
+
+### Multi-server support
+Maquillage can be run on multiple servers and will keep data up-to-date between them. To run on multiple servers, you need to use the same remote database for all servers. Any changes you make on one server will then be implemented on the other servers.
+
+### Modules
+Maquillage is entirely modular, and disabling any modules will not affect your ability to use the other modules.
+
+### PlaceholderAPI
+Maquillage uses PlaceholderAPI (PAPI) to provide parseable strings. These are the available placeholders:
+```
+%maquillage_namecolor% - The player's selected namecolor, followed by their username.
+%maquillage_namecolor_nickname% - The player's selected namecolor, followed by their Maquillage nickname.
+%maquillage_namecolor_essentialsnick% - The player's selected namecolor, followed by their EssentialsX nickname.
+%maquillage_tag% - The player's selected tag, with a trailing white space.
+%maquillage_tag_nospace% - The player's selected tag without a trailing white space.
+```
 
 ---
 
@@ -133,14 +153,6 @@ Contributions are always welcome! Please make sure to read our [Contributor's Gu
 
 We also ask that you adhere to our [Contributor Code of Conduct](CODE_OF_CONDUCT.md) to ensure this community remains a place where all feel welcome to participate.
 
-### Translations
-
-<a href="https://crowdin.com/">
-    <img alt="Crowdin" src="https://img.shields.io/badge/CROWDIN-141417?style=for-the-badge&logo=crowdin&logoColor=white">
-</a>
-
-If you wish to help translate the plugin check out our [Crowdin here](https://crowdin.com/)!
-
 ---
 
 ## 📝 Licensing
@@ -151,4 +163,4 @@ You can find the license the source code and all assets are under [here](../LICE
 
 ## ❤️ Acknowledgments
 
-- **[SOME_NAME:](LINK)** _Lorem ipsum dolor sit amet, consectetur adipiscing elit._
+- **[darksaid98](https://github.com/darksaid98)** _for a wonderful plugin template and great advice and help during the development process_
