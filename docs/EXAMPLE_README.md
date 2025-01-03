@@ -2,7 +2,7 @@
 
 ---
 
-<h1 style="text-align:center;">Project Name</h1>
+<h1 style="text-align:center;">Maquillage</h1>
 
 <p style="text-align:center;">
     <a href="https://github.com/Alathra/Template-Gradle-Plugin/blob/main/LICENSE">
@@ -24,12 +24,15 @@ Write your description of what your plugin is for here! Lorem ipsum dolor sit am
 
 ## 🌟 Features
 
-- Lorem...
-- ...
+* Create tags and name colors with [MiniMessage](https://docs.advntr.dev/minimessage/index.html) support
+* Player choosable tags and name colors, with permission support
+* Bulk import tags and name colors
+* Bulk import tags from other tag plugins
+* Support for any chat or tab-menu plugin that supports MiniMessage
 
 ---
 
-## 📦 Downloads
+## 📦 Downloads (To be added)
 
 <a href="https://github.com/Alathra/Template-Gradle-Plugin/releases/latest">
     <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/Alathra/Template-Gradle-Plugin/total?style=for-the-badge&logo=github&logoColor=white&labelColor=141417">
@@ -63,7 +66,7 @@ Experimental builds/snapshots are denoted by having `SNAPSHOT` in the name and s
 
 ## 🤝 Bugs & Feature Requests
 
-If you happen to find any bugs or wish to request a feature, please open an issue on our [issue tracker here](https://github.com/Alathra/Template-Gradle-Plugin/issues). We provide bug report and feature request templates, so it is important that you fill out all the necessary information.
+If you happen to find any bugs or wish to request a feature, please open an issue on our [issue tracker here](https://github.com/Alathra/Maquillage/issues). We provide bug report and feature request templates, so it is important that you fill out all the necessary information.
 
 Making your issue easy to read and follow will usually result in it being handled faster. Failure to provide the requested information in an issue may result in it being closed.
 
