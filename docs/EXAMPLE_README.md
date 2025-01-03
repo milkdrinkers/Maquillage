@@ -5,17 +5,17 @@
 <h1 style="text-align:center;">Maquillage</h1>
 
 <p style="text-align:center;">
-    <a href="https://github.com/Alathra/Template-Gradle-Plugin/blob/main/LICENSE">
-        <img alt="GitHub License" src="https://img.shields.io/github/license/Alathra/Template-Gradle-Plugin?style=for-the-badge&color=blue&labelColor=141417">
+    <a href="https://github.com/milkdrinkers/Maquillage/blob/main/LICENSE">
+        <img alt="GitHub License" src="https://img.shields.io/github/license/milkdrinkers/Maquillage?style=for-the-badge&color=blue&labelColor=141417">
     </a>
-    <a href="https://github.com/Alathra/Template-Gradle-Plugin/releases">
-        <img alt="GitHub Release" src="https://img.shields.io/github/v/release/Alathra/Template-Gradle-Plugin?include_prereleases&sort=semver&style=for-the-badge&label=LATEST%20VERSION&labelColor=141417">
+    <a href="https://github.com/milkdrinkers/Maquillage/releases">
+        <img alt="GitHub Release" src="https://img.shields.io/github/v/release/milkdrinkers/Maquillage?include_prereleases&sort=semver&style=for-the-badge&label=LATEST%20VERSION&labelColor=141417">
     </a>
-    <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/Alathra/Template-Gradle-Plugin/ci.yml?style=for-the-badge&labelColor=141417">
-    <a href="https://github.com/Alathra/Template-Gradle-Plugin/issues">
-        <img alt="GitHub Issues" src="https://img.shields.io/github/issues/Alathra/Template-Gradle-Plugin?style=for-the-badge&labelColor=141417">
+    <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/milkdrinkers/Maquillage/ci.yml?style=for-the-badge&labelColor=141417">
+    <a href="https://github.com/milkdrinkers/Maquillage/issues">
+        <img alt="GitHub Issues" src="https://img.shields.io/github/issues/milkdrinkers/Maquillage?style=for-the-badge&labelColor=141417">
     </a>
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Alathra/Template-Gradle-Plugin?style=for-the-badge&labelColor=141417">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/milkdrinkers/Maquillage?style=for-the-badge&labelColor=141417">
 </p>
 
 Maquillage is a plugin that lets you add tags and name colors that players can select through a GUI. You can add tags and name colors either through in-game commands or by importing them.
@@ -58,11 +58,11 @@ Maquillage uses PlaceholderAPI (PAPI) to provide parseable strings. These are th
 
 ## 📦 Downloads (To be added)
 
-<a href="https://github.com/Alathra/Template-Gradle-Plugin/releases/latest">
-    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/Alathra/Template-Gradle-Plugin/total?style=for-the-badge&logo=github&logoColor=white&labelColor=141417">
+<a href="https://github.com/milkdrinkers/Maquillage/releases/latest">
+    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/milkdrinkers/Maquillage/total?style=for-the-badge&logo=github&logoColor=white&labelColor=141417">
 </a>
 <a href="https://www.spigotmc.org/">
-    <img alt="Spiget Downloads" src="https://img.shields.io/spiget/downloads/9089?style=for-the-badge&logo=spigotmc&logoColor=white&label=SPIGOT&labelColor=141417">
+    <img alt="Spigot Downloads" src="https://img.shields.io/spiget/downloads/9089?style=for-the-badge&logo=spigotmc&logoColor=white&label=SPIGOT&labelColor=141417">
 </a>
 <a href="https://modrinth.com/">
     <img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/essentialsx?style=for-the-badge&logo=modrinth&logoColor=white&label=MODRINTH&labelColor=141417">
@@ -168,3 +168,6 @@ You can find the license the source code and all assets are under [here](../LICE
 ## ❤️ Acknowledgments
 
 - **[darksaid98](https://github.com/darksaid98)** _for a wonderful plugin template and great advice and help during the development process_
+
+---
+<img src="https://bstats.org/signatures/bukkit/maquillage.svg"/>
