@@ -1,7 +1,6 @@
 package io.github.milkdrinkers.maquillage.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
-import io.github.alathra.maquillage.command.cosmetic.*;
 import io.github.milkdrinkers.maquillage.command.cosmetic.*;
 
 class CommandMaquillage {

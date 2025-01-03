@@ -2,7 +2,6 @@ package io.github.milkdrinkers.maquillage.listener;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
-import io.github.alathra.maquillage.listener.listeners.*;
 import io.github.milkdrinkers.maquillage.listener.listeners.*;
 
 /**
