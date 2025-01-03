@@ -259,7 +259,7 @@ fun applyCustomVersion() {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "io.github.alathra"
+            groupId = "io.github.milkdrinkers"
             artifactId = "maquillage"
             version = "${rootProject.version}"
 
