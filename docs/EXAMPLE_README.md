@@ -1,4 +1,4 @@
-<img style="text-align:center;" src="assets/example_banner.webp" alt="project banner">
+<img style="text-align:center;" src="assets/maquillage banner.png" alt="project banner">
 
 ---
 
