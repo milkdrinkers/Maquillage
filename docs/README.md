@@ -30,7 +30,7 @@ To have Maquillage cosmetics appear in chat, you need a chat plugin that support
 
 * Create tags and name colors with [MiniMessage](https://docs.advntr.dev/minimessage/index.html) support
 * Player choosable tags and name colors, with permission support
-* Bulk import tags and name colors
+* Bulk import tags and name colors (or add them through in-game commands!)
 * Bulk import tags from other tag plugins
 * Support for any chat or tab-menu plugin that supports MiniMessage
 
