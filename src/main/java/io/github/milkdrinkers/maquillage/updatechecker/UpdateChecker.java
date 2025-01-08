@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.updatechecker;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.ColorParser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.milkdrinkers.maquillage.Maquillage;

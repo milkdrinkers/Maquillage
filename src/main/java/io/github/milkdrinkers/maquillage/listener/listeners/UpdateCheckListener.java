@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.listener.listeners;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.translation.Translation;
 import io.github.milkdrinkers.maquillage.updatechecker.SemanticVersion;

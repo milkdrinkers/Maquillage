@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.config;
 
-import com.github.milkdrinkers.crate.Config;
+import io.github.milkdrinkers.crate.Config;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
 

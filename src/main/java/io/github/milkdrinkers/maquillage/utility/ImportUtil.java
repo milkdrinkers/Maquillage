@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility;
 
-import com.github.milkdrinkers.crate.Config;
+import io.github.milkdrinkers.crate.Config;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;

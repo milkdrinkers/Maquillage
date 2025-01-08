@@ -1,5 +1,5 @@
 [versions]
-crate = "2.1.0"
+crate = "4.0.0-RC.1"
 flyway = "11.1.1"
 
 [libraries]
@@ -9,9 +9,9 @@ paper-api = "io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT"
 morepaperlib = "space.arim.morepaperlib:morepaperlib:0.4.4"
 
 # API dependencies
-crate-api = { module = "com.github.milkdrinkers:crate-api", version.ref = "crate" }
-crate-yaml = { module = "com.github.milkdrinkers:crate-yaml", version.ref = "crate" }
-colorparser = "com.github.milkdrinkers:colorparser:2.0.3"
+crate-api = { module = "io.github.milkdrinkers:crate-api", version.ref = "crate" }
+crate-yaml = { module = "io.github.milkdrinkers:crate-yaml", version.ref = "crate" }
+colorparser = "io.github.milkdrinkers:colorparser:3.0.0"
 commandapi-shade = "dev.jorel:commandapi-bukkit-shade:9.7.0"
 triumph-gui = "dev.triumphteam:triumph-gui:3.1.11"
 

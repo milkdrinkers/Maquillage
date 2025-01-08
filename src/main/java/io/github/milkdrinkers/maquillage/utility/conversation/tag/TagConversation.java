@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.tag;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
 import org.bukkit.conversations.*;

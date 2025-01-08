@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.color;
 
-import com.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
