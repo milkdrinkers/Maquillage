@@ -17,6 +17,9 @@ Maquillage uses PlaceholderAPI (PAPI) to provide parseable strings. These are th
 %maquillage_tag_nospace% - The player's selected tag without a trailing white space.
 ```
 
+## Adding cosmetics in-game
+To get started adding cosmetics in-game, use the command `/maquillage create color` or `/maquillage create tag` and the chat conversation will guide you through the process. For bulk import of cosmetics, see below. You can also edit various aspects of the cosmetics with the commands `/maquillage edit color <variable> <identifier>` or `/maquillage edit tag <variable> <identifier>`.
+
 ## Cosmetic import examples
 The following examples can be used in `import.yml` to bulk import cosmetics by running the command `"/maquillage import".
 
