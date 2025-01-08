@@ -22,6 +22,8 @@ Maquillage is a plugin that lets you add tags and name colors that players can s
 
 Maquillage also supports nicknames, either through Maquillage itself, but it also has placeholders that support [EssentialsX](https://essentialsx.net/) nicknames.
 
+To have Maquillage cosmetics appear in chat, you need a chat plugin that supports MiniMessage. Examples of this include [EssentialsX](https://essentialsx.net/) and [SunLight](https://www.spigotmc.org/resources/sunlight-%E2%AD%90-best-z-essentials-cmi-alternative.67733/). For Maquillage cosmetics in the tab-menu you need a tab-plugin that support MiniMessage, and an example of that is [TAB](https://www.spigotmc.org/resources/tab-1-5-1-21-1.57806/).
+
 ---
 
 ## 🌟 Features
