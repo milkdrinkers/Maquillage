@@ -50,9 +50,6 @@ To have Maquillage cosmetics appear in chat, you need a chat plugin that support
 <a href="https://hangar.papermc.io/">
     <img alt="Hangar Downloads" src="https://img.shields.io/hangar/dt/Essentials?style=for-the-badge&label=HANGAR&labelColor=141417">
 </a>
-<a href="https://www.curseforge.com/">
-    <img alt="CurseForge Downloads" src="https://img.shields.io/curseforge/dt/93271?style=for-the-badge&logo=curseforge&logoColor=white&label=CurseForge&labelColor=141417">
-</a>
 
 ### Stable Releases
 
