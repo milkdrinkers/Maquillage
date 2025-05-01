@@ -28,7 +28,7 @@ jobs:
     uses: ./.github/workflows/test.yml
     with:
       os: ubuntu-latest
-      java: 17
+      java: 21
 
   stage:
     name: Stage
@@ -37,7 +37,7 @@ jobs:
     uses: ./.github/workflows/stage.yml
     with:
       os: ubuntu-latest
-      java: 17
+      java: 21
     secrets: inherit
 
   deploy:
