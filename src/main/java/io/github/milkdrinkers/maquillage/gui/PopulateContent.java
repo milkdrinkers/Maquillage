@@ -110,7 +110,7 @@ public class PopulateContent {
         selectedColorItemMeta.displayName(ColorParser.of(color.getColor() + color.getLabel()).build().decoration(TextDecoration.ITALIC, false));
         String tag = playerData.getTag().map(tag1 -> tag1.getTag() + "<white> ").orElse("");
         selectedColorItemMeta.lore(Collections.singletonList(ColorParser.of(tag + color.getColor() + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
-        selectedColorItemMeta.addEnchant(Enchantment.DURABILITY, 1, true);
+        selectedColorItemMeta.addEnchant(Enchantment.UNBREAKING, 1, false);
         selectedColorItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         selectedColorItem.setItemMeta(selectedColorItemMeta);
         gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
