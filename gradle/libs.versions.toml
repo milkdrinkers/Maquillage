@@ -1,6 +1,6 @@
 [versions]
 crate = "4.0.0-RC.1"
-flyway = "11.3.4"
+flyway = "11.8.0"
 
 [libraries]
 # Core dependencies
@@ -12,7 +12,7 @@ morepaperlib = "space.arim.morepaperlib:morepaperlib:0.4.4"
 crate-api = { module = "io.github.milkdrinkers:crate-api", version.ref = "crate" }
 crate-yaml = { module = "io.github.milkdrinkers:crate-yaml", version.ref = "crate" }
 colorparser = "io.github.milkdrinkers:colorparser:3.0.0"
-commandapi-shade = "dev.jorel:commandapi-bukkit-shade:9.7.0"
+commandapi-shade = "dev.jorel:commandapi-bukkit-shade:10.0.0"
 triumph-gui = "dev.triumphteam:triumph-gui:3.1.11"
 
 # Plugin dependencies
@@ -31,7 +31,7 @@ jooq = "org.jooq:jooq:3.20.3"
 h2 = "com.h2database:h2:2.3.232"
 sqlite = "org.xerial:sqlite-jdbc:3.49.1.0"
 mysql = "com.mysql:mysql-connector-j:9.2.0"
-mariadb = "org.mariadb.jdbc:mariadb-java-client:3.5.1"
+mariadb = "org.mariadb.jdbc:mariadb-java-client:3.5.3"
 
 # Testing
 junit-bom = "org.junit:junit-bom:5.11.4"
@@ -50,8 +50,8 @@ junit = ["junit-jupiter", "junit-platform"]
 testcontainers = ["testcontainers-jupiter", "testcontainers-mysql", "testcontainers-mariadb"]
 
 [plugins]
-shadow = "com.gradleup.shadow:8.3.5"
+shadow = "com.gradleup.shadow:8.3.6"
 run-paper = "xyz.jpenilla.run-paper:2.3.1"
 plugin-yml = "net.minecrell.plugin-yml.bukkit:0.6.0"
-flyway = "org.flywaydb.flyway:11.3.4"
+flyway = "org.flywaydb.flyway:11.8.0"
 jooq = "org.jooq.jooq-codegen-gradle:3.20.3"
