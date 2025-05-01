@@ -36,19 +36,19 @@ To have Maquillage cosmetics appear in chat, you need a chat plugin that support
 
 ---
 
-## 📦 Downloads (To be added)
+## 📦 Downloads
 
 <a href="https://github.com/milkdrinkers/Maquillage/releases/latest">
     <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/milkdrinkers/Maquillage/total?style=for-the-badge&logo=github&logoColor=white&labelColor=141417">
 </a>
-<a href="https://www.spigotmc.org/">
-    <img alt="Spigot Downloads" src="https://img.shields.io/spiget/downloads/9089?style=for-the-badge&logo=spigotmc&logoColor=white&label=SPIGOT&labelColor=141417">
+<a href="https://www.spigotmc.org/resources/maquillage.124613/">
+    <img alt="Spigot Downloads" src="https://img.shields.io/spiget/downloads/124613?style=for-the-badge&logo=spigotmc&logoColor=white&label=SPIGOT&labelColor=141417">
 </a>
-<a href="https://modrinth.com/">
-    <img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/essentialsx?style=for-the-badge&logo=modrinth&logoColor=white&label=MODRINTH&labelColor=141417">
+<a href="https://modrinth.com/plugin/maquillage/">
+    <img alt="Modrinth Downloads" src="https://img.shields.io/modrinth/dt/Maquillage?style=for-the-badge&logo=modrinth&logoColor=white&label=MODRINTH&labelColor=141417">
 </a>
-<a href="https://hangar.papermc.io/">
-    <img alt="Hangar Downloads" src="https://img.shields.io/hangar/dt/Essentials?style=for-the-badge&label=HANGAR&labelColor=141417">
+<a href="https://hangar.papermc.io/rooooose-b/Maquillage">
+    <img alt="Hangar Downloads" src="https://img.shields.io/hangar/dt/Maquillage?style=for-the-badge&label=HANGAR&labelColor=141417">
 </a>
 
 ### Stable Releases
