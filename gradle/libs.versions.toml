@@ -1,5 +1,5 @@
 [versions]
-crate = "4.0.0-RC.1"
+crate = "4.0.0-RC.2"
 flyway = "11.8.0"
 
 [libraries]
