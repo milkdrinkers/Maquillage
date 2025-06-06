@@ -1,5 +1,5 @@
 [versions]
-crate = "4.0.0-RC.1"
+crate = "4.0.0-RC.2"
 flyway = "11.8.0"
 
 [libraries]
@@ -34,11 +34,11 @@ mysql = "com.mysql:mysql-connector-j:9.2.0"
 mariadb = "org.mariadb.jdbc:mariadb-java-client:3.5.3"
 
 # Testing
-junit-bom = "org.junit:junit-bom:5.11.4"
+junit-bom = "org.junit:junit-bom:5.13.0"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
 slf4j = "org.slf4j:slf4j-simple:2.1.0-alpha1"
-testcontainers-bom = "org.testcontainers:testcontainers-bom:1.20.4"
+testcontainers-bom = "org.testcontainers:testcontainers-bom:1.21.1"
 testcontainers-jupiter = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-mysql = { module = "org.testcontainers:mysql" }
 testcontainers-mariadb = { module = "org.testcontainers:mariadb" }
