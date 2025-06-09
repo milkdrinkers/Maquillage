@@ -148,8 +148,6 @@ tasks {
         mergeServiceFiles {
             setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin") // Fix Flyway overriding its own files
         }
-
-        minimize()
     }
 
     test {
