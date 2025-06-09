@@ -170,6 +170,8 @@ tasks {
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
             url("https://ci.extendedclip.com/job/PlaceholderAPI/197/artifact/build/libs/PlaceholderAPI-2.11.6.jar")
             github("EssentialsX", "Essentials", "2.20.1", "EssentialsX-2.20.1.jar")
+            hangar("ViaVersion", "5.3.2")
+            hangar("ViaBackwards", "5.3.2")
         }
     }
 }
