@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.gui;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;

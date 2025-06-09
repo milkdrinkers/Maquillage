@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.gui;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.maquillage.gui.GuiHandler.MaquillageGuiType;
@@ -31,7 +31,7 @@ public class PopulateButtons {
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
 
         skullMeta.lore(Collections.singletonList(ColorParser.of(Translation.of("gui.clear"))
-            .parseMinimessagePlaceholder("cosmetic", type.toString().toLowerCase()).build()));
+            .with("cosmetic", type.toString().toLowerCase()).build()));
 
         // Sets head name to match selected tag and color
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);

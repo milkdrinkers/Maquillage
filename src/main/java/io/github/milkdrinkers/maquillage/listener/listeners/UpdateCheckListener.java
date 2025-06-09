@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.listener.listeners;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.translation.Translation;
 import io.github.milkdrinkers.maquillage.updatechecker.SemanticVersion;
@@ -35,10 +35,10 @@ public class UpdateCheckListener implements Listener {
 
         e.getPlayer().sendMessage(
             ColorParser.of(Translation.of("update-checker.update-found-player"))
-                .parseMinimessagePlaceholder("plugin_name", pluginName)
-                .parseMinimessagePlaceholder("version_current", currentVersion.getVersionFull())
-                .parseMinimessagePlaceholder("version_latest", latestVersion.getVersionFull())
-                .parseMinimessagePlaceholder("download_link", UpdateChecker.LATEST_RELEASE)
+                .with("plugin_name", pluginName)
+                .with("version_current", currentVersion.getVersionFull())
+                .with("version_latest", latestVersion.getVersionFull())
+                .with("download_link", UpdateChecker.LATEST_RELEASE)
                 .build()
         );
     }

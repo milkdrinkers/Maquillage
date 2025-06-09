@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.color;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
@@ -29,7 +29,7 @@ public class EditColorColorConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.current-color"))
-                .parseMinimessagePlaceholder("namecolor", color.getColor() + player.getName()).build());
+                .with("namecolor", color.getColor() + player.getName()).build());
             return Translation.of("commands.module.namecolor.edit.color.current-color-question");
         }
 
@@ -61,7 +61,7 @@ public class EditColorColorConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.color.confirm"))
-                .parseMinimessagePlaceholder("namecolor", updatedColor + player.getName()).build());
+                .with("namecolor", updatedColor + player.getName()).build());
             return "YES/NO";
         }
     };

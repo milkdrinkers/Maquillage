@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.tag;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
 import org.bukkit.conversations.*;
@@ -83,9 +83,9 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.input-tag"))
-                .parseMinimessagePlaceholder("tag", tag)
-                .parseMinimessagePlaceholder("label", label)
-                .parseMinimessagePlaceholder("perm", permission).build());
+                .with("tag", tag)
+                .with("label", label)
+                .with("perm", permission).build());
             return "YES/NO?";
         }
     };

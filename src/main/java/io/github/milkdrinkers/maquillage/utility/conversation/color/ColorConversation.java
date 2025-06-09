@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.color;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
 import org.bukkit.conversations.*;
@@ -104,9 +104,9 @@ public class ColorConversation {
                 correctGradients = "</rainbow>";
 
             player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.confirm"))
-                .parseMinimessagePlaceholder("namecolor", colorName + correctGradients)
-                .parseMinimessagePlaceholder("label", label)
-                .parseMinimessagePlaceholder("perm", permission).build());
+                .with("namecolor", colorName + correctGradients)
+                .with("label", label)
+                .with("perm", permission).build());
             return "YES/NO?";
         }
     };

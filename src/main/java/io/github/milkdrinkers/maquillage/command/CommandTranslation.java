@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.command;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
@@ -56,7 +56,7 @@ class CommandTranslation {
     private static void executorHelp(CommandSender sender, CommandArguments args) {
         sender.sendMessage(
             ColorParser.of(Translation.of("commands.translation.help"))
-                .parseLegacy()
+                .legacy()
                 .build()
         );
     }
@@ -65,7 +65,7 @@ class CommandTranslation {
         Maquillage.getInstance().getTranslationManager().onReload();
         sender.sendMessage(
             ColorParser.of(Translation.of("commands.translation.reloaded"))
-                .parseLegacy()
+                .legacy()
                 .build()
         );
     }
@@ -79,7 +79,7 @@ class CommandTranslation {
 
         sender.sendMessage(
             ColorParser.of(Translation.of(key))
-                .parseLegacy()
+                .legacy()
                 .build()
         );
     }

@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.updatechecker;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
@@ -77,7 +77,7 @@ public class UpdateChecker implements Reloadable {
                 .whenComplete((resp, err) -> {
                     if (err != null) {
                         if (shouldLog)
-                            Logger.get().warn(ColorParser.of(Translation.of("update-checker.update-failed")).parseMinimessagePlaceholder("error", err.getMessage()).build());
+                            Logger.get().warn(ColorParser.of(Translation.of("update-checker.update-failed")).with("error", err.getMessage()).build());
                         return;
                     }
                     setLatestVersion(parseLatestVersion(resp.body()));
@@ -85,7 +85,7 @@ public class UpdateChecker implements Reloadable {
                 });
         } catch (Exception err) {
             if (shouldLog)
-                Logger.get().warn(ColorParser.of(Translation.of("update-checker.update-failed")).parseMinimessagePlaceholder("error", err.getMessage()).build());
+                Logger.get().warn(ColorParser.of(Translation.of("update-checker.update-failed")).with("error", err.getMessage()).build());
         }
     }
 
@@ -120,10 +120,10 @@ public class UpdateChecker implements Reloadable {
 
             Logger.get().info(
                 ColorParser.of(Translation.of("update-checker.update-found-console"))
-                    .parseMinimessagePlaceholder("plugin_name", pluginName)
-                    .parseMinimessagePlaceholder("version_current", currentVersion.getVersionFull())
-                    .parseMinimessagePlaceholder("version_latest", latestVersion.getVersionFull())
-                    .parseMinimessagePlaceholder("download_link", LATEST_RELEASE)
+                    .with("plugin_name", pluginName)
+                    .with("version_current", currentVersion.getVersionFull())
+                    .with("version_latest", latestVersion.getVersionFull())
+                    .with("download_link", LATEST_RELEASE)
                     .build()
             );
 
@@ -135,7 +135,7 @@ public class UpdateChecker implements Reloadable {
 
             Logger.get().info(
                 ColorParser.of(Translation.of("update-checker.running-latest"))
-                    .parseMinimessagePlaceholder("plugin_name", pluginName)
+                    .with("plugin_name", pluginName)
                     .build()
             );
         }

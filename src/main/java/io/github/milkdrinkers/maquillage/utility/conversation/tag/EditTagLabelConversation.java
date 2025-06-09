@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.tag;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.Tag;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
@@ -29,8 +29,8 @@ public class EditTagLabelConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.label.current-label"))
-                .parseMinimessagePlaceholder("tag", tag.getTag())
-                .parseMinimessagePlaceholder("label", currentLabel).build());
+                .with("tag", tag.getTag())
+                .with("label", currentLabel).build());
             return Translation.of("commands.module.tag.edit.label.current-label-question");
         }
 
@@ -62,8 +62,8 @@ public class EditTagLabelConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.label.confirm"))
-                .parseMinimessagePlaceholder("tag", tag.getTag())
-                .parseMinimessagePlaceholder("label", updatedLabel).build());
+                .with("tag", tag.getTag())
+                .with("label", updatedLabel).build());
             return "YES/NO?";
         }
     };

@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.translation;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.crate.Config;
 import io.github.milkdrinkers.crate.ConfigBuilder;
 import io.github.milkdrinkers.crate.internal.FileData;

@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.utility.conversation.color;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
@@ -31,11 +31,11 @@ public class EditColorPermConversation {
 
             if (currentPerm.isEmpty()) {
                 player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.perm.current-no-perm"))
-                    .parseMinimessagePlaceholder("namecolor", color.getColor() + player.getName()).build());
+                    .with("namecolor", color.getColor() + player.getName()).build());
             } else {
                 player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.perm.current-perm"))
-                    .parseMinimessagePlaceholder("namecolor", color.getColor() + player.getName())
-                    .parseMinimessagePlaceholder("perm", currentPerm).build());
+                    .with("namecolor", color.getColor() + player.getName())
+                    .with("perm", currentPerm).build());
             }
 
 
@@ -77,7 +77,7 @@ public class EditColorPermConversation {
         public @NotNull String getPromptText(@NotNull ConversationContext conversationContext) {
             Player player = (Player) conversationContext.getForWhom();
             player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.perm.confirm"))
-                .parseMinimessagePlaceholder("perm", updatedPerm).build());
+                .with("perm", updatedPerm).build());
             return "YES/NO?";
         }
     };

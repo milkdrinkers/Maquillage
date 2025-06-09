@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.command.CommandHandler;
 import io.github.milkdrinkers.maquillage.config.ConfigHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandlerBuilder;

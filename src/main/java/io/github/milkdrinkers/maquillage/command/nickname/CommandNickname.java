@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.command.nickname;
 
-import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.PlayerArgument;
@@ -44,7 +44,7 @@ public class CommandNickname {
 
                         if(nick.length() > Cfg.get().getInt("module.nickname.length"))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.too-long"))
-                                .parseMinimessagePlaceholder("characters", String.valueOf(Cfg.get().getInt("module.nickname.length"))).build());
+                                .with("characters", String.valueOf(Cfg.get().getInt("module.nickname.length"))).build());
 
                         if (nick.matches("[^a-zA-Z0-9_ ]"))
                             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.illegal-characters")).build());
@@ -68,8 +68,8 @@ public class CommandNickname {
                         NicknameCooldown.setCooldown(player);
 
                         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.success"))
-                            .parseMinimessagePlaceholder("player", player.getName())
-                            .parseMinimessagePlaceholder("nickname", nick).build());
+                            .with("player", player.getName())
+                            .with("nickname", nick).build());
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             Queries.Nickname.savePlayerNickname(player, nick);
@@ -99,7 +99,7 @@ public class CommandNickname {
                             player.playerListName(Component.text(player.getName()));
 
                         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.cleared"))
-                            .parseMinimessagePlaceholder("player", player.getName()).build());
+                            .with("player", player.getName()).build());
 
                         Bukkit.getScheduler().runTaskAsynchronously(Maquillage.getInstance(), () -> {
                             Queries.Nickname.clearPlayerNickname(player);
