@@ -16,6 +16,8 @@ import io.github.milkdrinkers.maquillage.translation.TranslationManager;
 import io.github.milkdrinkers.maquillage.updatechecker.UpdateChecker;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
+import io.github.milkdrinkers.threadutil.PlatformBukkit;
+import io.github.milkdrinkers.threadutil.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +48,8 @@ public class Maquillage extends JavaPlugin {
 
     public void onLoad() {
         instance = this;
+        Scheduler.init(new PlatformBukkit(this));
+        Scheduler.setErrorHandler(e -> this.getSLF4JLogger().error("[Scheduler]: {}", e.getMessage()));
         configHandler = new ConfigHandler(instance);
         translationManager = new TranslationManager(instance);
         DB.init(
@@ -114,6 +118,7 @@ public class Maquillage extends JavaPlugin {
     }
 
     public void onDisable() {
+        Scheduler.shutdown();
         configHandler.onDisable();
         translationManager.onDisable();
         DB.getHandler().onDisable();

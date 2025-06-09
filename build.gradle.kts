@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.colorparser) {
         exclude("net.kyori")
     }
+    implementation(libs.threadutil)
     implementation(libs.commandapi.shade)
     implementation(libs.triumph.gui)
 
@@ -141,6 +142,7 @@ tasks {
         reloc("space.arim.morepaperlib", "morepaperlib")
         reloc("io.github.milkdrinkers.crate", "crate")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
+        reloc("io.github.milkdrinkers.threadutil", "threadutil")
         reloc("dev.jorel.commandapi", "commandapi")
         reloc("dev.triumphteam.gui", "gui")
         reloc("com.zaxxer.hikari", "hikaricp")

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class NicknameCooldown {
 
-    private static HashMap<UUID, Instant> cooldowns = new HashMap<>();
+    private static final HashMap<UUID, Instant> cooldowns = new HashMap<>();
 
     public HashMap<UUID, Instant> getCooldowns() {
         return cooldowns;

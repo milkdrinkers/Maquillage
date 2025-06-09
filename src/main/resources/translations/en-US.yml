@@ -21,6 +21,8 @@ commands:
         <dark_gray>• <white>test <node>: <gray><i>Test a translation.
     reloaded: <green>Successfully reloaded translations!
   module:
+    error:
+      player-not-loaded: "<red>The player could not be loaded."
     tag:
       create:
         input-tag: "Input the desired tag."

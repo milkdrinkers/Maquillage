@@ -1,9 +1,13 @@
 package io.github.milkdrinkers.maquillage.database;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.NicknamesRecord;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
+import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
@@ -512,21 +516,23 @@ public abstract class Queries {
          * @param uuid     the player's UUID
          * @param nickname the nickname
          */
-        public static void savePlayerNickname(UUID uuid, String nickname) {
+        public static void savePlayerNickname(UUID uuid, io.github.milkdrinkers.maquillage.module.nickname.Nickname nickname) {
             try (
                 Connection  con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
                 context
-                    .insertInto(NICKNAMES, NICKNAMES.PLAYER, NICKNAMES.NICKNAME)
+                    .insertInto(NICKNAMES, NICKNAMES.PLAYER, NICKNAMES.NICKNAME, NICKNAMES.USERNAME)
                     .values(
                         UUIDUtil.toBytes(uuid),
-                        nickname
+                        nickname.getNickname(),
+                        nickname.getUsername()
                     )
                     .onDuplicateKeyUpdate()
                     .set(NICKNAMES.PLAYER, UUIDUtil.toBytes(uuid))
-                    .set(NICKNAMES.NICKNAME, nickname)
+                    .set(NICKNAMES.NICKNAME, nickname.getNickname())
+                    .set(NICKNAMES.USERNAME, nickname.getUsername())
                     .execute();
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!" + e);
@@ -534,52 +540,61 @@ public abstract class Queries {
         }
 
         /**
-         * Convenience method for {@link Nickname#savePlayerNickname(UUID, String)}
+         * Convenience method for {@link Nickname#savePlayerNickname(UUID, io.github.milkdrinkers.maquillage.module.nickname.Nickname)}
          *
          * @param p        the player
          * @param nickname the nickname
          */
-        public static void savePlayerNickname(Player p, String nickname) {
+        public static void savePlayerNickname(OfflinePlayer p, io.github.milkdrinkers.maquillage.module.nickname.Nickname nickname) {
             savePlayerNickname(p.getUniqueId(), nickname);
         }
 
         /**
          * Fetches a player's nickname from the database.
          *
-         * @param uuid the player's UUID
+         * @param p the player object.
          * @return the player's nickname, wrapped as optional.
          */
-        public static Optional<String> loadPlayerNickname(UUID uuid) {
+        public static Optional<io.github.milkdrinkers.maquillage.module.nickname.Nickname> loadPlayerNickname(OfflinePlayer p) {
             try(
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
-                final Record1<String> record = context
-                    .select(NICKNAMES.NICKNAME)
-                    .from(NICKNAMES)
-                    .where(NICKNAMES.PLAYER.equal(UUIDUtil.toBytes(uuid)))
+                final NicknamesRecord record = context
+                    .selectFrom(NICKNAMES)
+                    .where(NICKNAMES.PLAYER.equal(UUIDUtil.toBytes(p.getUniqueId())))
                     .fetchOne();
 
                 if (record == null)
                     return Optional.empty();
 
-                return Optional.ofNullable(record.value1());
+                // If the player profile is not loaded, we cannot check the name, so we load the player profile.
+                final PlayerProfile profile = p.getPlayerProfile();
+                if (profile.getName() == null)
+                    profile.complete(false); // Load player profile blocking
+
+                final @NotNull String currentUsername = profile.getName();
+
+                // If the joining player has a different name than the one stored in the database, update the stored name.
+                if (!currentUsername.equals(record.getUsername())) {
+                    context.update(NICKNAMES)
+                        .set(NICKNAMES.USERNAME, currentUsername)
+                        .where(NICKNAMES.PLAYER.equal(UUIDUtil.toBytes(p.getUniqueId())))
+                        .execute();
+                }
+
+                return Optional.of(
+                    new io.github.milkdrinkers.maquillage.module.nickname.Nickname(
+                        record.getNickname(),
+                        record.getUsername()
+                    )
+                );
 
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!", e);
             }
             return Optional.empty();
-        }
-
-        /**
-         * Convenience method for {@link Nickname#loadPlayerNickname(UUID)}
-         *
-         * @param p the player object.
-         * @return the player's nickname, wrapped as optional.
-         */
-        public static Optional<String> loadPlayerNickname(Player p) {
-            return loadPlayerNickname(p.getUniqueId());
         }
 
         /**
@@ -607,7 +622,7 @@ public abstract class Queries {
          *
          * @param p the player
          */
-        public static void clearPlayerNickname(Player p) {
+        public static void clearPlayerNickname(OfflinePlayer p) {
             clearPlayerNickname(p.getUniqueId());
         }
     }

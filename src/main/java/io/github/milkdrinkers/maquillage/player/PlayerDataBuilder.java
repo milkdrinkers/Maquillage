@@ -1,5 +1,6 @@
 package io.github.milkdrinkers.maquillage.player;
 
+import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +11,7 @@ public class PlayerDataBuilder {
     private @Nullable Player player;
     private int nameColorId = -1;
     private int tagId = -1;
-    private @Nullable String nickname = null;
+    private @Nullable Nickname nickname = null;
 
     public PlayerDataBuilder withUuid(UUID uuid) {
         this.uuid = uuid;
@@ -32,7 +33,7 @@ public class PlayerDataBuilder {
         return this;
     }
 
-    public PlayerDataBuilder withNickname(@Nullable String nickname) {
+    public PlayerDataBuilder withNickname(@Nullable Nickname nickname) {
         this.nickname = nickname;
         return this;
     }

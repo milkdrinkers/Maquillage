@@ -25,23 +25,21 @@ public class PlayerData {
     private @Nullable Nickname nickname;
     private int nameColorId;
     private int tagId;
-    private String nicknameString;
 
     PlayerData(
         UUID uuid,
         Player player,
         int nameColor,
         int tag,
-        String nickname
+        @Nullable Nickname nickname
     ) {
         this.uuid = uuid;
         this.player = player;
         this.nameColor = NameColorHolder.getInstance().getByDatabaseId(nameColor);
         this.tag = TagHolder.getInstance().getByDatabaseId(tag);
-        this.nickname = new Nickname(nickname);
+        this.nickname = nickname;
         this.nameColorId = nameColor;
         this.tagId = tag;
-        this.nicknameString = nickname;
     }
 
     // SECTION Getters
@@ -95,7 +93,7 @@ public class PlayerData {
     }
 
     public String getNicknameString() {
-        return nicknameString;
+        return getNickname().map(Nickname::getNickname).orElse("");
     }
 
     // SECTION Setters
@@ -168,8 +166,8 @@ public class PlayerData {
      *
      * @param nickname The desired nickname
      */
-    public void setNickname(String nickname) {
-        this.nickname = new Nickname(nickname);
+    public void setNickname(@Nullable Nickname nickname) {
+        this.nickname = nickname;
     }
 
     /**
