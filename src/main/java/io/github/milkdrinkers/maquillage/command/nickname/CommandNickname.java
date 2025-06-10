@@ -28,19 +28,20 @@ import java.util.Optional;
 import static io.github.milkdrinkers.maquillage.command.argument.CustomPlayerArgument.customPlayerArgument;
 
 public class CommandNickname {
-
-    public static CommandAPICommand registerCommandNickname() {
-        return new CommandAPICommand("nickname")
-            .withAliases("nick")
+    public static CommandAPICommand registerCommandNickname(String command, String... aliases) {
+        return new CommandAPICommand(command)
+            .withAliases(aliases)
             .withPermission("maquillage.command.nick")
             .withSubcommands(
-                registerSet(),
-                registerClear()
+                registerSet("set"),
+                registerClear("clear"),
+                CommandRealname.registerCommandRealname("realname")
             );
     }
 
-    private static CommandAPICommand registerSet() {
-        return new CommandAPICommand("set")
+    public static CommandAPICommand registerSet(String command, String... aliases) {
+        return new CommandAPICommand(command)
+            .withAliases(aliases)
             .withPermission("maquillage.command.nick.set")
             .withArguments(
                 customPlayerArgument("player"),
@@ -128,8 +129,9 @@ public class CommandNickname {
         new PlayerNicknameChangeEvent(player, event.getNickname(), event.getPreviousNickname()).callEvent();
     }
 
-    private static CommandAPICommand registerClear() {
-        return new CommandAPICommand("clear")
+    public static CommandAPICommand registerClear(String command, String... aliases) {
+        return new CommandAPICommand(command)
+            .withAliases(aliases)
             .withPermission("maquillage.command.nick.clear")
             .withOptionalArguments(
                 customPlayerArgument("player")

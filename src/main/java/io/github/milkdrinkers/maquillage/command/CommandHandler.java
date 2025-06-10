@@ -42,8 +42,10 @@ public class CommandHandler implements Reloadable {
             CommandNamecolor.registerCommandNamecolor().withAliases("namecolor").register();
 
         if (nicks) {
-            CommandNickname.registerCommandNickname().register();
-            CommandRealname.registerCommandRealname().register();
+            CommandNickname.registerCommandNickname("nickname", "nick").register();
+            CommandNickname.registerSet("setnick", "setnickname").register();
+            CommandNickname.registerClear("unnick", "clearnick", "clearnickname").register();
+            CommandRealname.registerCommandRealname("realname").register();
         }
     }
 

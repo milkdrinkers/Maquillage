@@ -14,8 +14,9 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class CommandRealname {
-    public static CommandAPICommand registerCommandRealname() {
-        return new CommandAPICommand("realname")
+    public static CommandAPICommand registerCommandRealname(String command, String... aliases) {
+        return new CommandAPICommand(command)
+            .withAliases(aliases)
             .withPermission("maquillage.command.realname")
             .withArguments(
                 new StringArgument("name")
