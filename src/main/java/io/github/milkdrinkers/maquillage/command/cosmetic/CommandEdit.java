@@ -22,7 +22,7 @@ public class CommandEdit {
     static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversation.prefix).withLocalEcho(false);
 
     public static CommandAPICommand registerCommandEdit(boolean tags, boolean colors) {
-        CommandAPICommand commandEdit =  new CommandAPICommand("edit")
+        CommandAPICommand commandEdit = new CommandAPICommand("edit")
             .withPermission("maquillage.command.admin.edit")
             .withShortDescription("Edits a Maquillage color or tag.");
 

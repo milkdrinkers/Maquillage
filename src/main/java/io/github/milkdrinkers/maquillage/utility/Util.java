@@ -2,7 +2,6 @@ package io.github.milkdrinkers.maquillage.utility;
 
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.HashMap;

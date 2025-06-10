@@ -6,7 +6,6 @@ import io.github.milkdrinkers.maquillage.config.ConfigHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandlerBuilder;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.hook.HookManager;
 import io.github.milkdrinkers.maquillage.listener.ListenerHandler;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;

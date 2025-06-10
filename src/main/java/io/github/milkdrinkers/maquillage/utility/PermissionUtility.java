@@ -1,6 +1,5 @@
 package io.github.milkdrinkers.maquillage.utility;
 
-import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;

@@ -1,8 +1,8 @@
 package io.github.milkdrinkers.maquillage.utility;
 
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHolder;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.jooq.JooqContext;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;

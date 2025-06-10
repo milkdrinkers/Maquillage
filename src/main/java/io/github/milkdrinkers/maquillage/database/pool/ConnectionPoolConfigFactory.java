@@ -1,10 +1,10 @@
 package io.github.milkdrinkers.maquillage.database.pool;
 
 import com.zaxxer.hikari.HikariConfig;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
 import io.github.milkdrinkers.maquillage.database.config.DatabaseConfig;
 import io.github.milkdrinkers.maquillage.database.config.DatabaseConfigBuilder;
 import io.github.milkdrinkers.maquillage.database.exception.DatabaseInitializationException;
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
 
 import java.nio.file.Path;
 import java.util.Optional;

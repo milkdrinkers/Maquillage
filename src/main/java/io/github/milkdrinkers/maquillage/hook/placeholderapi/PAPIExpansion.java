@@ -81,9 +81,11 @@ public class PAPIExpansion extends PlaceholderExpansion {
                     yield tag + " ";
             }
             case "tag_nospace" -> getTag(p);
-            case "nickname" -> getNickname(p).orElse(p.getName());  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname" ->
+                getNickname(p).orElse(p.getName());  // Returns the nickname if it exists, otherwise returns the player's name
             case "nickname_space" -> getNickname(p).orElse(p.getName()) + " ";
-            case "nickname_nofallback" -> getNickname(p).orElse("");  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname_nofallback" ->
+                getNickname(p).orElse("");  // Returns the nickname if it exists, otherwise returns the player's name
             case "nickname_nofallback_space" -> getNickname(p).orElse("") + " ";
             case "nickname_color" -> getNameColor(p, getNickname(p).orElse(p.getName()));
             case "nickname_color_space" -> getNameColor(p, getNickname(p).orElse(p.getName())) + " ";

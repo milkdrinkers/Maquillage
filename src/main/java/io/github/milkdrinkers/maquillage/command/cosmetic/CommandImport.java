@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.command.cosmetic;
 
-import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.jorel.commandapi.CommandAPICommand;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.utility.ImportUtil;
 import io.github.milkdrinkers.maquillage.utility.conversation.Conversation;

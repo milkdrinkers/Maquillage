@@ -44,7 +44,7 @@ public class EditTagPermConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext conversationContext, @Nullable String s) {
-            if (s.toLowerCase().equals("none")){
+            if (s.equalsIgnoreCase("none")) {
                 updatedPerm = "";
             } else {
                 while (s.charAt(0) == '.') {
