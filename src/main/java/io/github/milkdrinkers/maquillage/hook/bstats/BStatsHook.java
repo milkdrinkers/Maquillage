@@ -1,7 +1,7 @@
-package io.github.milkdrinkers.maquillage.hook;
+package io.github.milkdrinkers.maquillage.hook.bstats;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
-import io.github.milkdrinkers.maquillage.Reloadable;
+import io.github.milkdrinkers.maquillage.hook.AbstractHook;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
@@ -14,9 +14,8 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A hook to interface with <a href="https://github.com/Bastian/bstats-metrics">BStats</a>.
  */
-public class BStatsHook implements Reloadable {
+public class BStatsHook extends AbstractHook {
     private final static int BSTATS_ID = 23369; // Signup to BStats and register your new plugin here: https://bstats.org/getting-started, replace the id with you new one!
-    private final Maquillage plugin;
     private @Nullable Metrics hook;
 
     /**
@@ -25,21 +24,20 @@ public class BStatsHook implements Reloadable {
      * @param plugin the plugin instance
      */
     public BStatsHook(Maquillage plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
-    public void onLoad() {
-    }
-
-    @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
         // Catch startup errors for bstats
         try {
-            setHook(new Metrics(plugin, BSTATS_ID));
+            setHook(new Metrics(getPlugin(), BSTATS_ID));
         } catch (Exception ignored) {
             setHook(null);
         }
+
+        if (!isHookLoaded() || hook == null)
+            return;
 
         hook.addCustomChart(new SimplePie("used_language", () -> Cfg.get().getString("translation")));
 
@@ -49,15 +47,12 @@ public class BStatsHook implements Reloadable {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
         getHook().shutdown();
         setHook(null);
     }
 
-    /**
-     * Check if the BStats hook is loaded and ready for use.
-     * @return whether the BStats metrics hook is loaded or not
-     */
+    @Override
     public boolean isHookLoaded() {
         return hook != null;
     }

@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.morepaperlib)
 
     // API
+    implementation(libs.javasemver) // Required by VersionWatch
+    implementation(libs.versionwatch)
+    implementation(libs.wordweaver)
     implementation(libs.crate.api)
     implementation(libs.crate.yaml)
     implementation(libs.colorparser) {
@@ -140,6 +143,9 @@ tasks {
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${mainPackage}.lib.${targetPkg}")
 
         reloc("space.arim.morepaperlib", "morepaperlib")
+        reloc("io.github.milkdrinkers.javasemver", "javasemver")
+        reloc("io.github.milkdrinkers.versionwatch", "versionwatch")
+        reloc("io.github.milkdrinkers.wordweaver", "wordweaver")
         reloc("io.github.milkdrinkers.crate", "crate")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
         reloc("io.github.milkdrinkers.threadutil", "threadutil")

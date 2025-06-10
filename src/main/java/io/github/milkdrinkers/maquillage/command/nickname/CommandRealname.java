@@ -7,7 +7,7 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;

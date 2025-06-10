@@ -1,6 +1,7 @@
 package io.github.milkdrinkers.maquillage.database.handler;
 
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
 import io.github.milkdrinkers.maquillage.config.ConfigHandler;
 import io.github.milkdrinkers.maquillage.database.config.DatabaseConfig;
@@ -56,7 +57,7 @@ public class DatabaseHandler implements Reloadable {
      * On plugin load.
      */
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
         try {
             // Load database config from file, or use provided databaseConfig from constructor
             if (configHandler != null)
@@ -78,14 +79,14 @@ public class DatabaseHandler implements Reloadable {
      * On plugin enable.
      */
     @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
     }
 
     /**
      * On plugin disable.
      */
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
         if (!isReady())
             return;
 
@@ -139,7 +140,7 @@ public class DatabaseHandler implements Reloadable {
      */
     public DatabaseConfig getDatabaseConfig() {
         if (databaseConfig == null)
-            throw new IllegalStateException("Database config is still null but was accessed in getDB!");
+            throw new IllegalStateException("Database config is still null but was accessed in getDatabaseConfig!");
 
         return databaseConfig;
     }

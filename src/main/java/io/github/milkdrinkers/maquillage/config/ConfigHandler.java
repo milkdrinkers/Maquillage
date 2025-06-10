@@ -28,7 +28,7 @@ public class ConfigHandler implements Reloadable {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
         cfg = new Config("config", plugin.getDataFolder().getPath(), plugin.getResource("config.yml")); // Create a config file from the template in our resources folder
         databaseCfg = new Config("database", plugin.getDataFolder().getPath(), plugin.getResource("database.yml"));
         importCfg = new Config("import", plugin.getDataFolder().getPath(), plugin.getResource("import.yml"));
@@ -37,11 +37,11 @@ public class ConfigHandler implements Reloadable {
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
     }
 
     /**

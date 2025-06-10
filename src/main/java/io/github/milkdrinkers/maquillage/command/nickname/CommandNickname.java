@@ -12,10 +12,11 @@ import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreCha
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreRemoveEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameRemoveEvent;
 import io.github.milkdrinkers.maquillage.database.Queries;
+import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
 import io.github.milkdrinkers.threadutil.Scheduler;
 import net.kyori.adventure.text.Component;
@@ -53,8 +54,8 @@ public class CommandNickname {
                 // Check if allowed to set nick of other player
                 if (
                     !sender.equals(player) &&
-                        Maquillage.getVaultHook().isPermissionsLoaded() &&
-                        !Maquillage.getVaultHook().getPermissions().has(sender, "maquillage.command.nick.set.other")
+                        Hook.getVaultHook().isPermissionsLoaded() &&
+                        !Hook.getVaultHook().getPermissions().has(sender, "maquillage.command.nick.set.other")
                 ) {
                     throw CommandAPIBukkit.failWithAdventureComponent(Bukkit.getServer().permissionMessage());
                 }

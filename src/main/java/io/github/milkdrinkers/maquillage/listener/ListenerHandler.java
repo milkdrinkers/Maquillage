@@ -15,21 +15,18 @@ public class ListenerHandler implements Reloadable {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
         // Register listeners here
-        plugin.getServer().getPluginManager().registerEvents(new UpdateCheckListener(), plugin);
-        if (Maquillage.getVaultHook().isVaultLoaded())
-            plugin.getServer().getPluginManager().registerEvents(new VaultListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerQuitListener(), plugin);
         plugin.getServer().getPluginManager().registerEvents(new PlayerDataLoadedListener(), plugin);
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
     }
 }

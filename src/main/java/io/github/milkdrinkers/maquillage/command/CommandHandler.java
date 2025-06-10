@@ -20,12 +20,12 @@ public class CommandHandler implements Reloadable {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(plugin).shouldHookPaperReload(true).silentLogs(true));
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
         CommandAPI.onEnable();
 
         boolean tags = Cfg.get().getBoolean("module.tag.enabled");
@@ -50,7 +50,7 @@ public class CommandHandler implements Reloadable {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
         CommandAPI.onDisable();
     }
 }

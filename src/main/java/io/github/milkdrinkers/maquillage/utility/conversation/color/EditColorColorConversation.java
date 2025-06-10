@@ -3,7 +3,7 @@ package io.github.milkdrinkers.maquillage.utility.conversation.color;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.FixedSetPrompt;
 import org.bukkit.conversations.Prompt;

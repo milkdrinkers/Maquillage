@@ -8,7 +8,7 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import io.github.milkdrinkers.maquillage.utility.conversation.Conversation;
 import io.github.milkdrinkers.maquillage.utility.conversation.color.DeleteColorConversation;
 import io.github.milkdrinkers.maquillage.utility.conversation.tag.DeleteTagConversation;

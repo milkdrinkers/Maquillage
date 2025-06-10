@@ -82,7 +82,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         }
         return databaseId;
     }
@@ -94,7 +94,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
         return true;
     }
 
@@ -112,7 +112,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withDatabaseId(databaseId)
                 .createNameColor()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         return true;
     }
 
