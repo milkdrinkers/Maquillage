@@ -19,7 +19,7 @@ triumph-gui = "dev.triumphteam:triumph-gui:3.1.11"
 # Plugin dependencies
 bstats = "org.bstats:bstats-bukkit:3.1.0"
 vault = "com.github.MilkBowl:VaultAPI:1.7.1"
-essentialsx = "net.essentialsx:EssentialsX:2.20.1"
+essentialsx = "net.essentialsx:EssentialsX:2.21.1"
 placeholderapi = "me.clip:placeholderapi:2.11.6"
 
 # Database dependencies
