@@ -2,7 +2,6 @@ package io.github.milkdrinkers.maquillage.command.nickname;
 
 import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
-import dev.jorel.commandapi.arguments.PlayerArgument;
 import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
 import dev.jorel.commandapi.executors.CommandArguments;
@@ -23,6 +22,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
+import static io.github.milkdrinkers.maquillage.command.argument.CustomPlayerArgument.customPlayerArgument;
+
 public class CommandNickname {
 
     public static CommandAPICommand registerCommandNickname() {
@@ -39,7 +40,7 @@ public class CommandNickname {
         return new CommandAPICommand("set")
             .withPermission("maquillage.command.nick.set")
             .withArguments(
-                new PlayerArgument("player"),
+                customPlayerArgument("player"),
                 new StringArgument("nick")
             )
             .executesPlayer((sender, args) -> { // When sender is a player
@@ -69,7 +70,6 @@ public class CommandNickname {
                     args
                 );
             });
-
     }
 
     /**
@@ -125,7 +125,10 @@ public class CommandNickname {
     private static CommandAPICommand registerClear() {
         return new CommandAPICommand("clear")
             .withPermission("maquillage.command.nick.clear")
-            .withOptionalArguments(new PlayerArgument("player").withPermission("maquillage.command.nick.clear.other"))
+            .withOptionalArguments(
+                customPlayerArgument("player")
+                    .withPermission("maquillage.command.nick.clear.other")
+            )
             .executesPlayer((sender, args) -> { // When sender is a player
                 clearNickname(
                     sender,
