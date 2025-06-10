@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.compileOnly
+import org.gradle.kotlin.dsl.jooqCodegen
+import org.gradle.kotlin.dsl.libs
 import org.jooq.meta.jaxb.Logging
 import java.time.Instant
 
@@ -29,8 +32,6 @@ repositories {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://mvn-repo.arim.space/lesser-gpl3/")
-
-    maven("https://maven.athyrium.eu/releases")
 
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
@@ -71,6 +72,7 @@ dependencies {
     // Database dependencies - Core
     implementation(libs.hikaricp)
     library(libs.bundles.flyway)
+    compileOnly(libs.jakarta) // Compiler bug, see: https://github.com/jOOQ/jOOQ/issues/14865#issuecomment-2077182512
     library(libs.jooq)
     jooqCodegen(libs.h2)
 
@@ -146,9 +148,7 @@ tasks {
         reloc("com.zaxxer.hikari", "hikaricp")
         reloc("org.bstats", "bstats")
 
-        mergeServiceFiles {
-            setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin") // Fix Flyway overriding its own files
-        }
+        mergeServiceFiles()
     }
 
     test {
@@ -204,6 +204,8 @@ bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
     depend = listOf("Vault", "PlaceholderAPI")
     softDepend = listOf("Essentials")
+    loadBefore = listOf()
+    provides = listOf()
 }
 
 flyway {
@@ -219,7 +221,7 @@ flyway {
     cleanDisabled = false
     locations = arrayOf(
         "filesystem:src/main/resources/db/migration",
-        "classpath:db/migration"
+        "classpath:${mainPackage.replace(".", "/")}/database/migration/migrations"
     )
 }
 
