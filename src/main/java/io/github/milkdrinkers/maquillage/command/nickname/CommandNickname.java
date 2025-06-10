@@ -76,10 +76,8 @@ public class CommandNickname {
      * Set the nickname of a player
      */
     private static void setNickname(CommandSender sender, Player player, CommandArguments args) throws WrapperCommandSyntaxException {
-        if (!Maquillage.getVaultHook().getPermissions().has(player, "maquillage.nick.admin")) {
-            if (NicknameCooldown.hasCooldown(player))
-                throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
-        }
+        if (sender instanceof Player senderPlayer && NicknameCooldown.hasCooldown(senderPlayer))
+            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
         if (!(args.get("nick") instanceof String nick))
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.no-nickname")).build());
@@ -113,7 +111,8 @@ public class CommandNickname {
         if (Cfg.get().getBoolean("module.nickname.set-listname"))
             player.playerListName(Component.text(prefix + data.getNicknameString()));
 
-        NicknameCooldown.setCooldown(player);
+        if (sender instanceof Player senderPlayer)
+            NicknameCooldown.setCooldown(senderPlayer);
 
         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.success"))
             .with("player", player.getName())
@@ -150,12 +149,18 @@ public class CommandNickname {
      * Actually clears the nickname of a player
      */
     private static void clearNickname(CommandSender sender, Player player) throws WrapperCommandSyntaxException {
+        if (sender instanceof Player senderPlayer && NicknameCooldown.hasCooldown(senderPlayer))
+            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
+
         final PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
         if (data == null)
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
 
         if (data.getNickname().isEmpty())
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.no-nickname")).build());
+
+        if (sender instanceof Player senderPlayer)
+            NicknameCooldown.setCooldown(senderPlayer);
 
         NicknameLookup.getInstance().removeNicknameFromLookup(data.getNickname().get().getNickname());
 
