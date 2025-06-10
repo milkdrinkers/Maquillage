@@ -61,6 +61,7 @@ public abstract class DB {
 
     /**
      * Convenience method for accessing the {@link DatabaseHandler} instance
+     *
      * @return the database handler
      */
     @NotNull

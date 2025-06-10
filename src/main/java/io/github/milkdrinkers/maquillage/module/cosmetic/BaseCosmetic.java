@@ -1,6 +1,7 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.Identifiable;
 import io.github.milkdrinkers.maquillage.module.Labelable;
 import io.github.milkdrinkers.maquillage.module.Permissible;
@@ -36,7 +37,7 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
     }
 
     public boolean hasPerm(Player p) {
-        return Maquillage.getVaultHook().getPermissions().has(p, this.getPerm());
+        return Hook.Vault.isLoaded() && Hook.getVaultHook().isPermissionsLoaded() && Hook.getVaultHook().getPermissions().has(p, this.getPerm());
     }
 
     public String getKey() {

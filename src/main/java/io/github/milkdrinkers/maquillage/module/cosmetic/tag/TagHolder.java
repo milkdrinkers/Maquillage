@@ -83,7 +83,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                     .withDatabaseId(databaseId)
                     .createTag()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         }
         return databaseId;
     }
@@ -95,7 +95,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
         return true;
     }
 
@@ -113,7 +113,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withDatabaseId(databaseId)
                 .createTag()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         return true;
     }
 

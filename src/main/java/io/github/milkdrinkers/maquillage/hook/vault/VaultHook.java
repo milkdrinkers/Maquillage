@@ -1,10 +1,14 @@
-package io.github.milkdrinkers.maquillage.hook;
+package io.github.milkdrinkers.maquillage.hook.vault;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
-import io.github.milkdrinkers.maquillage.Reloadable;
+import io.github.milkdrinkers.maquillage.hook.AbstractHook;
+import io.github.milkdrinkers.maquillage.hook.Hook;
 import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.ServiceRegisterEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
@@ -12,8 +16,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * A hook to interface with the <a href="https://github.com/MilkBowl/VaultAPI">Vault API</a>.
  */
-public class VaultHook implements Reloadable {
-    private final Maquillage plugin;
+public class VaultHook extends AbstractHook implements Listener {
     private @Nullable RegisteredServiceProvider<Economy> rspEconomy;
     private @Nullable RegisteredServiceProvider<Permission> rspPermissions;
     private @Nullable RegisteredServiceProvider<Chat> rspChat;
@@ -24,25 +27,21 @@ public class VaultHook implements Reloadable {
      * @param plugin the plugin instance
      */
     public VaultHook(Maquillage plugin) {
-        this.plugin = plugin;
+        super(plugin);
     }
 
     @Override
-    public void onLoad() {
+    public void onEnable(Maquillage plugin) {
+        if (!isHookLoaded()) return;
+
+        setEconomy(getPlugin().getServer().getServicesManager().getRegistration(Economy.class));
+        setPermissions(getPlugin().getServer().getServicesManager().getRegistration(Permission.class));
+        setChat(getPlugin().getServer().getServicesManager().getRegistration(Chat.class));
     }
 
     @Override
-    public void onEnable() {
-        if (!isVaultLoaded()) return;
-
-        setEconomy(plugin.getServer().getServicesManager().getRegistration(Economy.class));
-        setPermissions(plugin.getServer().getServicesManager().getRegistration(Permission.class));
-        setChat(plugin.getServer().getServicesManager().getRegistration(Chat.class));
-    }
-
-    @Override
-    public void onDisable() {
-        if (!isVaultLoaded()) return;
+    public void onDisable(Maquillage plugin) {
+        if (!isHookLoaded()) return;
 
         setEconomy(null);
         setPermissions(null);
@@ -54,8 +53,9 @@ public class VaultHook implements Reloadable {
      *
      * @return the boolean
      */
-    public boolean isVaultLoaded() {
-        return plugin.getServer().getPluginManager().isPluginEnabled("Vault");
+    @Override
+    public boolean isHookLoaded() {
+        return isPluginEnabled(Hook.Vault.getPluginName());
     }
 
     /**
@@ -74,7 +74,7 @@ public class VaultHook implements Reloadable {
      */
     public Economy getEconomy() {
         if (rspEconomy == null)
-            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isVaultLoaded method before using vault methods.");
+            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isHookLoaded method before using vault methods.");
         return rspEconomy.getProvider();
     }
 
@@ -84,7 +84,7 @@ public class VaultHook implements Reloadable {
      * @param rsp The service provider providing {@link Economy}
      */
     @ApiStatus.Internal
-    public void setEconomy(@Nullable RegisteredServiceProvider<Economy> rsp) {
+    private void setEconomy(@Nullable RegisteredServiceProvider<Economy> rsp) {
         this.rspEconomy = rsp;
     }
 
@@ -104,7 +104,7 @@ public class VaultHook implements Reloadable {
      */
     public Permission getPermissions() {
         if (rspPermissions == null)
-            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isVaultLoaded method before using vault methods.");
+            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isHookLoaded method before using vault methods.");
         return rspPermissions.getProvider();
     }
 
@@ -114,7 +114,7 @@ public class VaultHook implements Reloadable {
      * @param rsp The service provider providing {@link Permission}
      */
     @ApiStatus.Internal
-    public void setPermissions(@Nullable RegisteredServiceProvider<Permission> rsp) {
+    private void setPermissions(@Nullable RegisteredServiceProvider<Permission> rsp) {
         this.rspPermissions = rsp;
     }
 
@@ -134,7 +134,7 @@ public class VaultHook implements Reloadable {
      */
     public Chat getChat() {
         if (rspChat == null)
-            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isVaultLoaded method before using vault methods.");
+            throw new NullPointerException("The plugin tried to use Vault without it being loaded. Use the VaultHook#isHookLoaded method before using vault methods.");
         return rspChat.getProvider();
     }
 
@@ -144,7 +144,26 @@ public class VaultHook implements Reloadable {
      * @param rsp The service provider providing {@link Chat}
      */
     @ApiStatus.Internal
-    public void setChat(@Nullable RegisteredServiceProvider<Chat> rsp) {
+    private void setChat(@Nullable RegisteredServiceProvider<Chat> rsp) {
         this.rspChat = rsp;
+    }
+
+    /**
+     * Update the Vault hooks RegisteredServiceProviders in {@link VaultHook}. <br>This ensures the Vault hook is lazily loaded and working properly, even on reloads.
+     *
+     * @param e event
+     */
+    @SuppressWarnings({"unchecked", "unused"})
+    @EventHandler
+    public void onServiceRegisterEvent(ServiceRegisterEvent e) {
+        RegisteredServiceProvider<?> rsp = e.getProvider();
+        Object rspProvider = rsp.getProvider();
+        switch (rspProvider) {
+            case Economy ignored -> setEconomy((RegisteredServiceProvider<Economy>) rsp);
+            case Permission ignored -> setPermissions((RegisteredServiceProvider<Permission>) rsp);
+            case Chat ignored -> setChat((RegisteredServiceProvider<Chat>) rsp);
+            default -> {
+            }
+        }
     }
 }

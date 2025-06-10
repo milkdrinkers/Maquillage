@@ -12,6 +12,7 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagBuilder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.utility.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 import org.jooq.Record;
 import org.jooq.Record3;
 import org.jooq.Result;
@@ -20,11 +21,14 @@ import java.time.LocalDateTime;
 import java.util.concurrent.CompletableFuture;
 
 public class SyncHandler implements Reloadable {
+    private BukkitTask syncTask = null;
+    private BukkitTask cleanupTask = null;
+
     /**
      * On plugin load.
      */
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
 
     }
 
@@ -32,17 +36,21 @@ public class SyncHandler implements Reloadable {
      * On plugin enable.
      */
     @Override
-    public void onEnable() {
-        Bukkit.getScheduler().runTaskTimer(Maquillage.getInstance(), this::sync, 600, 600);
-        Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 2400, 2400);
+    public void onEnable(Maquillage plugin) {
+        syncTask = Bukkit.getScheduler().runTaskTimer(Maquillage.getInstance(), this::sync, 600, 600);
+        cleanupTask = Bukkit.getScheduler().runTaskTimerAsynchronously(Maquillage.getInstance(), this::runCleanUp, 2400, 2400);
     }
 
     /**
      * On plugin disable.
      */
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
+        if (syncTask != null && !syncTask.isCancelled())
+            syncTask.cancel();
 
+        if (cleanupTask != null && !cleanupTask.isCancelled())
+            cleanupTask.cancel();
     }
 
     public enum SyncAction {
