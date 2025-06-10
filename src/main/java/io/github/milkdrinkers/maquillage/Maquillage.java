@@ -30,6 +30,7 @@ public class Maquillage extends JavaPlugin {
     private ListenerHandler listenerHandler;
     private UpdateChecker updateChecker;
     private static SyncHandler syncHandler;
+    private @SuppressWarnings("unused") MaquillageAPIProvider apiProvider;
 
     // Hooks
     private static BStatsHook bStatsHook;
@@ -48,6 +49,7 @@ public class Maquillage extends JavaPlugin {
 
     public void onLoad() {
         instance = this;
+        apiProvider = new MaquillageAPIProvider(this);
         Scheduler.init(new PlatformBukkit(this));
         Scheduler.setErrorHandler(e -> this.getSLF4JLogger().error("[Scheduler]: {}", e.getMessage()));
         configHandler = new ConfigHandler(instance);
@@ -129,6 +131,7 @@ public class Maquillage extends JavaPlugin {
         vaultHook.onDisable();
         essentialsHook.onDisable();
         papiHook.onDisable();
+        apiProvider = null;
 
         NameColorHolder.getInstance().cacheClear();
         TagHolder.getInstance().cacheClear();
