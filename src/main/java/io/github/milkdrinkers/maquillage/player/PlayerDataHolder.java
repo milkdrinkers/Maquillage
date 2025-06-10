@@ -1,9 +1,11 @@
 package io.github.milkdrinkers.maquillage.player;
 
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PlayerDataHolder {
@@ -30,6 +32,11 @@ public class PlayerDataHolder {
     @Nullable
     public PlayerData getPlayerData(Player p) {
         return getPlayerData(p.getUniqueId());
+    }
+
+    @NotNull
+    public Optional<PlayerData> getPlayerDataOptional(Player p) {
+        return Optional.ofNullable(getPlayerData(p));
     }
 
     public void setPlayerData(UUID uuid, PlayerData data) {

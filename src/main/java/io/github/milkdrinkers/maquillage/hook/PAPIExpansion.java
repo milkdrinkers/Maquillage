@@ -2,12 +2,15 @@ package io.github.milkdrinkers.maquillage.hook;
 
 import com.earth2me.essentials.Essentials;
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 /**
  * A PlaceholderAPI expansion. Read the docs at <a href="https://wiki.placeholderapi.com/developers/creating-a-placeholderexpansion/">here</a> on how to register your custom placeholders.
@@ -50,15 +53,7 @@ public class PAPIExpansion extends PlaceholderExpansion {
         return switch (params) {
             case "namecolor" -> getNameColor(p, p.getName());
             case "namecolor_nickname" -> {
-                PlayerData data = PlayerDataHolder.getInstance().getPlayerData(p);
-
-                String name = null;
-
-                if (data.getNicknameString() != null && !data.getNicknameString().isEmpty()) {
-                    name = data.getNicknameString();
-                } else {
-                    name = p.getName();
-                }
+                String name = getNickname(p).orElse(p.getName());
 
                 yield getNameColor(p, name);
             }
@@ -88,22 +83,37 @@ public class PAPIExpansion extends PlaceholderExpansion {
                     yield tag + " ";
             }
             case "tag_nospace" -> getTag(p);
+            case "nickname" -> getNickname(p).orElse(p.getName());  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname_space" -> getNickname(p).orElse(p.getName()) + " ";
+            case "nickname_nofallback" -> getNickname(p).orElse("");  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname_nofallback_space" -> getNickname(p).orElse("") + " ";
+            case "nickname_color" -> getNameColor(p, getNickname(p).orElse(p.getName()));
+            case "nickname_color_space" -> getNameColor(p, getNickname(p).orElse(p.getName())) + " ";
             default -> null;
         };
     }
 
-    private String getNameColor(Player p, String name) {
+    private Optional<String> getNickname(Player p) {
+        PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
+        if (playerData == null)
+            return Optional.empty();
+
+        return playerData.getNickname().map(Nickname::getNickname);
+    }
+
+    private String getNameColor(Player p, String playerName) {
         PlayerData playerData = PlayerDataHolder.getInstance().getPlayerData(p);
         if (playerData == null || playerData.getNameColor().isEmpty())
-            return name;
+            return playerName;
 
-        String colorString = playerData.getNameColor().get().getColor();
+        // Patch for gradient and rainbow
+        final String colorString = playerData.getNameColor().get().getColor();
         if (colorString.startsWith("<gradient"))
-            return colorString + name + "</gradient>";
+            return colorString + playerName + "</gradient>";
         else if (colorString.startsWith("<rainbow"))
-            return colorString + name + "</rainbow>";
+            return colorString + playerName + "</rainbow>";
 
-        return colorString + name;
+        return colorString + playerName;
     }
 
     private String getTag(Player p) {
