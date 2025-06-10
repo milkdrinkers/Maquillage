@@ -88,6 +88,7 @@ public class PlayerData {
         return nameColorId;
 
     }
+
     public int getTagId() {
         return tagId;
     }

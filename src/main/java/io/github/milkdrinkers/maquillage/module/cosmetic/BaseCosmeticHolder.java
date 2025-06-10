@@ -45,9 +45,9 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
     /**
      * Attempts to save a BaseCosmetic to DB and, if successful, caches the BaseCosmetic
      *
-     * @param value      BaseCosmetic
-     * @param perm       a permission node
-     * @param label       a display label
+     * @param value BaseCosmetic
+     * @param perm  a permission node
+     * @param label a display label
      * @return -1 if failed, otherwise the ID of the BaseCosmetic
      */
     int add(String value, String perm, String label);
@@ -57,8 +57,8 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      *
      * @param value      BaseCosmetic
      * @param perm       a permission node
-     * @param label       a display label
-     * @param databaseId         a unique id
+     * @param label      a display label
+     * @param databaseId a unique id
      * @return whether the value was updated
      */
     boolean update(String value, String perm, String label, int databaseId);

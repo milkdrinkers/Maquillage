@@ -1,6 +1,5 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic;
 
-import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.Identifiable;
 import io.github.milkdrinkers.maquillage.module.Labelable;

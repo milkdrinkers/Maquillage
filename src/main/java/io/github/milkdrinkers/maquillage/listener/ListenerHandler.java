@@ -2,7 +2,9 @@ package io.github.milkdrinkers.maquillage.listener;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
-import io.github.milkdrinkers.maquillage.listener.listeners.*;
+import io.github.milkdrinkers.maquillage.listener.listeners.PlayerDataLoadedListener;
+import io.github.milkdrinkers.maquillage.listener.listeners.PlayerJoinListener;
+import io.github.milkdrinkers.maquillage.listener.listeners.PlayerQuitListener;
 
 /**
  * A class to handle registration of event listeners.

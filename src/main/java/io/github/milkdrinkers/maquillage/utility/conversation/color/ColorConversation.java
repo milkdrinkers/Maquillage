@@ -60,7 +60,7 @@ public class ColorConversation {
 
         @Override
         public @Nullable Prompt acceptInput(@NotNull ConversationContext context, @Nullable String input) {
-            if (input.toLowerCase().equals("none")){
+            if (input.equalsIgnoreCase("none")) {
                 permission = "";
             } else {
                 while (input.charAt(0) == '.') {

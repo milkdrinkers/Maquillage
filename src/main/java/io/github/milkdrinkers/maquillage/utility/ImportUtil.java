@@ -48,25 +48,25 @@ public class ImportUtil {
     public static int getTagAmount() {
         if (getTagMap() == null)
             return 0;
-        return getTagMap().keySet().size();
+        return getTagMap().size();
     }
 
     public static int getSupremeTagAmount() {
         if (getSupremeTagMap() == null)
             return 0;
-        return getSupremeTagMap().keySet().size();
+        return getSupremeTagMap().size();
     }
 
     public static int getAlonsoTagAmount() {
         if (getAlonsoTagMap() == null)
             return 0;
-        return getAlonsoTagMap().keySet().size();
+        return getAlonsoTagMap().size();
     }
 
     public static int getNamecolorAmount() {
         if (getNamecolorMap() == null)
             return 0;
-        return getNamecolorMap().keySet().size();
+        return getNamecolorMap().size();
     }
 
     /**
@@ -80,7 +80,6 @@ public class ImportUtil {
 
     /**
      * Adds all tags in the import file.
-     *
      */
     public static void addAllTags() {
         if (getTagMap() == null || getTagMap().isEmpty())

@@ -17,15 +17,15 @@ class CommandMaquillage {
                 CommandImport.registerCommandImport()
             );
 
-         if (tags) {
+        if (tags) {
             commandMaquillage.withSubcommands(CommandTag.registerCommandTag());
-         }
+        }
 
-         if (colors) {
+        if (colors) {
             commandMaquillage.withSubcommands(CommandNamecolor.registerCommandNamecolor());
-         }
+        }
 
-         return commandMaquillage;
+        return commandMaquillage;
     }
 
 }
