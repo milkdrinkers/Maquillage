@@ -43,7 +43,7 @@ public class MigrationHandler {
 
         this.flyway = Flyway
             .configure(getClass().getClassLoader())
-            .loggers("slf4j")
+            .loggers()
             .baselineOnMigrate(true)
             .baselineVersion("0.0")
             .validateMigrationNaming(true)
