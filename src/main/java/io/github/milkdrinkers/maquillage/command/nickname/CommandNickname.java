@@ -7,6 +7,10 @@ import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
 import dev.jorel.commandapi.executors.CommandArguments;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameChangeEvent;
+import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreChangeEvent;
+import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreRemoveEvent;
+import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameRemoveEvent;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
@@ -94,9 +98,15 @@ public class CommandNickname {
         if (data == null)
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
 
-        data.setNickname(nickname);
+        final PlayerNicknamePreChangeEvent event = new PlayerNicknamePreChangeEvent(player, nickname, data.getNickname().orElse(null));
+        if (!event.callEvent())
+            return;
+
+        data.setNickname(event.getNickname());
 
         PlayerDataHolder.getInstance().setPlayerData(player, data);
+
+        Scheduler.async(() -> Queries.Nickname.savePlayerNickname(player, nickname)).execute();
 
         String prefix = "";
         if (Cfg.get().getBoolean("module.nickname.prefix.enabled"))
@@ -115,7 +125,7 @@ public class CommandNickname {
             .with("player", player.getName())
             .with("nickname", nick).build());
 
-        Scheduler.async(() -> Queries.Nickname.savePlayerNickname(player, nickname)).execute();
+        new PlayerNicknameChangeEvent(player, event.getNickname(), event.getPreviousNickname()).callEvent();
     }
 
     private static CommandAPICommand registerClear() {
@@ -159,8 +169,15 @@ public class CommandNickname {
         if (sender instanceof Player senderPlayer)
             NicknameCooldown.setCooldown(senderPlayer);
 
+        final PlayerNicknamePreRemoveEvent event = new PlayerNicknamePreRemoveEvent(player, data.getNickname().orElse(null));
+        if (!event.callEvent())
+            return;
+
         data.clearNickname();
+
         PlayerDataHolder.getInstance().setPlayerData(player, data);
+
+        Scheduler.async(() -> Queries.Nickname.clearPlayerNickname(player)).execute();
 
         if (Cfg.get().getBoolean("module.nickname.set-displayname"))
             player.displayName(Component.text(player.getName()));
@@ -171,6 +188,6 @@ public class CommandNickname {
         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.cleared"))
             .with("player", player.getName()).build());
 
-        Scheduler.async(() -> Queries.Nickname.clearPlayerNickname(player)).execute();
+        new PlayerNicknameRemoveEvent(player, event.getPreviousNickname()).callEvent();
     }
 }
