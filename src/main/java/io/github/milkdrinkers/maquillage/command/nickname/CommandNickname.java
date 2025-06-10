@@ -9,7 +9,6 @@ import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
-import io.github.milkdrinkers.maquillage.module.nickname.NicknameLookup;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import io.github.milkdrinkers.maquillage.translation.Translation;
@@ -99,8 +98,6 @@ public class CommandNickname {
 
         PlayerDataHolder.getInstance().setPlayerData(player, data);
 
-        NicknameLookup.getInstance().addNicknameToLookup(nick, player);
-
         String prefix = "";
         if (Cfg.get().getBoolean("module.nickname.prefix.enabled"))
             prefix = Cfg.get().getString("module.nickname.prefix.string");
@@ -161,8 +158,6 @@ public class CommandNickname {
 
         if (sender instanceof Player senderPlayer)
             NicknameCooldown.setCooldown(senderPlayer);
-
-        NicknameLookup.getInstance().removeNicknameFromLookup(data.getNickname().get().getNickname());
 
         data.clearNickname();
         PlayerDataHolder.getInstance().setPlayerData(player, data);

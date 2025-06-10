@@ -4,7 +4,6 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.NicknamesRecord;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
 import org.bukkit.OfflinePlayer;
@@ -20,11 +19,15 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static io.github.milkdrinkers.maquillage.database.QueryUtils.InstantUtil;
+import static io.github.milkdrinkers.maquillage.database.QueryUtils.UUIDUtil;
 import static io.github.milkdrinkers.maquillage.database.schema.Tables.*;
-import static io.github.milkdrinkers.maquillage.database.QueryUtils.*;
+import static org.jooq.impl.DSL.*;
 
 /**
  * A class providing access to all SQL queries.
@@ -39,8 +42,8 @@ public abstract class Queries {
         /**
          * Saves a new tag.
          *
-         * @param tag the tag
-         * @param perm the perm
+         * @param tag   the tag
+         * @param perm  the perm
          * @param label the label
          * @return the id of the tag or -1 if saving failed
          */
@@ -81,8 +84,8 @@ public abstract class Queries {
         /**
          * Updates a tag.
          *
-         * @param tag the tag
-         * @param perm the perm
+         * @param tag   the tag
+         * @param perm  the perm
          * @param label the label
          * @param tagId the database id
          * @return the success state of the action
@@ -115,7 +118,7 @@ public abstract class Queries {
          */
         public static boolean removeTag(int tagId) {
             try (
-                Connection con = DB.getConnection();
+                Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
@@ -161,7 +164,7 @@ public abstract class Queries {
          */
         public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllTags() {
             try (
-                Connection con = DB.getConnection();
+                Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
@@ -183,7 +186,7 @@ public abstract class Queries {
             /**
              * Save the selected tag of a player.
              *
-             * @param uuid the player uuid
+             * @param uuid  the player uuid
              * @param tagId the tag id
              */
             public static void savePlayerTag(UUID uuid, int tagId) {
@@ -236,7 +239,7 @@ public abstract class Queries {
              */
             public static Optional<Integer> loadPlayerTag(UUID uuid) {
                 try (
-                    Connection con = DB.getConnection();
+                    Connection con = DB.getConnection()
                 ) {
                     DSLContext context = DB.getContext(con);
 
@@ -277,8 +280,8 @@ public abstract class Queries {
          * Saves a new namecolor.
          *
          * @param namecolor the namecolor
-         * @param perm the perm
-         * @param label the label
+         * @param perm      the perm
+         * @param label     the label
          * @return the id of the namecolor or -1 if saving failed
          */
         public static int saveColor(String namecolor, String perm, String label) {
@@ -318,9 +321,9 @@ public abstract class Queries {
         /**
          * Update a namecolor.
          *
-         * @param namecolor  namecolor
-         * @param perm the perm
-         * @param label the label
+         * @param namecolor   namecolor
+         * @param perm        the perm
+         * @param label       the label
          * @param namecolorId the database id
          * @return the success state of the action
          */
@@ -352,7 +355,7 @@ public abstract class Queries {
          */
         public static boolean removeColor(int namecolorId) {
             try (
-                Connection con = DB.getConnection();
+                Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
@@ -398,7 +401,7 @@ public abstract class Queries {
          */
         public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllColors() {
             try (
-                Connection con = DB.getConnection();
+                Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
@@ -420,7 +423,7 @@ public abstract class Queries {
             /**
              * Save the selected namecolor of a player.
              *
-             * @param uuid the player uuid
+             * @param uuid        the player uuid
              * @param namecolorId the namecolor id
              */
             public static void savePlayerColor(UUID uuid, int namecolorId) {
@@ -518,7 +521,7 @@ public abstract class Queries {
          */
         public static void savePlayerNickname(UUID uuid, io.github.milkdrinkers.maquillage.module.nickname.Nickname nickname) {
             try (
-                Connection  con = DB.getConnection()
+                Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
@@ -556,7 +559,7 @@ public abstract class Queries {
          * @return the player's nickname, wrapped as optional.
          */
         public static Optional<io.github.milkdrinkers.maquillage.module.nickname.Nickname> loadPlayerNickname(OfflinePlayer p) {
-            try(
+            try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
@@ -624,6 +627,109 @@ public abstract class Queries {
          */
         public static void clearPlayerNickname(OfflinePlayer p) {
             clearPlayerNickname(p.getUniqueId());
+        }
+
+        /**
+         * Fetches similar entries from the database based on the input.
+         *
+         * @param input the input string to search for
+         * @return a sorted list of similar entries, limited to 10 results
+         */
+        public static List<String> fetchSimilarNames(@Nullable String input) {
+            if (input == null || input.trim().isBlank())
+                return new ArrayList<>();
+
+            final String inputTrimmed = input.trim().toLowerCase();
+            final String searchPattern = "%" + inputTrimmed + "%";
+
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                return context
+                    .select(NICKNAMES.NICKNAME.as("suggestion"))
+                    .from(NICKNAMES)
+                    .where(lower(NICKNAMES.NICKNAME).like(searchPattern).and(NICKNAMES.NICKNAME.isNotNull()))
+                    .unionAll(
+                        context.select(NICKNAMES.USERNAME.as("suggestion"))
+                            .from(NICKNAMES)
+                            .where(lower(NICKNAMES.USERNAME).like(searchPattern))
+                    )
+                    .orderBy(
+                        field("suggestion").asc()
+                    )
+                    .limit(20)
+                    .fetch()
+                    .map(Record1::value1);
+            } catch (SQLException ignored) {
+            }
+            return List.of();
+        }
+
+        /**
+         * Fetches the most similar nickname from the database based on the input.
+         * <br><br>
+         * The method first tries to find an exact match for the input. If no exact match is found,
+         * it searches for nicknames or usernames that contain the input string, picking the most similar.
+         * <br><br>
+         * Matching/similar nicknames are prioritized over usernames.
+         *
+         * @param input the input string to search for
+         * @return a database nickname if found, otherwise an empty optional
+         */
+        public static Optional<io.github.milkdrinkers.maquillage.module.nickname.Nickname> fetchMostSimilarNickname(@Nullable String input) {
+            if (input == null || input.trim().isBlank())
+                return Optional.empty();
+
+            final String inputTrimmed = input.trim().toLowerCase();
+            final String searchPattern = "%" + inputTrimmed + "%";
+
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                // Try to get exact match first
+                final @NotNull Optional<io.github.milkdrinkers.maquillage.module.nickname.Nickname> exactMatch = context
+                    .selectFrom(NICKNAMES)
+                    .where(lower(NICKNAMES.NICKNAME).eq(inputTrimmed)
+                        .and(NICKNAMES.NICKNAME.isNotNull())
+                        .or(lower(NICKNAMES.USERNAME).eq(inputTrimmed))
+                    )
+                    .fetchOptional()
+                    .map(record -> new io.github.milkdrinkers.maquillage.module.nickname.Nickname(
+                        record.getNickname(),
+                        record.getUsername()
+                    ));
+
+                if (exactMatch.isPresent())
+                    return exactMatch;
+
+                // Try to find best similar match
+                final @NotNull Optional<io.github.milkdrinkers.maquillage.module.nickname.Nickname> similarMatch = context
+                    .selectFrom(NICKNAMES)
+                    .where(lower(NICKNAMES.NICKNAME).like(searchPattern)
+                        .and(NICKNAMES.NICKNAME.isNotNull())
+                        .or(lower(NICKNAMES.USERNAME).like(searchPattern))
+                    )
+                    .orderBy(
+                        case_().when(lower(NICKNAMES.NICKNAME).like(searchPattern), 1) // Prioritize nicknames that match over usernames
+                            .else_(2),
+                        NICKNAMES.NICKNAME.asc() // Sort alphabetically
+                    )
+                    .limit(1)
+                    .fetchOptional()
+                    .map(record -> new io.github.milkdrinkers.maquillage.module.nickname.Nickname(
+                        record.getNickname(),
+                        record.getUsername()
+                    ));
+
+                return similarMatch;
+            } catch (SQLException e) {
+                Logger.get().error("SQL Query threw an error!", e);
+            }
+            return Optional.empty();
         }
     }
 

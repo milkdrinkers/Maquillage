@@ -119,7 +119,13 @@ commands:
           no-nickname: "<red>That player doesn't appear to have a nickname."
           cleared: "<green>The nickname for <player> was successfully cleared."
       realname:
-        realname: "<green>The username for <red><nickname><green> is <red><player>."
+        info: |
+          
+          <white>Realname for '<yellow><input><white>':
+            <dark_gray>• <white>Username: <yellow><username>
+            <dark_gray>• <white>Nickname: <yellow><nickname>
+        fail-matches: "<red>Could not find anyone named '<input>'."
+        fail-search: "<red>Could not find any data for '<input>'."
 gui:
   title: "<white>Select your <cosmetic>"
   clear: "<red>Click to clear your <cosmetic>."

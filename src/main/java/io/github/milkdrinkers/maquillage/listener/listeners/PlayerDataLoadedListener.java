@@ -1,7 +1,6 @@
 package io.github.milkdrinkers.maquillage.listener.listeners;
 
 import io.github.milkdrinkers.maquillage.event.PlayerDataLoadedEvent;
-import io.github.milkdrinkers.maquillage.module.nickname.NicknameLookup;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
@@ -28,8 +27,6 @@ public class PlayerDataLoadedListener implements Listener {
 
                 if (Cfg.get().getBoolean("module.nickname.set-listname"))
                     e.getPlayer().playerListName(Component.text(prefix + e.getData().getNicknameString()));
-
-                NicknameLookup.getInstance().addNicknameToLookup(e.getData().getNicknameString(), e.getPlayer());
             }
         }
 
