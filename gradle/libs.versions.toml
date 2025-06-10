@@ -10,6 +10,9 @@ paper-api = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
 morepaperlib = "space.arim.morepaperlib:morepaperlib:0.4.4"
 
 # API dependencies
+javasemver = "io.github.milkdrinkers:javasemver:1.0.0"
+versionwatch = "io.github.milkdrinkers:versionwatch:1.0.0"
+wordweaver = "io.github.milkdrinkers:wordweaver:0.0.5"
 crate-api = { module = "io.github.milkdrinkers:crate-api", version.ref = "crate" }
 crate-yaml = { module = "io.github.milkdrinkers:crate-yaml", version.ref = "crate" }
 colorparser = "io.github.milkdrinkers:colorparser-paper:4.0.0-SNAPSHOT"
@@ -53,6 +56,7 @@ junit = ["junit-jupiter", "junit-platform"]
 testcontainers = ["testcontainers-jupiter", "testcontainers-mysql", "testcontainers-mariadb"]
 
 [plugins]
+publisher = "com.vanniktech.maven.publish:0.32.0"
 shadow = "com.gradleup.shadow:8.3.6"
 run-paper = "xyz.jpenilla.run-paper:2.3.1"
 plugin-yml = "de.eldoria.plugin-yml.bukkit:0.7.1"

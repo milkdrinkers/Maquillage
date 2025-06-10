@@ -76,31 +76,35 @@ jobs:
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew build -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew publish --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
           
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
             echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
             exit $BUILD_EXIT_CODE
           fi
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
 
       # Generate build provenance attestations if enabled
       - name: Generate Build Provenance Attestations
         if: ${{ inputs.generate_attestations }}
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: "${{ github.workspace }}/build/libs/*"
+          subject-path: |
+            ${{ github.workspace }}/**/build/libs/*.jar
 
       # Upload the snapshot artifacts
       - name: Upload Snapshot Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Snapshot-${{ github.run_number }}
-          path: ${{ github.workspace }}/build/libs/
+          path: ${{ github.workspace }}/**/build/libs/*.jar
           retention-days: ${{ inputs.retention_days }}
           if-no-files-found: error
-
-      # Publish to maven TODO
 
   # Update version in properties file for release builds
   stage-version:
@@ -155,31 +159,35 @@ jobs:
         run: |
           echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
-      # Build with Gradle
-      - name: Build with Gradle
+      # Build with Gradle and Publish
+      - name: Build with Gradle & Publish
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew build -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew publishAllPublicationsToMavenCentralRepository -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
           
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
             echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
             exit $BUILD_EXIT_CODE
           fi
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
 
       - name: Generate Build Provenance Attestations
         if: ${{ inputs.generate_attestations }}
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: "${{ github.workspace }}/build/libs/*"
+          subject-path: |
+            ${{ github.workspace }}/**/build/libs/*.jar
 
       - name: Upload Release Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Release
-          path: ${{ github.workspace }}/build/libs/
+          path: ${{ github.workspace }}/**/build/libs/*.jar
           retention-days: ${{ inputs.retention_days }}
           if-no-files-found: error
-
-      # Publish to maven TODO
