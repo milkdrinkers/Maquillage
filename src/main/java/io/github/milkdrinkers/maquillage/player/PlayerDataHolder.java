@@ -4,13 +4,14 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PlayerDataHolder {
     private static PlayerDataHolder INSTANCE;
-    private final HashMap<UUID, PlayerData> playerData = new HashMap<>();
+    private final Map<UUID, PlayerData> playerData = new ConcurrentHashMap<>();
 
     private PlayerDataHolder() {
     }

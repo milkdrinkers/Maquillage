@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
@@ -12,7 +12,7 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      *
      * @return then entire cache
      */
-    HashMap<Integer, T> cacheGet();
+    Map<Integer, T> cacheGet();
 
     /**
      * Add this value to the cache
