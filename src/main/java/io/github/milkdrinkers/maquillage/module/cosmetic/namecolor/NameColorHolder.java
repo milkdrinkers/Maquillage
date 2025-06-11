@@ -1,9 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.namecolor;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.gui.GuiCooldown;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -192,14 +193,14 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
 
         // Has cooldown
-        if (GuiCooldown.hasCooldown(uuid))
+        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getNameColor().isPresent() && playerData.getNameColor().get().equals(nameColor))
             return false;
 
-        GuiCooldown.setCooldown(uuid);
+        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
 
         final int databaseId = nameColor.getDatabaseId();
         playerData.setNameColor(nameColor);

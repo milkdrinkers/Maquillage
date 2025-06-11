@@ -1,9 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.tag;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.gui.GuiCooldown;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -193,14 +194,14 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
 
         // Has cooldown
-        if (GuiCooldown.hasCooldown(uuid))
+        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getTag().isPresent() && playerData.getTag().get().equals(tag))
             return false;
 
-        GuiCooldown.setCooldown(uuid);
+        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
 
         final int tagID = tag.getDatabaseId();
         playerData.setTag(tag);
