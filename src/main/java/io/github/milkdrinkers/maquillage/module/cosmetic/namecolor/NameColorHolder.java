@@ -1,9 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.namecolor;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.gui.GuiCooldown;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -13,16 +14,15 @@ import org.bukkit.entity.Player;
 import org.jooq.Record4;
 import org.jooq.Result;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.milkdrinkers.maquillage.database.schema.tables.Colors.COLORS;
 
 public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     private static NameColorHolder INSTANCE;
-    private final HashMap<Integer, NameColor> cachedColors = new HashMap<>();
-    private final HashMap<String, Integer> colorKeys = new HashMap<>();
+    private final Map<Integer, NameColor> cachedColors = new ConcurrentHashMap<>();
+    private final Map<String, Integer> colorKeys = new ConcurrentHashMap<>();
 
     private NameColorHolder() {
     }
@@ -37,8 +37,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Cache
 
     @Override
-    public HashMap<Integer, NameColor> cacheGet() {
-        return cachedColors;
+    public Map<Integer, NameColor> cacheGet() {
+        return Collections.unmodifiableMap(cachedColors);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         }
         return databaseId;
     }
@@ -94,7 +94,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
         return true;
     }
 
@@ -112,7 +112,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withDatabaseId(databaseId)
                 .createNameColor()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
         return true;
     }
 
@@ -193,14 +193,14 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
 
         // Has cooldown
-        if (GuiCooldown.hasCooldown(uuid))
+        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getNameColor().isPresent() && playerData.getNameColor().get().equals(nameColor))
             return false;
 
-        GuiCooldown.setCooldown(uuid);
+        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
 
         final int databaseId = nameColor.getDatabaseId();
         playerData.setNameColor(nameColor);
@@ -209,7 +209,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         return true;
     }
 
-    public HashMap<String, Integer> getColorKeys() {
-        return colorKeys;
+    public Map<String, Integer> getColorKeys() {
+        return Collections.unmodifiableMap(colorKeys);
     }
 }

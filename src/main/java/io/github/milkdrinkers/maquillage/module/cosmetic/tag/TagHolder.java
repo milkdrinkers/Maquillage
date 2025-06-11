@@ -1,9 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.tag;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.gui.GuiCooldown;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -13,17 +14,16 @@ import org.bukkit.entity.Player;
 import org.jooq.Record4;
 import org.jooq.Result;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.milkdrinkers.maquillage.database.schema.tables.Tags.TAGS;
 
 public class TagHolder implements BaseCosmeticHolder<Tag> {
     private static TagHolder INSTANCE;
-    private final HashMap<Integer, Tag> cachedTags = new HashMap<>();
+    private final Map<Integer, Tag> cachedTags = new ConcurrentHashMap<>();
 
-    private final HashMap<String, Integer> tagKeys = new HashMap<>();
+    private final Map<String, Integer> tagKeys = new ConcurrentHashMap<>();
 
     private TagHolder() {
     }
@@ -38,8 +38,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Cache
 
     @Override
-    public HashMap<Integer, Tag> cacheGet() {
-        return cachedTags;
+    public Map<Integer, Tag> cacheGet() {
+        return Collections.unmodifiableMap(cachedTags);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                     .withDatabaseId(databaseId)
                     .createTag()
             );
-            Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         }
         return databaseId;
     }
@@ -95,7 +95,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
         return true;
     }
 
@@ -113,7 +113,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withDatabaseId(databaseId)
                 .createTag()
         );
-        Maquillage.getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
         return true;
     }
 
@@ -194,14 +194,14 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
 
         // Has cooldown
-        if (GuiCooldown.hasCooldown(uuid))
+        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getTag().isPresent() && playerData.getTag().get().equals(tag))
             return false;
 
-        GuiCooldown.setCooldown(uuid);
+        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
 
         final int tagID = tag.getDatabaseId();
         playerData.setTag(tag);
@@ -210,7 +210,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         return true;
     }
 
-    public HashMap<String, Integer> getTagKeys() {
-        return tagKeys;
+    public Map<String, Integer> getTagKeys() {
+        return Collections.unmodifiableMap(tagKeys);
     }
 }

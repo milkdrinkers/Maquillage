@@ -1,7 +1,8 @@
-package io.github.milkdrinkers.maquillage.hook;
+package io.github.milkdrinkers.maquillage.hook.placeholderapi;
 
 import com.earth2me.essentials.Essentials;
 import io.github.milkdrinkers.maquillage.Maquillage;
+import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -23,18 +24,15 @@ public class PAPIExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public @Nullable String getRequiredPlugin() {
-        return "Maquillage";
-    }
-
-    @Override
+    @SuppressWarnings("UnstableApiUsage")
     public @NotNull String getIdentifier() {
-        return "maquillage";
+        return plugin.getPluginMeta().getName().replace(' ', '_').toLowerCase();
     }
 
     @Override
+    @SuppressWarnings("UnstableApiUsage")
     public @NotNull String getAuthor() {
-        return "rooooose-b";
+        return String.join(", ", plugin.getPluginMeta().getAuthors());
     }
 
     @Override
@@ -61,8 +59,8 @@ public class PAPIExpansion extends PlaceholderExpansion {
                 String newName = null;
 
                 // Use essentials nickname if essentials is loaded
-                if (Maquillage.getEssentialsHook().isHookLoaded()) {
-                    Essentials essentials = Maquillage.getEssentialsHook().getHook();
+                if (Hook.Essentials.isLoaded()) {
+                    Essentials essentials = Hook.getEssentialsHook().getHook();
                     String nickname = essentials.getUser(p).getFormattedNickname();
 
                     if (nickname != null)
@@ -83,9 +81,11 @@ public class PAPIExpansion extends PlaceholderExpansion {
                     yield tag + " ";
             }
             case "tag_nospace" -> getTag(p);
-            case "nickname" -> getNickname(p).orElse(p.getName());  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname" ->
+                getNickname(p).orElse(p.getName());  // Returns the nickname if it exists, otherwise returns the player's name
             case "nickname_space" -> getNickname(p).orElse(p.getName()) + " ";
-            case "nickname_nofallback" -> getNickname(p).orElse("");  // Returns the nickname if it exists, otherwise returns the player's name
+            case "nickname_nofallback" ->
+                getNickname(p).orElse("");  // Returns the nickname if it exists, otherwise returns the player's name
             case "nickname_nofallback_space" -> getNickname(p).orElse("") + " ";
             case "nickname_color" -> getNameColor(p, getNickname(p).orElse(p.getName()));
             case "nickname_color_space" -> getNameColor(p, getNickname(p).orElse(p.getName())) + " ";

@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerDataLoadedEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private Player player;
-    private PlayerData data;
+    private final Player player;
+    private final PlayerData data;
 
     public PlayerDataLoadedEvent(Player player, PlayerData data) {
         this.player = player;

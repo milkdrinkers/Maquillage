@@ -10,6 +10,9 @@ paper-api = "io.papermc.paper:paper-api:1.20.6-R0.1-SNAPSHOT"
 morepaperlib = "space.arim.morepaperlib:morepaperlib:0.4.4"
 
 # API dependencies
+javasemver = "io.github.milkdrinkers:javasemver:1.0.0"
+versionwatch = "io.github.milkdrinkers:versionwatch:1.0.0"
+wordweaver = "io.github.milkdrinkers:wordweaver:0.0.5"
 crate-api = { module = "io.github.milkdrinkers:crate-api", version.ref = "crate" }
 crate-yaml = { module = "io.github.milkdrinkers:crate-yaml", version.ref = "crate" }
 colorparser = "io.github.milkdrinkers:colorparser-paper:4.0.0-SNAPSHOT"
@@ -32,12 +35,12 @@ jakarta = "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2" # Compiler bug, see: htt
 
 # JDBC drivers
 h2 = "com.h2database:h2:2.3.232"
-sqlite = "org.xerial:sqlite-jdbc:3.49.1.0"
+sqlite = "org.xerial:sqlite-jdbc:3.50.1.0"
 mysql = "com.mysql:mysql-connector-j:9.2.0"
 mariadb = "org.mariadb.jdbc:mariadb-java-client:3.5.3"
 
 # Testing
-junit-bom = "org.junit:junit-bom:5.13.0"
+junit-bom = "org.junit:junit-bom:5.13.1"
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
 slf4j = "org.slf4j:slf4j-simple:2.1.0-alpha1"

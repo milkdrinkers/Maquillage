@@ -5,9 +5,11 @@ import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -29,11 +31,11 @@ public class CommandRealname {
                     )
             )
             .executes((sender, args) -> {
-                if (sender instanceof Player player && NicknameCooldown.hasCooldown(player))
+                if (sender instanceof Player player && Cooldown.getInstance().hasCooldown(player, CooldownType.CommandNickname))
                     throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
                 if (sender instanceof Player senderPlayer)
-                    NicknameCooldown.setCooldown(senderPlayer);
+                    Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
 
                 final String name = args.getByClassOrDefault("name", String.class, "");
 

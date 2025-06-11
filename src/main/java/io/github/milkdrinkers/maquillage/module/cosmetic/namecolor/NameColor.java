@@ -30,6 +30,11 @@ public class NameColor extends BaseCosmetic {
     }
 
     @Override
+    public int hashCode() {
+        return getColor().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "NameColor{" +
             "color='" + getColor() + '\'' +

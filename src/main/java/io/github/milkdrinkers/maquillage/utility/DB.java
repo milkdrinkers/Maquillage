@@ -1,8 +1,8 @@
 package io.github.milkdrinkers.maquillage.utility;
 
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHolder;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.jooq.JooqContext;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
@@ -14,7 +14,7 @@ import java.sql.SQLException;
  * Convenience class for accessing methods in {@link DatabaseHandler#getConnection}
  * This class abstracts away accessing the {@link DatabaseHolder} singleton
  */
-public abstract class DB {
+public final class DB {
     /**
      * Convenience method for {@link DatabaseHolder#setDatabaseHandler(DatabaseHandler)}
      * Used to set the globally used database handler instance for the plugin
@@ -61,6 +61,7 @@ public abstract class DB {
 
     /**
      * Convenience method for accessing the {@link DatabaseHandler} instance
+     *
      * @return the database handler
      */
     @NotNull

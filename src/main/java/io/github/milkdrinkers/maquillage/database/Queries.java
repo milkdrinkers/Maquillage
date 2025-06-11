@@ -1,7 +1,9 @@
 package io.github.milkdrinkers.maquillage.database;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.CooldownsRecord;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.NicknamesRecord;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
 import io.github.milkdrinkers.maquillage.utility.DB;
@@ -19,10 +21,8 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static io.github.milkdrinkers.maquillage.database.QueryUtils.InstantUtil;
 import static io.github.milkdrinkers.maquillage.database.QueryUtils.UUIDUtil;
@@ -33,12 +33,12 @@ import static org.jooq.impl.DSL.*;
  * A class providing access to all SQL queries.
  */
 @ApiStatus.Internal
-public abstract class Queries {
+public final class Queries {
     /**
      * Holds all queries related to tags
      */
     @ApiStatus.Internal
-    public static abstract class Tag {
+    public static final class Tag {
         /**
          * Saves a new tag.
          *
@@ -182,7 +182,7 @@ public abstract class Queries {
          * Holds all queries with player specific behaviour
          */
         @ApiStatus.Internal
-        public static abstract class Players {
+        public static final class Players {
             /**
              * Save the selected tag of a player.
              *
@@ -275,7 +275,7 @@ public abstract class Queries {
      * Holds all queries related to name colors
      */
     @ApiStatus.Internal
-    public static abstract class NameColor {
+    public static final class NameColor {
         /**
          * Saves a new namecolor.
          *
@@ -419,7 +419,7 @@ public abstract class Queries {
          * Holds all queries with player specific behaviour
          */
         @ApiStatus.Internal
-        public static abstract class Players {
+        public static final class Players {
             /**
              * Save the selected namecolor of a player.
              *
@@ -512,7 +512,7 @@ public abstract class Queries {
      * Holds all queries related to nicknames
      */
     @ApiStatus.Internal
-    public static abstract class Nickname {
+    public static final class Nickname {
         /**
          * Saves a player's nickname.
          *
@@ -737,7 +737,7 @@ public abstract class Queries {
      * Holds all queries related to using the database as a messaging service.
      */
     @ApiStatus.Internal
-    public static abstract class Sync {
+    public static final class Sync {
         /**
          * Creates a synchronisation request with the current time in the database.
          *
@@ -804,4 +804,75 @@ public abstract class Queries {
         }
     }
 
+    /**
+     * Stores all queries related to player cooldowns.
+     */
+    @ApiStatus.Internal
+    public static final class Cooldown {
+        /**
+         * Loads all cooldowns for a player from the database.
+         * @param player the player to load cooldowns for
+         * @return a map of cooldown types to their respective cooldown times
+         */
+        public static Map<CooldownType, Instant> load(OfflinePlayer player) {
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                return context
+                    .selectFrom(COOLDOWNS)
+                    .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(player)))
+                    .fetch()
+                    .stream()
+                    .collect(Collectors.toMap(
+                        r -> CooldownType.valueOf(r.getCooldownType()),
+                        r -> QueryUtils.InstantUtil.fromDateTime(r.getCooldownTime())
+                    ));
+            } catch (SQLException e) {
+                Logger.get().error("SQL Query threw an error!", e);
+            }
+            return Collections.emptyMap();
+        }
+
+        /**
+         * Saves the cooldowns for a player to the database.
+         * <p>
+         * This method deletes any existing cooldowns for the player and inserts the current cooldowns using a transaction.
+         *
+         * @param player the player whose cooldowns to save
+         */
+        public static void save(OfflinePlayer player) {
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                context.transaction(config -> {
+                    DSLContext ctx = config.dsl();
+
+                    // Delete old cooldowns
+                    ctx.deleteFrom(COOLDOWNS)
+                        .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(player)))
+                        .execute();
+
+                    // Create list of active cooldowns
+                    final List<CooldownsRecord> cooldownsRecords = Arrays.stream(CooldownType.values())
+                        .filter(cooldownType -> io.github.milkdrinkers.maquillage.cooldown.Cooldown.getInstance().hasCooldown(player, cooldownType))
+                        .map(cooldownType -> new CooldownsRecord(
+                                UUIDUtil.toBytes(player),
+                                cooldownType.name(),
+                                QueryUtils.InstantUtil.toDateTime(io.github.milkdrinkers.maquillage.cooldown.Cooldown.getInstance().getCooldown(player, cooldownType))
+                            )
+                        )
+                        .toList();
+
+                    if (!cooldownsRecords.isEmpty())
+                        ctx.batchInsert(cooldownsRecords).execute();
+                });
+            } catch (SQLException e) {
+                Logger.get().error("SQL Query threw an error!", e);
+            }
+        }
+    }
 }

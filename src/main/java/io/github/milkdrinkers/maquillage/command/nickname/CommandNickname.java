@@ -6,18 +6,20 @@ import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
 import dev.jorel.commandapi.executors.CommandArguments;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
-import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameChangeEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreChangeEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreRemoveEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameRemoveEvent;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.database.Queries;
+import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
 import io.github.milkdrinkers.threadutil.Scheduler;
+import io.github.milkdrinkers.wordweaver.Translation;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -53,8 +55,8 @@ public class CommandNickname {
                 // Check if allowed to set nick of other player
                 if (
                     !sender.equals(player) &&
-                        Maquillage.getVaultHook().isPermissionsLoaded() &&
-                        !Maquillage.getVaultHook().getPermissions().has(sender, "maquillage.command.nick.set.other")
+                        Hook.getVaultHook().isPermissionsLoaded() &&
+                        !Hook.getVaultHook().getPermissions().has(sender, "maquillage.command.nick.set.other")
                 ) {
                     throw CommandAPIBukkit.failWithAdventureComponent(Bukkit.getServer().permissionMessage());
                 }
@@ -80,7 +82,7 @@ public class CommandNickname {
      * Set the nickname of a player
      */
     private static void setNickname(CommandSender sender, Player player, CommandArguments args) throws WrapperCommandSyntaxException {
-        if (sender instanceof Player senderPlayer && NicknameCooldown.hasCooldown(senderPlayer))
+        if (sender instanceof Player senderPlayer && Cooldown.getInstance().hasCooldown(senderPlayer, CooldownType.CommandNickname))
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
         if (!(args.get("nick") instanceof String nick))
@@ -120,7 +122,7 @@ public class CommandNickname {
             player.playerListName(Component.text(prefix + data.getNicknameString()));
 
         if (sender instanceof Player senderPlayer)
-            NicknameCooldown.setCooldown(senderPlayer);
+            Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
 
         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.success"))
             .with("player", player.getName())
@@ -158,7 +160,7 @@ public class CommandNickname {
      * Actually clears the nickname of a player
      */
     private static void clearNickname(CommandSender sender, Player player) throws WrapperCommandSyntaxException {
-        if (sender instanceof Player senderPlayer && NicknameCooldown.hasCooldown(senderPlayer))
+        if (sender instanceof Player senderPlayer && Cooldown.getInstance().hasCooldown(senderPlayer, CooldownType.CommandNickname))
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
         final PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
@@ -169,7 +171,7 @@ public class CommandNickname {
             throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.no-nickname")).build());
 
         if (sender instanceof Player senderPlayer)
-            NicknameCooldown.setCooldown(senderPlayer);
+            Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
 
         final PlayerNicknamePreRemoveEvent event = new PlayerNicknamePreRemoveEvent(player, data.getNickname().orElse(null));
         if (!event.callEvent())

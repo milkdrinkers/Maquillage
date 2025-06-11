@@ -1,17 +1,17 @@
 package io.github.milkdrinkers.maquillage.command.cosmetic;
 
-import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.jorel.commandapi.CommandAPIBukkit;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
 import io.github.milkdrinkers.maquillage.utility.conversation.Conversation;
 import io.github.milkdrinkers.maquillage.utility.conversation.color.DeleteColorConversation;
 import io.github.milkdrinkers.maquillage.utility.conversation.tag.DeleteTagConversation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.plugin.Plugin;
 
@@ -21,7 +21,7 @@ public class CommandDelete {
     static ConversationFactory factory = new ConversationFactory(plugin).withPrefix(Conversation.prefix).withLocalEcho(false);
 
     public static CommandAPICommand registerCommandDelete(boolean tags, boolean colors) {
-        CommandAPICommand commandDelete =  new CommandAPICommand("delete")
+        CommandAPICommand commandDelete = new CommandAPICommand("delete")
             .withPermission("maquillage.command.admin.delete")
             .withShortDescription("Deletes a Maquillage color or tag.");
 

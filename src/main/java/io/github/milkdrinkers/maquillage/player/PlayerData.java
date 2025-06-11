@@ -8,6 +8,7 @@ import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -88,6 +89,7 @@ public class PlayerData {
         return nameColorId;
 
     }
+
     public int getTagId() {
         return tagId;
     }
@@ -194,6 +196,11 @@ public class PlayerData {
         if (this == o) return true;
         if (!(o instanceof PlayerData playerData)) return false;
         return equals(playerData);
+    }
+
+    @Override
+    public int hashCode() {
+        return getUuid().hashCode();
     }
 
     @Override

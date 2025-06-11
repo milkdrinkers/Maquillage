@@ -4,7 +4,8 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIBukkitConfig;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
-import io.github.milkdrinkers.maquillage.command.cosmetic.*;
+import io.github.milkdrinkers.maquillage.command.cosmetic.CommandNamecolor;
+import io.github.milkdrinkers.maquillage.command.cosmetic.CommandTag;
 import io.github.milkdrinkers.maquillage.command.nickname.CommandNickname;
 import io.github.milkdrinkers.maquillage.command.nickname.CommandRealname;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
@@ -20,12 +21,12 @@ public class CommandHandler implements Reloadable {
     }
 
     @Override
-    public void onLoad() {
+    public void onLoad(Maquillage plugin) {
         CommandAPI.onLoad(new CommandAPIBukkitConfig(plugin).shouldHookPaperReload(true).silentLogs(true));
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable(Maquillage plugin) {
         CommandAPI.onEnable();
 
         boolean tags = Cfg.get().getBoolean("module.tag.enabled");
@@ -50,7 +51,7 @@ public class CommandHandler implements Reloadable {
     }
 
     @Override
-    public void onDisable() {
+    public void onDisable(Maquillage plugin) {
         CommandAPI.onDisable();
     }
 }

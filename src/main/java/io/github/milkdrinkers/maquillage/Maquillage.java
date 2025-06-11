@@ -3,40 +3,41 @@ package io.github.milkdrinkers.maquillage;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.command.CommandHandler;
 import io.github.milkdrinkers.maquillage.config.ConfigHandler;
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandlerBuilder;
 import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
-import io.github.milkdrinkers.maquillage.hook.BStatsHook;
-import io.github.milkdrinkers.maquillage.hook.EssentialsHook;
-import io.github.milkdrinkers.maquillage.hook.PAPIHook;
-import io.github.milkdrinkers.maquillage.hook.VaultHook;
+import io.github.milkdrinkers.maquillage.hook.HookManager;
 import io.github.milkdrinkers.maquillage.listener.ListenerHandler;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.milkdrinkers.maquillage.translation.TranslationManager;
-import io.github.milkdrinkers.maquillage.updatechecker.UpdateChecker;
+import io.github.milkdrinkers.maquillage.threadutil.SchedulerHandler;
+import io.github.milkdrinkers.maquillage.translation.TranslationHandler;
+import io.github.milkdrinkers.maquillage.updatechecker.UpdateHandler;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
-import io.github.milkdrinkers.threadutil.PlatformBukkit;
-import io.github.milkdrinkers.threadutil.Scheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class Maquillage extends JavaPlugin {
     private static Maquillage instance;
+
+    // Handlers/Managers
     private ConfigHandler configHandler;
-    private TranslationManager translationManager;
+    private TranslationHandler translationHandler;
+    private DatabaseHandler databaseHandler;
+    private HookManager hookManager;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
-    private UpdateChecker updateChecker;
-    private static SyncHandler syncHandler;
+    private UpdateHandler updateHandler;
+    private SchedulerHandler schedulerHandler;
+    private SyncHandler syncHandler;
     private @SuppressWarnings("unused") MaquillageAPIProvider apiProvider;
 
-    // Hooks
-    private static BStatsHook bStatsHook;
-    private static VaultHook vaultHook;
-    private static EssentialsHook essentialsHook;
-    private static PAPIHook papiHook;
+    // Handlers list (defines order of load/enable/disable)
+    private List<? extends Reloadable> handlers;
 
     /**
      * Gets plugin instance.
@@ -50,89 +51,54 @@ public class Maquillage extends JavaPlugin {
     public void onLoad() {
         instance = this;
         apiProvider = new MaquillageAPIProvider(this);
-        Scheduler.init(new PlatformBukkit(this));
-        Scheduler.setErrorHandler(e -> this.getSLF4JLogger().error("[Scheduler]: {}", e.getMessage()));
         configHandler = new ConfigHandler(instance);
-        translationManager = new TranslationManager(instance);
-        DB.init(
-            new DatabaseHandlerBuilder()
-                .withConfigHandler(configHandler)
-                .withLogger(getComponentLogger())
-                .build()
-        );
+        translationHandler = new TranslationHandler(instance, configHandler);
+        databaseHandler = new DatabaseHandlerBuilder()
+            .withConfigHandler(configHandler)
+            .withLogger(getComponentLogger())
+            .build();
+        hookManager = new HookManager(this);
         commandHandler = new CommandHandler(instance);
         listenerHandler = new ListenerHandler(instance);
-        updateChecker = new UpdateChecker();
-        bStatsHook = new BStatsHook(instance);
-        vaultHook = new VaultHook(instance);
-        essentialsHook = new EssentialsHook();
-        papiHook = new PAPIHook(instance);
+        updateHandler = new UpdateHandler(this);
+        schedulerHandler = new SchedulerHandler();
         syncHandler = new SyncHandler();
 
-        configHandler.onLoad();
-        translationManager.onLoad();
-        DB.getHandler().onLoad();
-        commandHandler.onLoad();
-        listenerHandler.onLoad();
-        updateChecker.onLoad();
-        bStatsHook.onLoad();
-        vaultHook.onLoad();
-        essentialsHook.onLoad();
-        papiHook.onLoad();
-        syncHandler.onLoad();
+        handlers = List.of(
+            configHandler,
+            translationHandler,
+            databaseHandler,
+            hookManager,
+            commandHandler,
+            listenerHandler,
+            updateHandler,
+            schedulerHandler,
+            syncHandler
+        );
+
+        DB.init(databaseHandler);
+        for (Reloadable handler : handlers)
+            handler.onLoad(instance);
     }
 
     public void onEnable() {
-        configHandler.onEnable();
-        translationManager.onEnable();
-        DB.getHandler().onEnable();
-        commandHandler.onEnable();
-        listenerHandler.onEnable();
-        updateChecker.onEnable();
-        bStatsHook.onEnable();
-        vaultHook.onEnable();
-        essentialsHook.onEnable();
-        papiHook.onEnable();
+        for (Reloadable handler : handlers)
+            handler.onEnable(instance);
 
         if (!DB.isReady()) {
             Logger.get().warn(ColorParser.of("<yellow>Database handler failed to start. Database support has been disabled.").build());
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
-        if (!vaultHook.isVaultLoaded()) {
-            Logger.get().warn(ColorParser.of("<yellow>Vault is required by this plugin.").build());
-            Bukkit.getPluginManager().disablePlugin(this);
-        }
-
-        if (essentialsHook.isHookLoaded()) {
-            Logger.get().info(ColorParser.of("<green>EssentialsX has been found on this server. EssentialsX support enabled.").build());
-        } else {
-            Logger.get().warn(ColorParser.of("<yellow>EssentialsX is not installed on this server. EssentialsX support has been disabled.").build());
-        }
-
-        if (!Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            Logger.get().warn(ColorParser.of("<yellow>Maquillage features will be limited as PlaceholderAPI is not installed on this server.").build());
-        }
-
         NameColorHolder.getInstance().loadAll();
         TagHolder.getInstance().loadAll();
-        syncHandler.onEnable();
     }
 
     public void onDisable() {
-        Scheduler.shutdown();
-        configHandler.onDisable();
-        translationManager.onDisable();
-        DB.getHandler().onDisable();
-        commandHandler.onDisable();
-        listenerHandler.onDisable();
-        updateChecker.onDisable();
-        bStatsHook.onDisable();
-        vaultHook.onDisable();
-        essentialsHook.onDisable();
-        papiHook.onDisable();
-        apiProvider = null;
+        for (Reloadable handler : handlers.reversed()) // If reverse doesn't work implement a new List with your desired disable order
+            handler.onDisable(instance);
 
+        apiProvider = null;
         NameColorHolder.getInstance().cacheClear();
         TagHolder.getInstance().cacheClear();
     }
@@ -154,50 +120,26 @@ public class Maquillage extends JavaPlugin {
     }
 
     /**
-     * Gets config handler.
+     * Gets hook manager.
      *
-     * @return the translation handler
+     * @return the hook manager
      */
     @NotNull
-    public TranslationManager getTranslationManager() {
-        return translationManager;
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     /**
-     * Gets update checker.
+     * Gets update handler.
      *
-     * @return the update checker
+     * @return the update handler
      */
     @NotNull
-    public UpdateChecker getUpdateChecker() {
-        return updateChecker;
+    public UpdateHandler getUpdateHandler() {
+        return updateHandler;
     }
 
-    /**
-     * Gets bStats hook.
-     *
-     * @return the bStats hook
-     */
-    @NotNull
-    public static BStatsHook getBStatsHook() {
-        return bStatsHook;
-    }
-
-    /**
-     * Gets vault hook.
-     *
-     * @return the vault hook
-     */
-    @NotNull
-    public static VaultHook getVaultHook() {
-        return vaultHook;
-    }
-
-    public static EssentialsHook getEssentialsHook() {
-        return essentialsHook;
-    }
-
-    public static SyncHandler getSyncHandler() {
+    public SyncHandler getSyncHandler() {
         return syncHandler;
     }
 }

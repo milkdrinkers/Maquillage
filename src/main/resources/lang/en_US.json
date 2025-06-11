@@ -1,0 +1,140 @@
+{
+  "update-checker": {
+    "running-latest": "<white>You are running the latest version of <plugin_name>!",
+    "update-found-console": "\n\n<white>An update was found for <plugin_name>!\n    <white>Current version: <red>v<version_current>\n    <white>Latest version: <green><click:open_url:'<download_link>'><hover:show_text:'<green>Open Download Page'>v<version_latest></hover></click>\n",
+    "update-found-player": "\n<white>An update was found for <plugin_name>!\n  <dark_gray>• <white>Current version: <red>v<version_current>\n  <dark_gray>• <white>Latest version: <green><click:open_url:'<download_link>'><hover:show_text:'<green>Open Download Page'>v<version_latest></hover></click>\n",
+    "update-failed": "<yellow>Failed to fetch latest version, error: <error>"
+  },
+  "commands": {
+    "translation": {
+      "help": "\n<white>Translations subcommands:\n  <dark_gray>• <white>reload: <gray><i>Reloads the translation files.\n  <dark_gray>• <white>test <node>: <gray><i>Test a translation.\n",
+      "reloaded": "<green>Successfully reloaded translations!"
+    },
+    "module": {
+      "error": {
+        "player-not-loaded": "<red>The player could not be loaded."
+      },
+      "tag": {
+        "create": {
+          "input-tag": "Input the desired tag.",
+          "input-label": "Input the desired label. This is shown in the GUI where player's choose a tag.",
+          "input-perm": "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"",
+          "confirm": "Do you want to save the tag <tag><white> with the label <label><white> and the permission node <perm>?",
+          "not-saved": "<red>The tag was not saved.",
+          "failure": "<red>Something went wrong. The tag was not saved.",
+          "success": "<green>The tag was successfully saved!"
+        },
+        "edit": {
+          "tag": {
+            "current-tag": "The current tag is <tag>.",
+            "current-tag-question": "What do you want the new tag to be?",
+            "confirm": "Do you want to update the tag to this: <tag><white>?",
+            "not-updated": "<red>The tag was not updated.",
+            "failure": "<red>Something went wrong. The tag was not updated.",
+            "success": "<green>The tag was successfully updated!"
+          },
+          "label": {
+            "current-label": "The current label for <tag> is <label>.",
+            "current-label-question": "What do you want the new label to be?",
+            "confirm": "Do you want to update the label of this tag <tag><white> to be <label>?",
+            "not-updated": "<red>The tag label was not updated.",
+            "failure": "<red>Something went wrong. The tag label was not updated.",
+            "success": "<green>The tag label was successfully updated!"
+          },
+          "perm": {
+            "current-perm": "The current permission node for <tag><white> is <perm>.",
+            "current-no-perm": "The tag <tag><white> is currently permissionless.",
+            "current-perm-question": "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.tag.[your input]\"",
+            "confirm": "Do you want to update the tag to this: <perm>?",
+            "not-updated": "<red>The permission was not updated.",
+            "failure": "<red>Something went wrong. The permission was not updated.",
+            "success": "<green>The permission was successfully updated!"
+          }
+        },
+        "delete": {
+          "no-tag": "<red>There's no tag with that key.",
+          "confirm": "\nAre you sure you want to delete this tag: <tag><white>?\n<red>This action is permanent.\n",
+          "not-deleted": "<red>The tag was not deleted.",
+          "failure": "<red>Something went wrong. The tag was not deleted.",
+          "success": "<green>The tag was successfully deleted!"
+        }
+      },
+      "namecolor": {
+        "create": {
+          "input-namecolor": "Input the desired namecolor.",
+          "input-label": "Input the desired label. This is shown in the GUI where player's choose a namecolor.",
+          "input-perm": "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.namecolor.[your input]\"",
+          "confirm": "Do you want to save the namecolor <namecolor><white> with the label <label><white> and the permission node <perm>?",
+          "not-saved": "<red>The namecolor was not saved.",
+          "failure": "<red>Something went wrong. The namecolor was not saved.",
+          "success": "<green>The namecolor was successfully saved!"
+        },
+        "edit": {
+          "color": {
+            "current-color": "The current namecolor is <namecolor>.",
+            "current-color-question": "What do you want the new namecolor to be?",
+            "confirm": "Do you want to update the namecolor to this: <namecolor><white>?",
+            "not-updated": "<red>The namecolor was not updated.",
+            "failure": "<red>Something went wrong. The namecolor was not updated.",
+            "success": "<green>The namecolor was successfully updated!"
+          },
+          "label": {
+            "current-label": "The current label for <namecolor> is <label>.",
+            "current-label-question": "What do you want the new label to be?",
+            "confirm": "Do you want to update the label of this namecolor <namecolor><white> to be <label>?",
+            "not-updated": "<red>The namecolor label was not updated.",
+            "failure": "<red>Something went wrong. The namecolor label was not updated.",
+            "success": "<green>The namecolor label was successfully updated!"
+          },
+          "perm": {
+            "current-perm": "The current permission node for <namecolor><white> is <perm>.",
+            "current-no-perm": "The namecolor <namecolor><white> is currently permissionless.",
+            "current-perm-question": "Input the desired permission node, or \"none\" for permissionless. The final permission node will be \"maquillage.namecolor.[your input]\"",
+            "confirm": "Do you want to update the permission to this: <perm>?",
+            "not-updated": "<red>The permission was not updated.",
+            "failure": "<red>Something went wrong. The permission was not updated.",
+            "success": "<green>The permission was successfully updated!"
+          }
+        },
+        "delete": {
+          "no-color": "<red>There's no namecolor with that key.",
+          "confirm": "\nAre you sure you want to delete this color: <namecolor><white>?\n<red>This action is permanent.\n",
+          "not-deleted": "<red>The namecolor was not deleted.",
+          "failure": "<red>Something went wrong. The namecolor was not deleted.",
+          "success": "<green>The namecolor was successfully deleted!"
+        }
+      },
+      "nickname": {
+        "nickname": {
+          "set": {
+            "player-not-found": "<red>The player wasn't found.",
+            "cooldown": "<red>This command has a cooldown. Try again in a few seconds.",
+            "no-nickname": "<red>You need to input a nickname.",
+            "too-long": "<red>That nickname is too long. The maximum length is <characters> characters.",
+            "illegal-characters": "<red>That nickname contains illegal characters. Only A-Z, 0-9 and _ are allowed.",
+            "success": "<green>The nickname for <player> was successfully changed to <nickname>."
+          },
+          "clear": {
+            "player-not-found": "<red>The player wasn't found.",
+            "no-nickname": "<red>That player doesn't appear to have a nickname.",
+            "cleared": "<green>The nickname for <player> was successfully cleared."
+          }
+        },
+        "realname": {
+          "info": "\n<white>Realname for '<yellow><input><white>':\n  <dark_gray>• <white>Username: <yellow><username>\n  <dark_gray>• <white>Nickname: <yellow><nickname>\n",
+          "fail-matches": "<red>Could not find anyone named '<input>'.",
+          "fail-search": "<red>Could not find any data for '<input>'."
+        }
+      }
+    }
+  },
+  "gui": {
+    "title": "<white>Select your <cosmetic>",
+    "clear": "<red>Click to clear your <cosmetic>.",
+    "next-page": "<green>Next page",
+    "previous-page": "<red>Previous page",
+    "select-tag": "<grey>Click this to select the tag.",
+    "select-namecolor": "<grey>Click this to select the namecolor.",
+    "on-cooldown": "<red>You are on cooldown. Try again in a few seconds."
+  }
+}

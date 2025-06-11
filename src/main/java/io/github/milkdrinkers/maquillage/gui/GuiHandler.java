@@ -1,11 +1,11 @@
 package io.github.milkdrinkers.maquillage.gui;
 
-import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.PaginatedGui;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
-import io.github.milkdrinkers.maquillage.translation.Translation;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.entity.Player;
 
 public class GuiHandler {

@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface BaseCosmeticHolder<T extends BaseCosmetic> {
 
@@ -12,7 +12,7 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      *
      * @return then entire cache
      */
-    HashMap<Integer, T> cacheGet();
+    Map<Integer, T> cacheGet();
 
     /**
      * Add this value to the cache
@@ -45,9 +45,9 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
     /**
      * Attempts to save a BaseCosmetic to DB and, if successful, caches the BaseCosmetic
      *
-     * @param value      BaseCosmetic
-     * @param perm       a permission node
-     * @param label       a display label
+     * @param value BaseCosmetic
+     * @param perm  a permission node
+     * @param label a display label
      * @return -1 if failed, otherwise the ID of the BaseCosmetic
      */
     int add(String value, String perm, String label);
@@ -57,8 +57,8 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      *
      * @param value      BaseCosmetic
      * @param perm       a permission node
-     * @param label       a display label
-     * @param databaseId         a unique id
+     * @param label      a display label
+     * @param databaseId a unique id
      * @return whether the value was updated
      */
     boolean update(String value, String perm, String label, int databaseId);
