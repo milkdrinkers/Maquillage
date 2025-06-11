@@ -6,6 +6,8 @@ import io.github.milkdrinkers.maquillage.module.Labelable;
 import io.github.milkdrinkers.maquillage.module.Permissible;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
+
 public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticIdentifiable, Identifiable {
     private String perm;
     private String label;
@@ -63,10 +65,16 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
         return getDatabaseId() == baseCosmetic.getDatabaseId();
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof BaseCosmetic baseCosmetic)) return false;
         return getDatabaseId() == baseCosmetic.getDatabaseId();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPerm(), getLabel(), getKey(), getDatabaseId());
     }
 
     @Override

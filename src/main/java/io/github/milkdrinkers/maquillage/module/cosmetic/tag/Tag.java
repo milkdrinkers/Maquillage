@@ -30,6 +30,11 @@ public class Tag extends BaseCosmetic {
     }
 
     @Override
+    public int hashCode() {
+        return getTag().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Tag{" +
             "tag='" + getTag() + '\'' +
