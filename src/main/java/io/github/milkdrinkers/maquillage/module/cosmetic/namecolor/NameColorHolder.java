@@ -13,16 +13,15 @@ import org.bukkit.entity.Player;
 import org.jooq.Record4;
 import org.jooq.Result;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.milkdrinkers.maquillage.database.schema.tables.Colors.COLORS;
 
 public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     private static NameColorHolder INSTANCE;
-    private final HashMap<Integer, NameColor> cachedColors = new HashMap<>();
-    private final HashMap<String, Integer> colorKeys = new HashMap<>();
+    private final Map<Integer, NameColor> cachedColors = new ConcurrentHashMap<>();
+    private final Map<String, Integer> colorKeys = new ConcurrentHashMap<>();
 
     private NameColorHolder() {
     }
@@ -37,8 +36,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Cache
 
     @Override
-    public HashMap<Integer, NameColor> cacheGet() {
-        return cachedColors;
+    public Map<Integer, NameColor> cacheGet() {
+        return Collections.unmodifiableMap(cachedColors);
     }
 
     @Override
@@ -209,7 +208,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
         return true;
     }
 
-    public HashMap<String, Integer> getColorKeys() {
-        return colorKeys;
+    public Map<String, Integer> getColorKeys() {
+        return Collections.unmodifiableMap(colorKeys);
     }
 }

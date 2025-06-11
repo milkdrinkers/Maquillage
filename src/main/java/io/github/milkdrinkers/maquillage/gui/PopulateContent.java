@@ -34,7 +34,7 @@ public class PopulateContent {
     static ItemStack selectedTagItem = new ItemStack(Material.ENCHANTED_BOOK);
     static ItemMeta selectedTagItemMeta = selectedTagItem.getItemMeta();
 
-    public static void populateColorContent(PaginatedGui gui, HashMap<Integer, NameColor> colors, Player p) {
+    public static void populateColorContent(PaginatedGui gui, Map<Integer, NameColor> colors, Player p) {
         List<NameColor> colorList = colors.values().stream()
             .filter(color -> color.hasPerm(p))
             .sorted(Comparator.comparing(NameColor::getLabel))
@@ -58,7 +58,7 @@ public class PopulateContent {
         }
     }
 
-    public static void populateTagContent(PaginatedGui gui, HashMap<Integer, Tag> tags, Player p) {
+    public static void populateTagContent(PaginatedGui gui, Map<Integer, Tag> tags, Player p) {
         List<Tag> tagList = tags.values().stream()
             .filter(tag -> tag.hasPerm(p))
             .sorted(Comparator.comparing(Tag::getLabel))

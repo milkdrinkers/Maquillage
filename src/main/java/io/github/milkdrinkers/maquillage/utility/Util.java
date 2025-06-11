@@ -5,12 +5,12 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Util {
-
     private static final PlainTextComponentSerializer plainTextComponentSerializer = PlainTextComponentSerializer.plainText();
 
-    public static String createKey(String label, HashMap<String, Integer> map) {
+    public static String createKey(String label, Map<String, Integer> map) {
         Component labelComponent = ColorParser.of(label).legacy().build();
         String keyNoNum = plainTextComponentSerializer.serialize(labelComponent);
 
@@ -28,5 +28,4 @@ public class Util {
         }
         return key;
     }
-
 }

@@ -13,17 +13,16 @@ import org.bukkit.entity.Player;
 import org.jooq.Record4;
 import org.jooq.Result;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static io.github.milkdrinkers.maquillage.database.schema.tables.Tags.TAGS;
 
 public class TagHolder implements BaseCosmeticHolder<Tag> {
     private static TagHolder INSTANCE;
-    private final HashMap<Integer, Tag> cachedTags = new HashMap<>();
+    private final Map<Integer, Tag> cachedTags = new ConcurrentHashMap<>();
 
-    private final HashMap<String, Integer> tagKeys = new HashMap<>();
+    private final Map<String, Integer> tagKeys = new ConcurrentHashMap<>();
 
     private TagHolder() {
     }
@@ -38,8 +37,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Cache
 
     @Override
-    public HashMap<Integer, Tag> cacheGet() {
-        return cachedTags;
+    public Map<Integer, Tag> cacheGet() {
+        return Collections.unmodifiableMap(cachedTags);
     }
 
     @Override
@@ -210,7 +209,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
         return true;
     }
 
-    public HashMap<String, Integer> getTagKeys() {
-        return tagKeys;
+    public Map<String, Integer> getTagKeys() {
+        return Collections.unmodifiableMap(tagKeys);
     }
 }
