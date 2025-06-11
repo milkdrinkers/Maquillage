@@ -34,6 +34,7 @@ public class Maquillage extends JavaPlugin {
     private UpdateHandler updateHandler;
     private SchedulerHandler schedulerHandler;
     private SyncHandler syncHandler;
+    private @SuppressWarnings("unused") MaquillageAPIProvider apiProvider;
 
     // Handlers list (defines order of load/enable/disable)
     private List<? extends Reloadable> handlers;
@@ -49,6 +50,7 @@ public class Maquillage extends JavaPlugin {
 
     public void onLoad() {
         instance = this;
+        apiProvider = new MaquillageAPIProvider(this);
         configHandler = new ConfigHandler(instance);
         translationHandler = new TranslationHandler(instance, configHandler);
         databaseHandler = new DatabaseHandlerBuilder()
@@ -96,6 +98,7 @@ public class Maquillage extends JavaPlugin {
         for (Reloadable handler : handlers.reversed()) // If reverse doesn't work implement a new List with your desired disable order
             handler.onDisable(instance);
 
+        apiProvider = null;
         NameColorHolder.getInstance().cacheClear();
         TagHolder.getInstance().cacheClear();
     }

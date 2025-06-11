@@ -1,11 +1,16 @@
+import org.gradle.kotlin.dsl.compileOnly
+import org.gradle.kotlin.dsl.jooqCodegen
+import org.gradle.kotlin.dsl.libs
 import org.jooq.meta.jaxb.Logging
 import java.time.Instant
+import com.vanniktech.maven.publish.JavaLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
     `java-library`
-    `maven-publish`
-    signing
 
+    alias(libs.plugins.publisher)
     alias(libs.plugins.shadow) // Shades and relocates dependencies, see https://gradleup.com/shadow/
     alias(libs.plugins.run.paper) // Built in test server using runServer and runMojangMappedServer tasks
     alias(libs.plugins.plugin.yml) // Automatic plugin.yml generation
@@ -31,8 +36,6 @@ repositories {
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://mvn-repo.arim.space/lesser-gpl3/")
-
-    maven("https://maven.athyrium.eu/releases")
 
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 
@@ -76,6 +79,7 @@ dependencies {
     // Database dependencies - Core
     implementation(libs.hikaricp)
     library(libs.bundles.flyway)
+    compileOnly(libs.jakarta) // Compiler bug, see: https://github.com/jOOQ/jOOQ/issues/14865#issuecomment-2077182512
     library(libs.jooq)
     jooqCodegen(libs.h2)
 
@@ -154,9 +158,7 @@ tasks {
         reloc("com.zaxxer.hikari", "hikaricp")
         reloc("org.bstats", "bstats")
 
-        mergeServiceFiles {
-            setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin") // Fix Flyway overriding its own files
-        }
+        mergeServiceFiles()
     }
 
     test {
@@ -212,6 +214,8 @@ bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
     depend = listOf("Vault", "PlaceholderAPI")
     softDepend = listOf("Essentials")
+    loadBefore = listOf()
+    provides = listOf()
 }
 
 flyway {
@@ -227,7 +231,7 @@ flyway {
     cleanDisabled = false
     locations = arrayOf(
         "filesystem:src/main/resources/db/migration",
-        "classpath:db/migration"
+        "classpath:${mainPackage.replace(".", "/")}/database/migration/migrations"
     )
 }
 
@@ -264,64 +268,64 @@ fun applyCustomVersion() {
     rootProject.version = (if (ver.first().equals('v', true)) ver.substring(1) else ver.uppercase()).uppercase()
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "io.github.milkdrinkers"
-            artifactId = "maquillage"
-            version = "${rootProject.version}"
+mavenPublishing {
+    coordinates(
+        groupId = "io.github.milkdrinkers",
+        artifactId = "maquillage",
+        version = rootProject.version.toString().let { originalVersion ->
+            if (!originalVersion.contains("-SNAPSHOT"))
+                originalVersion
+            else
+                originalVersion.substringBeforeLast("-SNAPSHOT") + "-SNAPSHOT" // Force append just -SNAPSHOT if snapshot version
+        }
+    )
 
-            pom {
-                name.set(rootProject.name)
-                description.set(rootProject.description.orEmpty())
-                url.set("https://github.com/Alathra/Maquillage")
-                licenses {
-                    license {
-                        name.set("GNU General Public License Version 3")
-                        url.set("https://www.gnu.org/licenses/gpl-3.0.en.html#license-text")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("rooooose-b")
-                        name.set("Rose")
-                        url.set("https://github.com/rooooose-b")
-                        organization.set("Alathra")
-                        organizationUrl.set("https://github.com/Alathra")
-                    }
-                    developer {
-                        id.set("darksaid98")
-                        name.set("darksaid98")
-                        email.set("darksaid9889@gmail.com")
-                        url.set("https://github.com/darksaid98")
-                        organization.set("Alathra")
-                        organizationUrl.set("https://github.com/Alathra")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:git://github.com/Alathra/Maquillage.git")
-                    developerConnection.set("scm:git:ssh://github.com:Alathra/Maquillage.git")
-                    url.set("https://github.com/Alathra/Maquillage")
-                }
+    pom {
+        name.set(rootProject.name)
+        description.set(rootProject.description.orEmpty())
+        url.set("https://github.com/milkdrinkers/Maquillage")
+        inceptionYear.set("2025")
+
+        licenses {
+            license {
+                name.set("GNU General Public License Version 3")
+                url.set("https://www.gnu.org/licenses/gpl-3.0.en.html#license-text")
+                distribution.set("https://www.gnu.org/licenses/gpl-3.0.en.html#license-text")
             }
+        }
 
-            from(components["java"])
+        developers {
+            developer {
+                id.set("rooooose-b")
+                name.set("Rose")
+                url.set("https://github.com/rooooose-b")
+                organization.set("Milkdrinkers")
+            }
+            developer {
+                id.set("darksaid98")
+                name.set("darksaid98")
+                url.set("https://github.com/darksaid98")
+                organization.set("Milkdrinkers")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/milkdrinkers/Maquillage")
+            connection.set("scm:git:git://github.com/milkdrinkers/Maquillage.git")
+            developerConnection.set("scm:git:ssh://github.com:milkdrinkers/Maquillage.git")
         }
     }
 
-    repositories {
-        maven {
-            name = "central"
-            url = uri("https://central.sonatype.com")
-            credentials {
-                username = System.getenv("MAVEN_USERNAME")
-                password = System.getenv("MAVEN_PASSWORD")
-            }
-        }
-    }
-}
+    configure(JavaLibrary(
+        javadocJar = JavadocJar.None(), // We want to use our own javadoc jar
+    ))
 
-signing {
-    useInMemoryPgpKeys(System.getenv("GPG_KEY"), System.getenv("GPG_PASSWORD"))
-    sign(publishing.publications["maven"])
+    // Publish to Maven Central
+    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+
+    // Sign all publications
+    signAllPublications()
+
+    // Skip signing for local tasks
+    tasks.withType<Sign>().configureEach { onlyIf { !gradle.taskGraph.allTasks.any { it is PublishToMavenLocal } } }
 }
