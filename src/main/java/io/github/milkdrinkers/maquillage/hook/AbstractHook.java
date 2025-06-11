@@ -5,7 +5,7 @@ import io.github.milkdrinkers.maquillage.Reloadable;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
-public class AbstractHook implements Reloadable {
+public abstract class AbstractHook implements Reloadable {
     private final Maquillage plugin;
 
     protected AbstractHook(Maquillage plugin) {
