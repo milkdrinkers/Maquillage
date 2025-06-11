@@ -103,7 +103,7 @@ jobs:
           files: |
             ${{ github.workspace }}/tmp/*
             ${{ github.workspace }}/tmp/**/build/libs/*.jar
-          fail_on_unmatched_files: true
+          fail_on_unmatched_files: false
           token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: ${{ github.ref_name }}
           draft: ${{ inputs.draft }}
