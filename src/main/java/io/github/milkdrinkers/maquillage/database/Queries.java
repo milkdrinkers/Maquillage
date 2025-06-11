@@ -33,12 +33,12 @@ import static org.jooq.impl.DSL.*;
  * A class providing access to all SQL queries.
  */
 @ApiStatus.Internal
-public abstract class Queries {
+public final class Queries {
     /**
      * Holds all queries related to tags
      */
     @ApiStatus.Internal
-    public static abstract class Tag {
+    public static final class Tag {
         /**
          * Saves a new tag.
          *
@@ -182,7 +182,7 @@ public abstract class Queries {
          * Holds all queries with player specific behaviour
          */
         @ApiStatus.Internal
-        public static abstract class Players {
+        public static final class Players {
             /**
              * Save the selected tag of a player.
              *
@@ -275,7 +275,7 @@ public abstract class Queries {
      * Holds all queries related to name colors
      */
     @ApiStatus.Internal
-    public static abstract class NameColor {
+    public static final class NameColor {
         /**
          * Saves a new namecolor.
          *
@@ -419,7 +419,7 @@ public abstract class Queries {
          * Holds all queries with player specific behaviour
          */
         @ApiStatus.Internal
-        public static abstract class Players {
+        public static final class Players {
             /**
              * Save the selected namecolor of a player.
              *
@@ -512,7 +512,7 @@ public abstract class Queries {
      * Holds all queries related to nicknames
      */
     @ApiStatus.Internal
-    public static abstract class Nickname {
+    public static final class Nickname {
         /**
          * Saves a player's nickname.
          *
@@ -737,7 +737,7 @@ public abstract class Queries {
      * Holds all queries related to using the database as a messaging service.
      */
     @ApiStatus.Internal
-    public static abstract class Sync {
+    public static final class Sync {
         /**
          * Creates a synchronisation request with the current time in the database.
          *
