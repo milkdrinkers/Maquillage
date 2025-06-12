@@ -1,7 +1,7 @@
 [versions]
 crate = "4.0.0-RC.2"
 flyway = "11.9.1"
-jooq = "3.20.4"
+jooq = "3.20.5"
 
 [libraries]
 # Core dependencies
