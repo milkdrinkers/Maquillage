@@ -1,11 +1,7 @@
-import org.gradle.kotlin.dsl.compileOnly
-import org.gradle.kotlin.dsl.jooqCodegen
-import org.gradle.kotlin.dsl.libs
-import org.jooq.meta.jaxb.Logging
-import java.time.Instant
 import com.vanniktech.maven.publish.JavaLibrary
 import com.vanniktech.maven.publish.JavadocJar
-import com.vanniktech.maven.publish.SonatypeHost
+import org.jooq.meta.jaxb.Logging
+import java.time.Instant
 
 plugins {
     `java-library`
@@ -58,7 +54,9 @@ dependencies {
     // API
     implementation(libs.javasemver) // Required by VersionWatch
     implementation(libs.versionwatch)
-    implementation(libs.wordweaver)
+    implementation(libs.wordweaver) {
+        exclude("com.google.code.gson") // Already ships with Paper
+    }
     implementation(libs.crate.api)
     implementation(libs.crate.yaml)
     implementation(libs.colorparser) {
@@ -66,7 +64,18 @@ dependencies {
     }
     implementation(libs.threadutil)
     implementation(libs.commandapi.shade)
-    implementation(libs.triumph.gui)
+    implementation(libs.triumph.gui) {
+        // Already ships with Paper
+        exclude("net.kyori", "adventure-api")
+        exclude("net.kyori", "adventure-bom")
+        exclude("net.kyori", "adventure-key")
+        exclude("net.kyori", "examination-api")
+        exclude("net.kyori", "examination-string")
+        exclude("net.kyori", "adventure-text-serializer-gson")
+        exclude("net.kyori", "adventure-text-serializer-legacy")
+        exclude("net.kyori", "adventure-text-logger-slf4j")
+        exclude("com.google.code.gson")
+    }
 
     // Plugin Dependencies
     implementation(libs.bstats)
@@ -149,12 +158,14 @@ tasks {
         reloc("space.arim.morepaperlib", "morepaperlib")
         reloc("io.github.milkdrinkers.javasemver", "javasemver")
         reloc("io.github.milkdrinkers.versionwatch", "versionwatch")
+        reloc("org.json", "json")
         reloc("io.github.milkdrinkers.wordweaver", "wordweaver")
         reloc("io.github.milkdrinkers.crate", "crate")
+        reloc("org.yaml.snakeyaml", "snakeyaml")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
         reloc("io.github.milkdrinkers.threadutil", "threadutil")
         reloc("dev.jorel.commandapi", "commandapi")
-        reloc("dev.triumphteam.gui", "gui")
+        reloc("dev.triumphteam.gui", "triumphgui")
         reloc("com.zaxxer.hikari", "hikaricp")
         reloc("org.bstats", "bstats")
 
@@ -321,7 +332,7 @@ mavenPublishing {
     ))
 
     // Publish to Maven Central
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL, automaticRelease = true)
+    publishToMavenCentral(automaticRelease = true)
 
     // Sign all publications
     signAllPublications()
