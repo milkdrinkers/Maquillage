@@ -1,5 +1,6 @@
 import com.vanniktech.maven.publish.JavaLibrary
 import com.vanniktech.maven.publish.JavadocJar
+import net.minecrell.pluginyml.paper.PaperPluginDescription
 import org.jooq.meta.jaxb.Logging
 import java.time.Instant
 
@@ -9,7 +10,7 @@ plugins {
     alias(libs.plugins.publisher)
     alias(libs.plugins.shadow) // Shades and relocates dependencies, see https://gradleup.com/shadow/
     alias(libs.plugins.run.paper) // Built in test server using runServer and runMojangMappedServer tasks
-    alias(libs.plugins.plugin.yml) // Automatic plugin.yml generation
+    alias(libs.plugins.plugin.yml.paper) // Automatic plugin.yml generation
     alias(libs.plugins.flyway) // Database migrations
     alias(libs.plugins.jooq) // Database ORM
 
@@ -63,7 +64,7 @@ dependencies {
         exclude("net.kyori")
     }
     implementation(libs.threadutil)
-    implementation(libs.commandapi.shade)
+    implementation(libs.command.api.paper)
     implementation(libs.triumph.gui) {
         // Already ships with Paper
         exclude("net.kyori", "adventure-api")
@@ -179,7 +180,7 @@ tasks {
 
     runServer {
         // Configure the Minecraft version for our task.
-        minecraftVersion("1.21.5")
+        minecraftVersion(libs.versions.paper.run.get())
 
         // IntelliJ IDEA debugger setup: https://docs.papermc.io/paper/dev/debugging#using-a-remote-debugger
         jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true", "-DIReallyKnowWhatIAmDoingISwear", "-Dpaper.playerconnection.keepalive=6000")
@@ -208,24 +209,41 @@ tasks.named<Jar>("sourcesJar") { // Required for sources jar generation with jOO
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
-bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
-    // Plugin main class (required)
-    main = "${mainPackage}.${project.name}"
+paper { // Options: https://github.com/Minecrell/plugin-yml#bukkit
+    main = "${mainPackage}.${rootProject.name}"
+    loader = "${mainPackage}.${rootProject.name}PluginLoader"
+    generateLibrariesJson = true
 
     // Plugin Information
-    name = project.name
-    prefix = project.name
+    name = rootProject.name
+    prefix = rootProject.name
     version = "${project.version}"
-    description = "${project.description}"
+    description = "${rootProject.description}"
     authors = listOf("rooooose-b", "darksaid98")
     contributors = listOf()
-    apiVersion = "1.20.6"
+    apiVersion = libs.versions.paper.api.get().substringBefore("-R")
 
     // Misc properties
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
-    depend = listOf("Vault", "PlaceholderAPI")
-    softDepend = listOf("Essentials")
-    loadBefore = listOf()
+
+    // Dependencies
+    hasOpenClassloader = true
+    bootstrapDependencies {}
+    serverDependencies {
+        // Hard depends
+        register("Vault") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+        register("PlaceholderAPI") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+        }
+
+        // Soft depends
+        register("Essentials") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+        }
+    }
     provides = listOf()
 }
 
