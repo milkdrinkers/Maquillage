@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.gui;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.builder.item.PaperItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
@@ -92,7 +92,7 @@ public class PopulateContent {
         loreList.add(ColorParser.of(Translation.of("gui.select-namecolor")).build());
         colorItemMeta.lore(loreList);
         colorItem.setItemMeta(colorItemMeta);
-        gui.addItem(ItemBuilder.from(colorItem).asGuiItem(event -> {
+        gui.addItem(PaperItemBuilder.from(colorItem).asGuiItem(event -> {
             boolean success = NameColorHolder.setPlayerColor(p, color);
 
             if (success) {
@@ -113,7 +113,7 @@ public class PopulateContent {
         selectedColorItemMeta.addEnchant(Enchantment.UNBREAKING, 1, false);
         selectedColorItemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         selectedColorItem.setItemMeta(selectedColorItemMeta);
-        gui.addItem(ItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
+        gui.addItem(PaperItemBuilder.from(selectedColorItem).asGuiItem(event -> gui.update()));
     }
 
     private static void addTagItem(PaginatedGui gui, Tag tag, Player p, PlayerData playerData) {
@@ -126,7 +126,7 @@ public class PopulateContent {
         loreList.add(ColorParser.of(Translation.of("gui.select-tag")).build());
         tagItemMeta.lore(loreList);
         tagItem.setItemMeta(tagItemMeta);
-        gui.addItem(ItemBuilder.from(tagItem).asGuiItem(event -> {
+        gui.addItem(PaperItemBuilder.from(tagItem).asGuiItem(event -> {
             boolean success = TagHolder.setPlayerTag(p, tag);
 
             if (success) {
@@ -145,7 +145,7 @@ public class PopulateContent {
         String color = playerData.getNameColor().map(NameColor::getColor).orElse("<white>");
         selectedTagItemMeta.lore(Collections.singletonList(ColorParser.of(tag.getTag() + color + " " + p.getName()).build().decoration(TextDecoration.ITALIC, false)));
         selectedTagItem.setItemMeta(selectedTagItemMeta);
-        gui.addItem(ItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
+        gui.addItem(PaperItemBuilder.from(selectedTagItem).asGuiItem(event -> gui.update()));
     }
 
 }

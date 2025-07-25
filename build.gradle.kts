@@ -38,6 +38,8 @@ repositories {
 
     maven("https://repo.essentialsx.net/releases/")
 
+    maven("https://repo.triumphteam.dev/snapshots/")
+
     maven("https://jitpack.io/") {
         content {
             includeGroup("com.github.MilkBowl")
@@ -65,18 +67,7 @@ dependencies {
     }
     implementation(libs.threadutil)
     implementation(libs.command.api.paper)
-    implementation(libs.triumph.gui) {
-        // Already ships with Paper
-        exclude("net.kyori", "adventure-api")
-        exclude("net.kyori", "adventure-bom")
-        exclude("net.kyori", "adventure-key")
-        exclude("net.kyori", "examination-api")
-        exclude("net.kyori", "examination-string")
-        exclude("net.kyori", "adventure-text-serializer-gson")
-        exclude("net.kyori", "adventure-text-serializer-legacy")
-        exclude("net.kyori", "adventure-text-logger-slf4j")
-        exclude("com.google.code.gson")
-    }
+    implementation(libs.triumph.gui)
 
     // Plugin Dependencies
     implementation(libs.bstats)

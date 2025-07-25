@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.gui;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.builder.item.PaperItemBuilder;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.gui.GuiHandler.MaquillageGuiType;
@@ -45,7 +45,7 @@ public class PopulateButtons {
         skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(p.getUniqueId()));
         skull.setItemMeta(skullMeta);
 
-        gui.setItem(6, 5, ItemBuilder.from(skull).asGuiItem(event -> {
+        gui.setItem(6, 5, PaperItemBuilder.from(skull).asGuiItem(event -> {
             switch (type) {
                 case COLOR -> {
                     NameColorHolder.clearPlayerColor(p);
@@ -64,7 +64,7 @@ public class PopulateButtons {
         ItemMeta nextPageMeta = nextPage.getItemMeta();
         nextPageMeta.displayName(ColorParser.of(Translation.of("gui.next-page")).build().decoration(TextDecoration.ITALIC, false));
         nextPage.setItemMeta(nextPageMeta);
-        gui.setItem(6, 6, ItemBuilder.from(nextPage).asGuiItem(event -> {
+        gui.setItem(6, 6, PaperItemBuilder.from(nextPage).asGuiItem(event -> {
             gui.next();
         }));
 
@@ -73,7 +73,7 @@ public class PopulateButtons {
         ItemMeta prevPageMeta = prevPage.getItemMeta();
         prevPageMeta.displayName(ColorParser.of(Translation.of("gui.previous-page")).build().decoration(TextDecoration.ITALIC, false));
         prevPage.setItemMeta(prevPageMeta);
-        gui.setItem(6, 4, ItemBuilder.from(prevPage).asGuiItem(event -> {
+        gui.setItem(6, 4, PaperItemBuilder.from(prevPage).asGuiItem(event -> {
             gui.previous();
         }));
     }
