@@ -1,12 +1,12 @@
 package io.github.milkdrinkers.maquillage.updatechecker;
 
-import io.github.milkdrinkers.colorparser.paper.ColorParser;
-import io.github.milkdrinkers.javasemver.Version;
-import io.github.milkdrinkers.javasemver.exception.VersionParseException;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
 import io.github.milkdrinkers.maquillage.utility.Cfg;
 import io.github.milkdrinkers.maquillage.utility.Logger;
+import io.github.milkdrinkers.colorparser.paper.ColorParser;
+import io.github.milkdrinkers.javasemver.Version;
+import io.github.milkdrinkers.javasemver.exception.VersionParseException;
 import io.github.milkdrinkers.versionwatch.Platform;
 import io.github.milkdrinkers.versionwatch.VersionWatcher;
 import io.github.milkdrinkers.wordweaver.Translation;
@@ -22,11 +22,9 @@ public class UpdateHandler implements Reloadable {
     private final static String GITHUB_USER = "milkdrinkers"; // The GitHub user/organization name
     private final static String GITHUB_REPO = "Maquillage"; // The GitHub repository
 
-    private final Maquillage plugin;
     private final VersionWatcher watcher;
 
     public UpdateHandler(Maquillage plugin) {
-        this.plugin = plugin;
         this.watcher = VersionWatcher.builder()
             .withPlatform(Platform.GitHub)
             .withVersion(getCurrentVersion(plugin))
@@ -34,13 +32,6 @@ public class UpdateHandler implements Reloadable {
             .withResourceSlug(GITHUB_REPO)
             .withAgent(plugin.getName() + getCurrentVersion(plugin))
             .build();
-    }
-
-    /**
-     * On plugin load.
-     */
-    @Override
-    public void onLoad(Maquillage plugin) {
     }
 
     /**
@@ -100,21 +91,15 @@ public class UpdateHandler implements Reloadable {
                     return;
 
                 p.sendMessage(
-                    ColorParser.of(Translation.of("update-checker.update-found-player").replace("<download_link>", watcher.getDownloadURL()))
+                    ColorParser.of(Translation.of("update-checker.update-found-player"))
                         .with("plugin_name", plugin.getName())
                         .with("version_current", watcher.getCurrentVersion().getVersionFull())
                         .with("version_latest", watcher.getLatestVersion().getVersionFull())
+                        .with("download_link", watcher.getDownloadURL())
                         .build()
                 );
             }
         }, plugin);
-    }
-
-    /**
-     * On plugin disable.
-     */
-    @Override
-    public void onDisable(Maquillage plugin) {
     }
 
     /**

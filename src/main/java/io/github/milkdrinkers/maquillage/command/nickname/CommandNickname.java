@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.command.nickname;
 
-import dev.jorel.commandapi.CommandAPIBukkit;
+import dev.jorel.commandapi.CommandAPIPaper;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.StringArgument;
 import dev.jorel.commandapi.exceptions.WrapperCommandSyntaxException;
@@ -10,8 +10,8 @@ import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameChange
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreChangeEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknamePreRemoveEvent;
 import io.github.milkdrinkers.maquillage.api.event.nickname.PlayerNicknameRemoveEvent;
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.hook.Hook;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
@@ -58,7 +58,7 @@ public class CommandNickname {
                         Hook.getVaultHook().isPermissionsLoaded() &&
                         !Hook.getVaultHook().getPermissions().has(sender, "maquillage.command.nick.set.other")
                 ) {
-                    throw CommandAPIBukkit.failWithAdventureComponent(Bukkit.getServer().permissionMessage());
+                    throw CommandAPIPaper.failWithAdventureComponent(Bukkit.getServer().permissionMessage());
                 }
 
                 setNickname(
@@ -72,7 +72,7 @@ public class CommandNickname {
 
                 setNickname(
                     sender,
-                    player.orElseThrow(() -> CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.player-not-found")).build())),
+                    player.orElseThrow(() -> CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.player-not-found")).build())),
                     args
                 );
             });
@@ -82,24 +82,24 @@ public class CommandNickname {
      * Set the nickname of a player
      */
     private static void setNickname(CommandSender sender, Player player, CommandArguments args) throws WrapperCommandSyntaxException {
-        if (sender instanceof Player senderPlayer && Cooldown.getInstance().hasCooldown(senderPlayer, CooldownType.CommandNickname))
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
+        if (sender instanceof Player senderPlayer && Cooldowns.has(senderPlayer, CooldownType.CommandNickname))
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
         if (!(args.get("nick") instanceof String nick))
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.no-nickname")).build());
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.no-nickname")).build());
 
         if (nick.length() > Cfg.get().getInt("module.nickname.length"))
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.too-long"))
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.too-long"))
                 .with("characters", String.valueOf(Cfg.get().getInt("module.nickname.length"))).build());
 
         if (nick.matches("[^a-zA-Z0-9_ ]"))
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.illegal-characters")).build());
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.illegal-characters")).build());
 
         final Nickname nickname = new Nickname(nick, player.getName());
 
         final PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
         if (data == null)
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
 
         final PlayerNicknamePreChangeEvent event = new PlayerNicknamePreChangeEvent(player, nickname, data.getNickname().orElse(null));
         if (!event.callEvent())
@@ -122,7 +122,7 @@ public class CommandNickname {
             player.playerListName(Component.text(prefix + data.getNicknameString()));
 
         if (sender instanceof Player senderPlayer)
-            Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
+            Cooldowns.set(senderPlayer, CooldownType.CommandNickname, 2);
 
         sender.sendMessage(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.success"))
             .with("player", player.getName())
@@ -150,7 +150,7 @@ public class CommandNickname {
 
                 clearNickname(
                     sender,
-                    player.orElseThrow(() -> CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.player-not-found")).build()))
+                    player.orElseThrow(() -> CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.player-not-found")).build()))
                 );
             })
             ;
@@ -160,18 +160,18 @@ public class CommandNickname {
      * Actually clears the nickname of a player
      */
     private static void clearNickname(CommandSender sender, Player player) throws WrapperCommandSyntaxException {
-        if (sender instanceof Player senderPlayer && Cooldown.getInstance().hasCooldown(senderPlayer, CooldownType.CommandNickname))
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
+        if (sender instanceof Player senderPlayer && Cooldowns.has(senderPlayer, CooldownType.CommandNickname))
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
         final PlayerData data = PlayerDataHolder.getInstance().getPlayerData(player);
         if (data == null)
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.error.player-not-loaded")).build());
 
         if (data.getNickname().isEmpty())
-            throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.no-nickname")).build());
+            throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.clear.no-nickname")).build());
 
         if (sender instanceof Player senderPlayer)
-            Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
+            Cooldowns.set(senderPlayer, CooldownType.CommandNickname, 2);
 
         final PlayerNicknamePreRemoveEvent event = new PlayerNicknamePreRemoveEvent(player, data.getNickname().orElse(null));
         if (!event.callEvent())

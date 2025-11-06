@@ -1,15 +1,13 @@
 package io.github.milkdrinkers.maquillage.config;
 
-import io.github.milkdrinkers.crate.Config;
+import io.github.milkdrinkers.crate.internal.settings.ReloadSetting;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
-
-import javax.inject.Singleton;
+import io.github.milkdrinkers.crate.Config;
 
 /**
  * A class that generates/loads {@literal &} provides access to a configuration file.
  */
-@Singleton
 public class ConfigHandler implements Reloadable {
     private final Maquillage plugin;
     private Config cfg;
@@ -29,19 +27,32 @@ public class ConfigHandler implements Reloadable {
 
     @Override
     public void onLoad(Maquillage plugin) {
-        cfg = new Config("config", plugin.getDataFolder().getPath(), plugin.getResource("config.yml")); // Create a config file from the template in our resources folder
-        databaseCfg = new Config("database", plugin.getDataFolder().getPath(), plugin.getResource("database.yml"));
-        importCfg = new Config("import", plugin.getDataFolder().getPath(), plugin.getResource("import.yml"));
-        supremeCfg = new Config("supreme-import", plugin.getDataFolder().getPath(), plugin.getResource("supreme-import.yml"));
-        alonsoCfg = new Config("alonso-import", plugin.getDataFolder().getPath(), plugin.getResource("alonso-import.yml"));
-    }
+        cfg = Config.builderConfig()
+            .path(plugin.getDataFolder().toPath().resolve("config.yml"))
+            .defaults(plugin.getResource("config.yml"))
+            .reload(ReloadSetting.MANUALLY)
+            .build(); // Create a config file from the template in our resources folder
+        databaseCfg = Config.builderConfig()
+            .path(plugin.getDataFolder().toPath().resolve("database.yml"))
+            .defaults(plugin.getResource("database.yml"))
+            .reload(ReloadSetting.MANUALLY)
+            .build();
 
-    @Override
-    public void onEnable(Maquillage plugin) {
-    }
-
-    @Override
-    public void onDisable(Maquillage plugin) {
+        importCfg = Config.builderConfig()
+            .path(plugin.getDataFolder().toPath().resolve("import.yml"))
+            .defaults(plugin.getResource("import.yml"))
+            .reload(ReloadSetting.MANUALLY)
+            .build();
+        supremeCfg = Config.builderConfig()
+            .path(plugin.getDataFolder().toPath().resolve("supreme-import.yml"))
+            .defaults(plugin.getResource("supreme-import.yml"))
+            .reload(ReloadSetting.MANUALLY)
+            .build();
+        alonsoCfg = Config.builderConfig()
+            .path(plugin.getDataFolder().toPath().resolve("alonso-import.yml"))
+            .defaults(plugin.getResource("alonso-import.yml"))
+            .reload(ReloadSetting.MANUALLY)
+            .build();
     }
 
     /**
@@ -71,10 +82,20 @@ public class ConfigHandler implements Reloadable {
         return importCfg;
     }
 
+    /**
+     * Gets import config object.
+     *
+     * @return the config object
+     */
     public Config getSupremeConfig() {
         return supremeCfg;
     }
 
+    /**
+     * Gets import config object.
+     *
+     * @return the config object
+     */
     public Config getAlonsoConfig() {
         return alonsoCfg;
     }

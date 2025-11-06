@@ -1,12 +1,12 @@
 package io.github.milkdrinkers.maquillage.command.nickname;
 
-import dev.jorel.commandapi.CommandAPIBukkit;
+import dev.jorel.commandapi.CommandAPIPaper;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
 import io.github.milkdrinkers.wordweaver.Translation;
@@ -31,11 +31,11 @@ public class CommandRealname {
                     )
             )
             .executes((sender, args) -> {
-                if (sender instanceof Player player && Cooldown.getInstance().hasCooldown(player, CooldownType.CommandNickname))
-                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
+                if (sender instanceof Player player && Cooldowns.has(player, CooldownType.CommandNickname))
+                    throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.nickname.nickname.set.cooldown")).build());
 
                 if (sender instanceof Player senderPlayer)
-                    Cooldown.getInstance().setCooldown(senderPlayer, CooldownType.CommandNickname, 2);
+                    Cooldowns.set(senderPlayer, CooldownType.CommandNickname, 2);
 
                 final String name = args.getByClassOrDefault("name", String.class, "");
 

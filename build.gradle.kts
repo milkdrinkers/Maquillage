@@ -2,7 +2,6 @@ import com.vanniktech.maven.publish.JavaLibrary
 import com.vanniktech.maven.publish.JavadocJar
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 import org.jooq.meta.jaxb.Logging
-import java.time.Instant
 
 plugins {
     `java-library`
@@ -10,16 +9,15 @@ plugins {
     alias(libs.plugins.publisher)
     alias(libs.plugins.shadow) // Shades and relocates dependencies, see https://gradleup.com/shadow/
     alias(libs.plugins.run.paper) // Built in test server using runServer and runMojangMappedServer tasks
-    alias(libs.plugins.plugin.yml.paper) // Automatic plugin.yml generation
-    alias(libs.plugins.flyway) // Database migrations
+    alias(libs.plugins.plugin.yml.paper) // Automatic plugin.yml generation    //alias(libs.plugins.paperweight) // Used to develop internal plugins using Mojang mappings, See https://github.com/PaperMC/paperweight
     alias(libs.plugins.jooq) // Database ORM
+    flyway
+    projectextensions
+    versioning
 
     eclipse
     idea
 }
-
-val mainPackage = "${project.group}.${project.name.lowercase()}"
-applyCustomVersion()
 
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(21)) // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 8 installed for example.
@@ -35,6 +33,11 @@ repositories {
     maven("https://mvn-repo.arim.space/lesser-gpl3/")
 
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+    maven("https://repo.codemc.org/repository/maven-public/") {
+        content {
+            includeGroup("com.github.retrooper")
+        }
+    }
 
     maven("https://repo.essentialsx.net/releases/")
 
@@ -65,14 +68,17 @@ dependencies {
     implementation(libs.colorparser) {
         exclude("net.kyori")
     }
-    implementation(libs.threadutil)
-    implementation(libs.command.api.paper)
-    implementation(libs.triumph.gui)
+    implementation(libs.threadutil.bukkit)
+    implementation(libs.commandapi.shade)
+    implementation(libs.triumph.gui) {
+        exclude("net.kyori")
+    }
 
     // Plugin Dependencies
     implementation(libs.bstats)
     compileOnly(libs.vault)
     compileOnly(libs.essentialsx)
+    compileOnly(libs.packetevents)
     compileOnly(libs.placeholderapi) {
         exclude("me.clip.placeholderapi.libs", "kyori")
     }
@@ -80,12 +86,16 @@ dependencies {
     // Database dependencies - Core
     implementation(libs.hikaricp)
     library(libs.bundles.flyway)
+    flywayDriver(libs.h2)
     compileOnly(libs.jakarta) // Compiler bug, see: https://github.com/jOOQ/jOOQ/issues/14865#issuecomment-2077182512
     library(libs.jooq)
     jooqCodegen(libs.h2)
 
     // Database dependencies - JDBC drivers
     library(libs.bundles.jdbcdrivers)
+
+    // Messaging service clients
+    library(libs.bundles.messagingclients)
 
     // Testing - Core
     testImplementation(libs.annotations)
@@ -94,6 +104,7 @@ dependencies {
     testRuntimeOnly(libs.slf4j)
     testImplementation(platform(libs.testcontainers.bom))
     testImplementation(libs.bundles.testcontainers)
+    testRuntimeOnly(libs.paper.api)
 
     // Testing - Database dependencies
     testImplementation(libs.hikaricp)
@@ -102,15 +113,14 @@ dependencies {
 
     // Testing - JDBC drivers
     testImplementation(libs.bundles.jdbcdrivers)
+
+    // Testing - Messaging service clients
+    testImplementation(libs.bundles.messagingclients)
 }
 
 tasks {
     build {
         dependsOn(shadowJar)
-    }
-
-    jooqCodegen {
-        dependsOn(flywayMigrate)
     }
 
     compileJava {
@@ -120,8 +130,6 @@ tasks {
         // See https://openjdk.java.net/jeps/247 for more information.
         options.release.set(21)
         options.compilerArgs.addAll(arrayListOf("-Xlint:all", "-Xlint:-processing", "-Xdiags:verbose"))
-
-        dependsOn(jooqCodegen) // Generate jOOQ sources before compilation
     }
 
     javadoc {
@@ -181,10 +189,11 @@ tasks {
         // Automatically install dependencies
         downloadPlugins {
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
-            url("https://ci.extendedclip.com/job/PlaceholderAPI/197/artifact/build/libs/PlaceholderAPI-2.11.6.jar")
+            github("retrooper", "packetevents", "v2.10.0", "packetevents-spigot-2.10.0.jar")
+            github("PlaceholderAPI", "PlaceholderAPI", "2.11.7", "PlaceholderAPI-2.11.7.jar")
             github("EssentialsX", "Essentials", "2.20.1", "EssentialsX-2.20.1.jar")
-            hangar("ViaVersion", "5.3.2")
-            hangar("ViaBackwards", "5.3.2")
+            hangar("ViaVersion", "5.5.1")
+            hangar("ViaBackwards", "5.5.1")
         }
     }
 }
@@ -195,27 +204,21 @@ tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
     }
 }
 
-tasks.named<Jar>("sourcesJar") { // Required for sources jar generation with jOOQ
-    dependsOn(tasks.jooqCodegen)
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE
-}
-
-paper { // Options: https://github.com/Minecrell/plugin-yml#bukkit
-    main = "${mainPackage}.${rootProject.name}"
-    loader = "${mainPackage}.${rootProject.name}PluginLoader"
+paper { // Options: https://docs.eldoria.de/pluginyml/paper/
+    main = project.entryPointClass
+    loader = project.entryPointClass + "PluginLoader"
     generateLibrariesJson = true
+    load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 
-    // Plugin Information
-    name = rootProject.name
-    prefix = rootProject.name
+    // Info
+    name = project.name
+    prefix = project.name
     version = "${project.version}"
-    description = "${rootProject.description}"
-    authors = listOf("rooooose-b", "darksaid98")
-    contributors = listOf()
+    description = "${project.description}"
+    authors = project.authors
+    contributors = project.contributors
     apiVersion = libs.versions.paper.api.get().substringBefore("-R")
-
-    // Misc properties
-    load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP or POSTWORLD
+    foliaSupported = false
 
     // Dependencies
     hasOpenClassloader = true
@@ -230,6 +233,10 @@ paper { // Options: https://github.com/Minecrell/plugin-yml#bukkit
         }
 
         // Soft depends
+        register("PacketEvents") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+        }
         register("Essentials") {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
             required = false
@@ -239,18 +246,21 @@ paper { // Options: https://github.com/Minecrell/plugin-yml#bukkit
 }
 
 flyway {
-    url = "jdbc:h2:${project.layout.buildDirectory.get()}/generated/flyway/db;AUTO_SERVER=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;IGNORECASE=TRUE"
+    url = provider {
+        "jdbc:h2:${project.layout.buildDirectory.get()}/generated/flyway/db;AUTO_SERVER=TRUE;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE;IGNORECASE=TRUE"
+    }
     user = "sa"
     password = ""
-    schemas = listOf("PUBLIC").toTypedArray()
+    schemas = listOf("PUBLIC")
     placeholders = mapOf( // Substitute placeholders for flyway
         "tablePrefix" to "",
     )
     validateMigrationNaming = true
     baselineOnMigrate = true
     cleanDisabled = false
-    locations = arrayOf(
-        "filesystem:src/main/resources/db/migration",
+    enableRdbmsSpecificMigrations = true
+    locations = listOf(
+        "filesystem:${project.layout.projectDirectory}/src/main/resources/db/migration/",
         "classpath:${mainPackage.replace(".", "/")}/database/migration/migrations"
     )
 }
@@ -260,9 +270,9 @@ jooq {
         logging = Logging.ERROR
         jdbc {
             driver = "org.h2.Driver"
-            url = flyway.url
-            user = flyway.user
-            password = flyway.password
+            url = flyway.url.get()
+            user = flyway.user.get()
+            password = flyway.password.get()
         }
         generator {
             database {
@@ -278,14 +288,6 @@ jooq {
             }
         }
     }
-}
-
-fun applyCustomVersion() {
-    // Apply custom version arg or append snapshot version
-    val ver = properties["altVer"]?.toString() ?: "${rootProject.version}-SNAPSHOT-${Instant.now().epochSecond}"
-
-    // Strip prefixed "v" from version tag
-    rootProject.version = (if (ver.first().equals('v', true)) ver.substring(1) else ver.uppercase()).uppercase()
 }
 
 mavenPublishing {

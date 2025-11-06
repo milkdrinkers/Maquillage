@@ -1,4 +1,4 @@
-{
+ {
   "update-checker": {
     "running-latest": "<white>You are running the latest version of <plugin_name>!",
     "update-found-console": "\n\n<white>An update was found for <plugin_name>!\n    <white>Current version: <red>v<version_current>\n    <white>Latest version: <green><click:open_url:'<download_link>'><hover:show_text:'<green>Open Download Page'>v<version_latest></hover></click>\n",
@@ -129,12 +129,48 @@
     }
   },
   "gui": {
-    "title": "<white>Select your <cosmetic>",
-    "clear": "<red>Click to clear your <cosmetic>.",
-    "next-page": "<green>Next page",
-    "previous-page": "<red>Previous page",
-    "select-tag": "<grey>Click this to select the tag.",
-    "select-namecolor": "<grey>Click this to select the namecolor.",
+    "namecolor": {
+      "title": "Select your Name Color",
+      "item": {
+        "name": "<label>",
+        "lore": [
+          "<!i><gray><preview_tag><preview_namecolor>",
+          "<active>"
+        ],
+        "active": {
+          "yes": "<!i><gray>You are using this namecolor",
+          "no": "<!i><gray>Click to select the namecolor"
+        }
+      },
+      "clear-item": {
+        "name": "<!i><gray><preview_tag><preview_namecolor>",
+        "lore": [
+          "<!i><red>Click to clear your namecolor"
+        ]
+      }
+    },
+    "tag": {
+      "title": "Select your Tag",
+      "item": {
+        "name": "<label>",
+        "lore": [
+          "<!i><gray><preview_tag><preview_namecolor>",
+          "<active>"
+        ],
+        "active": {
+          "yes": "<!i><gray>You are using this tag",
+          "no": "<!i><gray>Click to select the tag"
+        }
+      },
+      "clear-item": {
+        "name": "<!i><gray><preview_tag><preview_namecolor>",
+        "lore": [
+          "<!i><red>Click to clear your tag"
+        ]
+      }
+    },
+    "next-page": "<!i><green>Next page",
+    "previous-page": "<!i><red>Previous page",
     "on-cooldown": "<red>You are on cooldown. Try again in a few seconds."
   }
 }

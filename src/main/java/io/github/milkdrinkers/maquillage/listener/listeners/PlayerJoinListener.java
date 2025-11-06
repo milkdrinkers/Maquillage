@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.listener.listeners;
 
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.event.PlayerDataLoadedEvent;
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
@@ -22,12 +22,12 @@ public class PlayerJoinListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     @SuppressWarnings("unused")
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
 
         Scheduler
             .async(() -> {
                 Queries.Cooldown.load(e.getPlayer()).forEach((cooldownType, instant) -> {
-                    Cooldown.getInstance().setCooldown(e.getPlayer(), cooldownType, instant);
+                    Cooldowns.set(e.getPlayer(), cooldownType, instant);
                 });
                 return loadPlayerData(p);
             })

@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.listener.listeners;
 
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import io.github.milkdrinkers.threadutil.Scheduler;
@@ -12,11 +12,13 @@ public class PlayerQuitListener implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onPlayerQuitEvent(PlayerQuitEvent e) {
-        PlayerDataHolder.getInstance().removePlayerData(e.getPlayer());
         Scheduler
+            .sync(() -> {
+                PlayerDataHolder.getInstance().removePlayerData(e.getPlayer());
+            })
             .async(() -> {
                 Queries.Cooldown.save(e.getPlayer());
-                Cooldown.getInstance().clearCooldowns(e.getPlayer());
+                Cooldowns.removeAll(e.getPlayer());
             })
             .execute();
     }

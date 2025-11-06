@@ -7,15 +7,15 @@ public interface Reloadable {
     /**
      * On plugin load.
      */
-    void onLoad(Maquillage plugin);
+    default void onLoad(Maquillage plugin) {};
 
     /**
      * On plugin enable.
      */
-    void onEnable(Maquillage plugin);
+    default void onEnable(Maquillage plugin) {}
 
     /**
      * On plugin disable.
      */
-    void onDisable(Maquillage plugin);
+    default void onDisable(Maquillage plugin) {};
 }

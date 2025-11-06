@@ -1,9 +1,8 @@
 package io.github.milkdrinkers.maquillage.utility;
 
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseHolder;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
 import io.github.milkdrinkers.maquillage.database.jooq.JooqContext;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jooq.DSLContext;
 
@@ -11,41 +10,58 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Convenience class for accessing methods in {@link DatabaseHandler#getConnection}
- * This class abstracts away accessing the {@link DatabaseHolder} singleton
+ * Convenience class for accessing methods in {@link DatabaseHandler}
  */
 public final class DB {
-    /**
-     * Convenience method for {@link DatabaseHolder#setDatabaseHandler(DatabaseHandler)}
-     * Used to set the globally used database handler instance for the plugin
-     */
-    public static void init(DatabaseHandler handler) {
-        DatabaseHolder.getInstance().setDatabaseHandler(handler);
+    private static DB INSTANCE;
+
+    private static DB getInstance() {
+        if (INSTANCE == null)
+            INSTANCE = new DB();
+        return INSTANCE;
+    }
+
+    private DatabaseHandler databaseHandler;
+
+    private DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
+    }
+
+    private void setDatabaseHandler(DatabaseHandler handler) {
+        this.databaseHandler = handler;
     }
 
     /**
-     * Convenience method for {@link DatabaseHandler#isReady()}
+     * Used to set the globally used database handler instance for the plugin
+     */
+    @ApiStatus.Internal
+    public static void init(DatabaseHandler handler) {
+        getInstance().setDatabaseHandler(handler);
+    }
+
+    /**
+     * Convenience method for {@link DatabaseHandler#isStarted()}
      *
      * @return if the database is ready
      */
-    public static boolean isReady() {
-        DatabaseHandler handler = DatabaseHolder.getInstance().getDatabaseHandler();
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
+    public static boolean isStarted() {
+        DatabaseHandler handler = getInstance().getDatabaseHandler();
         if (handler == null)
             return false;
 
-        return handler.isReady();
-
+        return handler.isStarted();
     }
 
     /**
-     * Convenience method for {@link DatabaseHandler#getConnection} to getConnection {@link Connection}
+     * Convenience method for {@link DatabaseHandler#getConnection} to get a {@link Connection}
      *
      * @return the connection
      * @throws SQLException the sql exception
      */
     @NotNull
     public static Connection getConnection() throws SQLException {
-        return DatabaseHolder.getInstance().getDatabaseHandler().getConnection();
+        return getInstance().getDatabaseHandler().getConnection();
     }
 
     /**
@@ -56,7 +72,7 @@ public final class DB {
      */
     @NotNull
     public static DSLContext getContext(Connection con) {
-        return DatabaseHolder.getInstance().getDatabaseHandler().getJooqContext().createContext(con);
+        return getInstance().getDatabaseHandler().getJooqContext().createContext(con);
     }
 
     /**
@@ -66,15 +82,6 @@ public final class DB {
      */
     @NotNull
     public static DatabaseHandler getHandler() {
-        return DatabaseHolder.getInstance().getDatabaseHandler();
-    }
-
-    /**
-     * Convenience method for {@link DatabaseHandler#getDB()} to getConnection {@link DatabaseType}
-     *
-     * @return the database
-     */
-    public static DatabaseType getDB() {
-        return DatabaseHolder.getInstance().getDatabaseHandler().getDB();
+        return getInstance().getDatabaseHandler();
     }
 }

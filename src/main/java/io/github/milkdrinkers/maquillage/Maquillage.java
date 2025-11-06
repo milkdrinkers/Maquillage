@@ -3,11 +3,11 @@ package io.github.milkdrinkers.maquillage;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
 import io.github.milkdrinkers.maquillage.command.CommandHandler;
 import io.github.milkdrinkers.maquillage.config.ConfigHandler;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownHandler;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandlerBuilder;
-import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
 import io.github.milkdrinkers.maquillage.hook.HookManager;
 import io.github.milkdrinkers.maquillage.listener.ListenerHandler;
+import io.github.milkdrinkers.maquillage.messaging.MessagingHandler;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHolder;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.threadutil.SchedulerHandler;
@@ -15,6 +15,7 @@ import io.github.milkdrinkers.maquillage.translation.TranslationHandler;
 import io.github.milkdrinkers.maquillage.updatechecker.UpdateHandler;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
+import io.github.milkdrinkers.maquillage.utility.Messaging;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -28,12 +29,13 @@ public class Maquillage extends JavaPlugin {
     private ConfigHandler configHandler;
     private TranslationHandler translationHandler;
     private DatabaseHandler databaseHandler;
+    private MessagingHandler messagingHandler;
     private HookManager hookManager;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
     private UpdateHandler updateHandler;
     private SchedulerHandler schedulerHandler;
-    private SyncHandler syncHandler;
+    private CooldownHandler cooldownHandler;
     private @SuppressWarnings("unused") MaquillageAPIProvider apiProvider;
 
     // Handlers list (defines order of load/enable/disable)
@@ -51,32 +53,39 @@ public class Maquillage extends JavaPlugin {
     public void onLoad() {
         instance = this;
         apiProvider = new MaquillageAPIProvider(this);
-        configHandler = new ConfigHandler(instance);
-        translationHandler = new TranslationHandler(instance, configHandler);
-        databaseHandler = new DatabaseHandlerBuilder()
+        configHandler = new ConfigHandler(this);
+        translationHandler = new TranslationHandler(configHandler);
+        databaseHandler = DatabaseHandler.builder()
             .withConfigHandler(configHandler)
             .withLogger(getComponentLogger())
+            .withMigrate(true)
+            .build();
+        messagingHandler = MessagingHandler.builder()
+            .withLogger(getComponentLogger())
+            .withName(getName())
             .build();
         hookManager = new HookManager(this);
-        commandHandler = new CommandHandler(instance);
-        listenerHandler = new ListenerHandler(instance);
+        commandHandler = new CommandHandler(this);
+        listenerHandler = new ListenerHandler(this);
         updateHandler = new UpdateHandler(this);
         schedulerHandler = new SchedulerHandler();
-        syncHandler = new SyncHandler();
+        cooldownHandler = new CooldownHandler();
 
         handlers = List.of(
             configHandler,
             translationHandler,
             databaseHandler,
+            messagingHandler,
             hookManager,
             commandHandler,
             listenerHandler,
             updateHandler,
             schedulerHandler,
-            syncHandler
+            cooldownHandler
         );
 
         DB.init(databaseHandler);
+        Messaging.init(messagingHandler);
         for (Reloadable handler : handlers)
             handler.onLoad(instance);
     }
@@ -85,8 +94,13 @@ public class Maquillage extends JavaPlugin {
         for (Reloadable handler : handlers)
             handler.onEnable(instance);
 
-        if (!DB.isReady()) {
+        if (!DB.isStarted()) {
             Logger.get().warn(ColorParser.of("<yellow>Database handler failed to start. Database support has been disabled.").build());
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
+
+        if (!Messaging.isReady() && configHandler.getDatabaseConfig().getBoolean("messenger.enabled")) {
+            Logger.get().warn(ColorParser.of("<yellow>Messaging handler failed to start. Messaging support has been disabled.").build());
             Bukkit.getPluginManager().disablePlugin(this);
         }
 
@@ -137,9 +151,5 @@ public class Maquillage extends JavaPlugin {
     @NotNull
     public UpdateHandler getUpdateHandler() {
         return updateHandler;
-    }
-
-    public SyncHandler getSyncHandler() {
-        return syncHandler;
     }
 }

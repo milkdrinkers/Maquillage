@@ -1,10 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.namecolor;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
-import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
+import io.github.milkdrinkers.maquillage.messaging.MessagingUtils;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -82,7 +82,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
-            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+            MessagingUtils.sendNameColorFetch(databaseId);
         }
         return databaseId;
     }
@@ -94,7 +94,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.COLOR, value.getDatabaseId());
+        MessagingUtils.sendNameColorDelete(value.getDatabaseId());
         return true;
     }
 
@@ -112,7 +112,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withDatabaseId(databaseId)
                 .createNameColor()
         );
-        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.COLOR, databaseId);
+        MessagingUtils.sendNameColorFetch(databaseId);
         return true;
     }
 
@@ -193,14 +193,14 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
             return false;
 
         // Has cooldown
-        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
+        if (Cooldowns.has(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getNameColor().isPresent() && playerData.getNameColor().get().equals(nameColor))
             return false;
 
-        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
+        Cooldowns.set(p, CooldownType.Gui, 2);
 
         final int databaseId = nameColor.getDatabaseId();
         playerData.setNameColor(nameColor);

@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.command;
 
 import dev.jorel.commandapi.CommandAPI;
-import dev.jorel.commandapi.CommandAPIBukkitConfig;
+import dev.jorel.commandapi.CommandAPIPaperConfig;
 import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.Reloadable;
 import io.github.milkdrinkers.maquillage.command.cosmetic.CommandNamecolor;
@@ -14,6 +14,7 @@ import io.github.milkdrinkers.maquillage.utility.Cfg;
  * A class to handle registration of commands.
  */
 public class CommandHandler implements Reloadable {
+    public static final String BASE_PERM = "maquillage.command";
     private final Maquillage plugin;
 
     public CommandHandler(Maquillage plugin) {
@@ -22,11 +23,17 @@ public class CommandHandler implements Reloadable {
 
     @Override
     public void onLoad(Maquillage plugin) {
-        CommandAPI.onLoad(new CommandAPIBukkitConfig(plugin).shouldHookPaperReload(true).silentLogs(true));
+        CommandAPI.onLoad(
+            new CommandAPIPaperConfig(plugin)
+                .silentLogs(true)
+        );
     }
 
     @Override
     public void onEnable(Maquillage plugin) {
+        if (!CommandAPI.isLoaded())
+            return;
+
         CommandAPI.onEnable();
 
         boolean tags = Cfg.get().getBoolean("module.tag.enabled");
@@ -52,6 +59,9 @@ public class CommandHandler implements Reloadable {
 
     @Override
     public void onDisable(Maquillage plugin) {
+        if (!CommandAPI.isLoaded())
+            return;
+
         CommandAPI.onDisable();
     }
 }

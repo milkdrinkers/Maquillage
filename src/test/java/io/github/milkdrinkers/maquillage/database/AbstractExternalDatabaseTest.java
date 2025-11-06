@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.database;
 
-import io.github.milkdrinkers.maquillage.database.config.DatabaseConfigBuilder;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandlerBuilder;
+import io.github.milkdrinkers.maquillage.database.config.DatabaseConfig;
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseHandler;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.GenericContainer;
@@ -25,7 +25,7 @@ public abstract class AbstractExternalDatabaseTest extends AbstractDatabaseTest 
     void beforeAllTests() {
         Assertions.assertTrue(container.isRunning());
 
-        databaseConfig = new DatabaseConfigBuilder()
+        databaseConfig = DatabaseConfig.builder()
             .withDatabaseType(getTestConfig().jdbcPrefix())
             .withDatabase("testing")
             .withHost(container.getHost())
@@ -37,16 +37,18 @@ public abstract class AbstractExternalDatabaseTest extends AbstractDatabaseTest 
         Assertions.assertEquals(getTestConfig().requiredDatabaseType(), databaseConfig.getDatabaseType());
 
         DB.init(
-            new DatabaseHandlerBuilder()
-                .withDatabaseConfig(databaseConfig)
+            DatabaseHandler.builder()
+                .withConfig(databaseConfig)
                 .withLogger(logger)
                 .build()
         );
-        DB.getHandler().startup();
+        DB.getHandler().doStartup();
     }
 
     @AfterAll
+    @Override
     void afterAllTests() {
+        super.afterAllTests();
         container.stop();
     }
 }

@@ -1,11 +1,14 @@
 package io.github.milkdrinkers.maquillage.database;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
-import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.CooldownsRecord;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.NicknamesRecord;
-import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
+import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
+import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
+import io.github.milkdrinkers.maquillage.messaging.message.BidirectionalMessage;
+import io.github.milkdrinkers.maquillage.messaging.message.IncomingMessage;
+import io.github.milkdrinkers.maquillage.messaging.message.OutgoingMessage;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
 import org.bukkit.OfflinePlayer;
@@ -19,19 +22,23 @@ import org.jooq.Record;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static io.github.milkdrinkers.maquillage.database.QueryUtils.InstantUtil;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.Colors.COLORS;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.ColorsPlayers.COLORS_PLAYERS;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.Cooldowns.COOLDOWNS;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.Messaging.MESSAGING;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.Nicknames.NICKNAMES;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.Tags.TAGS;
+import static io.github.milkdrinkers.maquillage.database.schema.tables.TagsPlayers.TAGS_PLAYERS;
 import static io.github.milkdrinkers.maquillage.database.QueryUtils.UUIDUtil;
-import static io.github.milkdrinkers.maquillage.database.schema.Tables.*;
 import static org.jooq.impl.DSL.*;
 
 /**
  * A class providing access to all SQL queries.
  */
+@SuppressWarnings({"LoggingSimilarMessage", "StringConcatenationArgumentToLogCall"})
 @ApiStatus.Internal
 public final class Queries {
     /**
@@ -739,64 +746,93 @@ public final class Queries {
     @ApiStatus.Internal
     public static final class Sync {
         /**
-         * Creates a synchronisation request with the current time in the database.
+         * Fetch the latest (greatest) message ID from the database.
          *
-         * @param action the action
-         * @param type   the type
-         * @param id     the id
+         * @return the message id or empty if no messages are queued
          */
-        public static void saveSyncMessage(final SyncHandler.SyncAction action, final SyncHandler.SyncType type, final int id) {
-            final String message = "%s %s %s".formatted(action.name(), type.name(), id);
-
+        public static Optional<Integer> fetchLatestMessageId() {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
-                context.insertInto(SYNC, SYNC.MESSAGE, SYNC.TIMESTAMP)
+                return context
+                    .select(max(MESSAGING.ID))
+                    .from(MESSAGING)
+                    .fetchOptional(0, Integer.class);
+            } catch (SQLException e) {
+                Logger.get().error("SQL Query threw an error!" + e);
+                return Optional.empty();
+            }
+        }
+
+        /**
+         * Adds a message to the database.
+         *
+         * @param message the outgoing message to send
+         * @return the new message id or empty if insert failed
+         */
+        public static <T> Optional<Integer> send(OutgoingMessage<T> message) {
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                return context
+                    .insertInto(MESSAGING, MESSAGING.TIMESTAMP, MESSAGING.MESSAGE)
                     .values(
-                        message,
-                        InstantUtil.toDateTime(Instant.now())
+                        currentLocalDateTime(),
+                        val(message.encode())
                     )
-                    .execute();
+                    .returningResult(MESSAGING.ID)
+                    .fetchOptional(0, Integer.class);
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!" + e);
+                return Optional.empty();
             }
         }
 
         /**
-         * Fetch sync messages result.
+         * Fetch all messages from the database.
          *
-         * @param latestSyncId the latest sync id
-         * @return the result
+         * @param latestSyncId    the currently synced to message id
+         * @param cleanupInterval the configured cleanup interval
+         * @return the messages
          */
-        public static @Nullable Result<Record3<Integer, String, LocalDateTime>> fetchSyncMessages(final int latestSyncId) {
+        public static Map<Integer, IncomingMessage<?, ?>> receive(int latestSyncId, long cleanupInterval) {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
-                return context.select(SYNC.ID, SYNC.MESSAGE, SYNC.TIMESTAMP)
-                    .from(SYNC)
-                    .where(SYNC.ID.greaterThan(latestSyncId))
-                    .fetch();
+                return context
+                    .selectFrom(MESSAGING)
+                    .where(MESSAGING.ID.greaterThan(latestSyncId)
+                        .and(MESSAGING.TIMESTAMP.greaterOrEqual(localDateTimeSub(currentLocalDateTime(), cleanupInterval / 1000, DatePart.SECOND))) // Checks TIMESTAMP >= now() - cleanupInterval
+                    )
+                    .orderBy(MESSAGING.ID.asc())
+                    .fetch()
+                    .intoMap(MESSAGING.ID, r -> BidirectionalMessage.from(r.getMessage()));
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!" + e);
+                return Map.of();
             }
-            return null;
         }
 
         /**
-         * Deletes all sync messages in the database.
+         * Deletes all outdate messages from the database.
+         *
+         * @param cleanupInterval the configured cleanup interval
          */
-        public static void cleanUpSyncMessages() {
+        public static void cleanup(long cleanupInterval) {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
-                context.deleteFrom(SYNC)
-                    .where(SYNC.TIMESTAMP.lessOrEqual(InstantUtil.toDateTime(Instant.now().minus(120, ChronoUnit.SECONDS))))
+                context
+                    .deleteFrom(MESSAGING)
+                    .where(MESSAGING.TIMESTAMP.lessThan(localDateTimeSub(currentLocalDateTime(), cleanupInterval / 1000, DatePart.SECOND))) // Checks TIMESTAMP < now() - cleanupInterval
                     .execute();
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!" + e);
@@ -805,26 +841,25 @@ public final class Queries {
     }
 
     /**
-     * Stores all queries related to player cooldowns.
+     * Wrapper class to organize cooldown-related queries.
      */
-    @ApiStatus.Internal
     public static final class Cooldown {
-        /**
-         * Loads all cooldowns for a player from the database.
-         * @param player the player to load cooldowns for
-         * @return a map of cooldown types to their respective cooldown times
-         */
         public static Map<CooldownType, Instant> load(OfflinePlayer player) {
+            return load(player.getUniqueId());
+        }
+
+        public static Map<CooldownType, Instant> load(UUID uuid) {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
-                return context
+                final Result<CooldownsRecord> cooldownsRecords = context
                     .selectFrom(COOLDOWNS)
-                    .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(player)))
-                    .fetch()
-                    .stream()
+                    .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(uuid)))
+                    .fetch();
+
+                return cooldownsRecords.stream()
                     .collect(Collectors.toMap(
                         r -> CooldownType.valueOf(r.getCooldownType()),
                         r -> QueryUtils.InstantUtil.fromDateTime(r.getCooldownTime())
@@ -835,14 +870,11 @@ public final class Queries {
             return Collections.emptyMap();
         }
 
-        /**
-         * Saves the cooldowns for a player to the database.
-         * <p>
-         * This method deletes any existing cooldowns for the player and inserts the current cooldowns using a transaction.
-         *
-         * @param player the player whose cooldowns to save
-         */
         public static void save(OfflinePlayer player) {
+            save(player.getUniqueId());
+        }
+
+        public static void save(UUID uuid) {
             try (
                 Connection con = DB.getConnection()
             ) {
@@ -853,19 +885,22 @@ public final class Queries {
 
                     // Delete old cooldowns
                     ctx.deleteFrom(COOLDOWNS)
-                        .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(player)))
+                        .where(COOLDOWNS.UUID.eq(UUIDUtil.toBytes(uuid)))
                         .execute();
 
-                    // Create list of active cooldowns
-                    final List<CooldownsRecord> cooldownsRecords = Arrays.stream(CooldownType.values())
-                        .filter(cooldownType -> io.github.milkdrinkers.maquillage.cooldown.Cooldown.getInstance().hasCooldown(player, cooldownType))
-                        .map(cooldownType -> new CooldownsRecord(
-                                UUIDUtil.toBytes(player),
-                                cooldownType.name(),
-                                QueryUtils.InstantUtil.toDateTime(io.github.milkdrinkers.maquillage.cooldown.Cooldown.getInstance().getCooldown(player, cooldownType))
-                            )
-                        )
-                        .toList();
+                    // Insert new cooldowns
+                    final List<CooldownsRecord> cooldownsRecords = new ArrayList<>();
+
+                    for (CooldownType cooldownType : CooldownType.values()) {
+                        if (!Cooldowns.has(uuid, cooldownType))
+                            continue;
+
+                        cooldownsRecords.add(new CooldownsRecord(
+                            UUIDUtil.toBytes(uuid),
+                            cooldownType.name(),
+                            QueryUtils.InstantUtil.toDateTime(Cooldowns.get(uuid, cooldownType))
+                        ));
+                    }
 
                     if (!cooldownsRecords.isEmpty())
                         ctx.batchInsert(cooldownsRecords).execute();

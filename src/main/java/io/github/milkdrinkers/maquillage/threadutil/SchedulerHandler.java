@@ -18,12 +18,8 @@ public class SchedulerHandler implements Reloadable {
     }
 
     @Override
-    public void onEnable(Maquillage plugin) {
-
-    }
-
-    @Override
     public void onDisable(Maquillage plugin) {
-        Scheduler.shutdown(Duration.ofSeconds(60));
+        if (Scheduler.isInitialized())
+            Scheduler.shutdown(Duration.ofSeconds(60));
     }
 }

@@ -1,10 +1,10 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.tag;
 
 import io.github.milkdrinkers.maquillage.Maquillage;
-import io.github.milkdrinkers.maquillage.cooldown.Cooldown;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
+import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
-import io.github.milkdrinkers.maquillage.database.sync.SyncHandler;
+import io.github.milkdrinkers.maquillage.messaging.MessagingUtils;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
@@ -83,7 +83,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                     .withDatabaseId(databaseId)
                     .createTag()
             );
-            Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+            MessagingUtils.sendTagFetch(databaseId);
         }
         return databaseId;
     }
@@ -95,7 +95,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
         cacheRemove(value);
-        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.DELETE, SyncHandler.SyncType.TAG, value.getDatabaseId());
+        MessagingUtils.sendTagDelete(value.getDatabaseId());
         return true;
     }
 
@@ -113,7 +113,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withDatabaseId(databaseId)
                 .createTag()
         );
-        Maquillage.getInstance().getSyncHandler().saveSyncMessage(SyncHandler.SyncAction.FETCH, SyncHandler.SyncType.TAG, databaseId);
+        MessagingUtils.sendTagFetch(databaseId);
         return true;
     }
 
@@ -194,14 +194,14 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
             return false;
 
         // Has cooldown
-        if (Cooldown.getInstance().hasCooldown(p, CooldownType.Gui))
+        if (Cooldowns.has(p, CooldownType.Gui))
             return false;
 
         // Trying to set same value
         if (playerData.getTag().isPresent() && playerData.getTag().get().equals(tag))
             return false;
 
-        Cooldown.getInstance().setCooldown(p, CooldownType.Gui, 2);
+        Cooldowns.set(p, CooldownType.Gui, 2);
 
         final int tagID = tag.getDatabaseId();
         playerData.setTag(tag);

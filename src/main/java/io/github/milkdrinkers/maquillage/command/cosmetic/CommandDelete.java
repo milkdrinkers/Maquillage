@@ -1,6 +1,6 @@
 package io.github.milkdrinkers.maquillage.command.cosmetic;
 
-import dev.jorel.commandapi.CommandAPIBukkit;
+import dev.jorel.commandapi.CommandAPIPaper;
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.ArgumentSuggestions;
 import dev.jorel.commandapi.arguments.StringArgument;
@@ -44,7 +44,7 @@ public class CommandDelete {
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("key").toString();
                 if (!NameColorHolder.getInstance().doesKeyExist(identifier))
-                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.namecolor.delete.no-color")).build());
+                    throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.namecolor.delete.no-color")).build());
                 factory.withFirstPrompt(DeleteColorConversation.confirmDeletePrompt(NameColorHolder.getInstance().getByKey(identifier)));
 
                 org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);
@@ -62,7 +62,7 @@ public class CommandDelete {
             .executesPlayer((sender, args) -> {
                 String identifier = args.get("key").toString();
                 if (!TagHolder.getInstance().doesKeyExist(identifier))
-                    throw CommandAPIBukkit.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.tag.delete.no-tag")).build());
+                    throw CommandAPIPaper.failWithAdventureComponent(ColorParser.of(Translation.of("commands.module.tag.delete.no-tag")).build());
                 factory.withFirstPrompt(DeleteTagConversation.confirmDeletePrompt(TagHolder.getInstance().getByKey(identifier)));
 
                 org.bukkit.conversations.Conversation conversation = factory.buildConversation(sender);

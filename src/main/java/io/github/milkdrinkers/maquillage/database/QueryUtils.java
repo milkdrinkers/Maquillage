@@ -78,6 +78,7 @@ public final class QueryUtils {
         public static byte[] toBytes(WorldInfo value) {
             return toBytes(value.getUID());
         }
+
         /**
          * Convert uuid to an array of bytes.
          *

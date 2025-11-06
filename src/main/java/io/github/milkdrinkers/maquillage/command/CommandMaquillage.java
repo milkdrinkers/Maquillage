@@ -9,7 +9,8 @@ class CommandMaquillage {
             .withAliases("maq")
             .withShortDescription("The main command for the plugin Maquillage.")
             .withSubcommands(
-                CommandTranslation.registerCommandTranslation(),
+                new TranslationCommand().command(),
+                new DumpCommand().command(),
                 CommandReload.registerCommandReload(),
                 CommandCreate.registerCommandCreate(tags, colors),
                 CommandDelete.registerCommandDelete(tags, colors),
