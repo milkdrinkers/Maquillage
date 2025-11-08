@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.api.event.nickname;
 
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -24,11 +24,11 @@ public class PlayerNicknamePreChangeEvent extends Event implements Cancellable {
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private boolean cancelled;
 
-    private final @NotNull Player player;
+    private final @NotNull OfflinePlayer player;
     private @NotNull Nickname nickname;
     private final @Nullable Nickname previousNickname;
 
-    public PlayerNicknamePreChangeEvent(@NotNull Player player, @NotNull Nickname nickname, @Nullable Nickname previousNickname) {
+    public PlayerNicknamePreChangeEvent(@NotNull OfflinePlayer player, @NotNull Nickname nickname, @Nullable Nickname previousNickname) {
         Objects.requireNonNull(player, "Player cannot be set to null in PlayerNicknamePreChangeEvent");
         Objects.requireNonNull(nickname, "Nickname cannot be set to null in PlayerNicknamePreChangeEvent");
         this.player = player;
@@ -41,7 +41,7 @@ public class PlayerNicknamePreChangeEvent extends Event implements Cancellable {
      *
      * @return the player
      */
-    public @NotNull Player getPlayer() {
+    public @NotNull OfflinePlayer getPlayer() {
         return player;
     }
 

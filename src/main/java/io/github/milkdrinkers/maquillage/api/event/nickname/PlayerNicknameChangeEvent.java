@@ -1,7 +1,7 @@
 package io.github.milkdrinkers.maquillage.api.event.nickname;
 
 import io.github.milkdrinkers.maquillage.module.nickname.Nickname;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -21,11 +21,11 @@ import java.util.Optional;
 public class PlayerNicknameChangeEvent extends Event {
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private final @NotNull Player player;
+    private final @NotNull OfflinePlayer player;
     private final @NotNull Nickname nickname;
     private final @Nullable Nickname previousNickname;
 
-    public PlayerNicknameChangeEvent(@NotNull Player player, @NotNull Nickname nickname, @Nullable Nickname previousNickname) {
+    public PlayerNicknameChangeEvent(@NotNull OfflinePlayer player, @NotNull Nickname nickname, @Nullable Nickname previousNickname) {
         Objects.requireNonNull(player, "Player cannot be set to null in PlayerNicknameChangeEvent");
         Objects.requireNonNull(nickname, "Nickname cannot be set to null in PlayerNicknameChangeEvent");
         this.player = player;
@@ -38,7 +38,7 @@ public class PlayerNicknameChangeEvent extends Event {
      *
      * @return the player
      */
-    public @NotNull Player getPlayer() {
+    public @NotNull OfflinePlayer getPlayer() {
         return player;
     }
 

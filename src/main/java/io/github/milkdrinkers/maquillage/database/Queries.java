@@ -11,6 +11,7 @@ import io.github.milkdrinkers.maquillage.messaging.message.IncomingMessage;
 import io.github.milkdrinkers.maquillage.messaging.message.OutgoingMessage;
 import io.github.milkdrinkers.maquillage.utility.DB;
 import io.github.milkdrinkers.maquillage.utility.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
@@ -731,6 +732,73 @@ public final class Queries {
                         record.getNickname(),
                         record.getUsername()
                     ));
+
+                return similarMatch;
+            } catch (SQLException e) {
+                Logger.get().error("SQL Query threw an error!", e);
+            }
+            return Optional.empty();
+        }
+
+        /**
+         * Fetches a {@link PlayerProfile} by the most similar nickname or username from the database based on the input.
+         * <br><br>
+         * The method first tries to find an exact match for the input. If no exact match is found,
+         * it searches for nicknames or usernames that contain the input string, picking the most similar.
+         * <br><br>
+         * Matching/similar nicknames are prioritized over usernames.
+         *
+         * @param input the input string to search for
+         * @return a player profile if found, otherwise an empty optional
+         */
+        public static Optional<PlayerProfile> fetchPlayerProfile(@Nullable String input) {
+            if (input == null || input.trim().isBlank())
+                return Optional.empty();
+
+            final String inputTrimmed = input.trim().toLowerCase();
+            final String searchPattern = "%" + inputTrimmed + "%";
+
+            try (
+                Connection con = DB.getConnection()
+            ) {
+                DSLContext context = DB.getContext(con);
+
+                // Try to get exact match first
+                final @NotNull Optional<PlayerProfile> exactMatch = context
+                    .selectFrom(NICKNAMES)
+                    .where(lower(NICKNAMES.NICKNAME).eq(inputTrimmed)
+                        .and(NICKNAMES.NICKNAME.isNotNull())
+                        .or(lower(NICKNAMES.USERNAME).eq(inputTrimmed))
+                    )
+                    .fetchOptional()
+                    .map(record -> {
+                        final PlayerProfile profile = Bukkit.createProfile(UUIDUtil.fromBytes(record.getPlayer()), record.getUsername());
+                        profile.complete(false);
+                        return profile;
+                    });
+
+                if (exactMatch.isPresent())
+                    return exactMatch;
+
+                // Try to find best similar match
+                final @NotNull Optional<PlayerProfile> similarMatch = context
+                    .selectFrom(NICKNAMES)
+                    .where(lower(NICKNAMES.NICKNAME).like(searchPattern)
+                        .and(NICKNAMES.NICKNAME.isNotNull())
+                        .or(lower(NICKNAMES.USERNAME).like(searchPattern))
+                    )
+                    .orderBy(
+                        case_().when(lower(NICKNAMES.NICKNAME).like(searchPattern), 1) // Prioritize nicknames that match over usernames
+                            .else_(2),
+                        NICKNAMES.NICKNAME.asc() // Sort alphabetically
+                    )
+                    .limit(1)
+                    .fetchOptional()
+                    .map(record -> {
+                        final PlayerProfile profile = Bukkit.createProfile(UUIDUtil.fromBytes(record.getPlayer()), record.getUsername());
+                        profile.complete(false);
+                        return profile;
+                    });
 
                 return similarMatch;
             } catch (SQLException e) {

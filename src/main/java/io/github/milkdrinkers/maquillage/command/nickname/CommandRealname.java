@@ -39,9 +39,7 @@ public class CommandRealname {
 
                 final String name = args.getByClassOrDefault("name", String.class, "");
 
-                CompletableFuture<Optional<Nickname>> future = CompletableFuture.supplyAsync(() -> {
-                    return Queries.Nickname.fetchMostSimilarNickname(name);
-                });
+                final CompletableFuture<Optional<Nickname>> future = CompletableFuture.supplyAsync(() -> Queries.Nickname.fetchMostSimilarNickname(name));
 
                 future.thenAccept(nickResult -> {
                     if (nickResult.isPresent()) {
