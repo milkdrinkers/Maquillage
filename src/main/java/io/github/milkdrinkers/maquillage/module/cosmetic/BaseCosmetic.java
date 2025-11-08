@@ -13,12 +13,14 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
     private String label;
     private String key;
     private int databaseId;
+    private int weight;
 
-    public BaseCosmetic(String perm, String label, String key, int databaseId) {
+    public BaseCosmetic(String perm, String label, String key, int databaseId, int weight) {
         this.perm = perm;
         this.label = label;
         this.key = key;
         this.databaseId = databaseId;
+        this.weight = weight;
     }
 
     public String getLabel() {
@@ -57,6 +59,14 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
         this.databaseId = databaseId;
     }
 
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
     public boolean equals(int id) {
         return getDatabaseId() == id;
     }
@@ -84,6 +94,7 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
             ", name='" + label + '\'' +
             ", identifier='" + key + '\'' +
             ", ID=" + databaseId +
+            ", weight=" + weight +
             '}';
     }
 }

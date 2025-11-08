@@ -1,11 +1,13 @@
 package io.github.milkdrinkers.maquillage.database;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.ColorsRecord;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.CooldownsRecord;
 import io.github.milkdrinkers.maquillage.database.schema.tables.records.NicknamesRecord;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.handler.DatabaseType;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.TagsRecord;
 import io.github.milkdrinkers.maquillage.messaging.message.BidirectionalMessage;
 import io.github.milkdrinkers.maquillage.messaging.message.IncomingMessage;
 import io.github.milkdrinkers.maquillage.messaging.message.OutgoingMessage;
@@ -18,7 +20,6 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jooq.*;
-import org.jooq.Record;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -55,7 +56,7 @@ public final class Queries {
          * @param label the label
          * @return the id of the tag or -1 if saving failed
          */
-        public static int saveTag(String tag, String perm, String label) {
+        public static int saveTag(String tag, String perm, String label, int weight) {
             try (
                 Connection con = DB.getConnection()
             ) {
@@ -74,13 +75,7 @@ public final class Queries {
                 if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    final int rowId = context.lastID().intValue();
-                    context // Update ID field for SQLite
-                        .update(TAGS)
-                        .set(TAGS.ID, rowId)
-                        .where("rowid = ?", rowId)
-                        .execute();
-                    return rowId; // For SQLite
+                    return context.lastID().intValue();
                 }
 
             } catch (SQLException | ArithmeticException e) {
@@ -98,7 +93,7 @@ public final class Queries {
          * @param tagId the database id
          * @return the success state of the action
          */
-        public static boolean updateTag(String tag, String perm, String label, int tagId) {
+        public static boolean updateTag(String tag, String perm, String label, int tagId, int weight) {
             try (
                 Connection con = DB.getConnection()
             ) {
@@ -108,6 +103,7 @@ public final class Queries {
                     .set(TAGS.TAG, tag)
                     .set(TAGS.PERM, perm)
                     .set(TAGS.LABEL, label)
+                    .set(TAGS.WEIGHT, weight)
                     .where(TAGS.ID.eq(tagId))
                     .execute();
                 return true;
@@ -147,15 +143,14 @@ public final class Queries {
          * @param tagId the database id
          * @return the record
          */
-        public static @Nullable Record loadTag(final int tagId) {
+        public static @Nullable TagsRecord loadTag(final int tagId) {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
                 return context
-                    .select(TAGS.fields(TAGS.TAG, TAGS.PERM, TAGS.LABEL))
-                    .from(TAGS)
+                    .selectFrom(TAGS)
                     .where(TAGS.ID.equal(tagId))
                     .fetchOne();
             } catch (SQLException e) {
@@ -170,15 +165,14 @@ public final class Queries {
          * @return the result
          * @implSpec Should be called on server restarts or plugin reloads.
          */
-        public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllTags() {
+        public static @Nullable Result<TagsRecord> loadAllTags() {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
                 return context
-                    .select(TAGS.ID, TAGS.TAG, TAGS.PERM, TAGS.LABEL)
-                    .from(TAGS)
+                    .selectFrom(TAGS)
                     .fetch();
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!", e);
@@ -292,7 +286,7 @@ public final class Queries {
          * @param label     the label
          * @return the id of the namecolor or -1 if saving failed
          */
-        public static int saveColor(String namecolor, String perm, String label) {
+        public static int saveColor(String namecolor, String perm, String label, int weight) {
             try (
                 Connection con = DB.getConnection()
             ) {
@@ -311,13 +305,7 @@ public final class Queries {
                 if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    final int rowId = context.lastID().intValue();
-                    context // Update ID field for SQLite
-                        .update(COLORS)
-                        .set(COLORS.ID, rowId)
-                        .where("rowid = ?", rowId)
-                        .execute();
-                    return rowId; // For SQLite
+                    return context.lastID().intValue();
                 }
 
             } catch (SQLException | ArithmeticException e) {
@@ -335,7 +323,7 @@ public final class Queries {
          * @param namecolorId the database id
          * @return the success state of the action
          */
-        public static boolean updateColor(String namecolor, String perm, String label, int namecolorId) {
+        public static boolean updateColor(String namecolor, String perm, String label, int namecolorId, int weight) {
             try (
                 Connection con = DB.getConnection()
             ) {
@@ -345,6 +333,7 @@ public final class Queries {
                     .set(COLORS.COLOR, namecolor)
                     .set(COLORS.PERM, perm)
                     .set(COLORS.LABEL, label)
+                    .set(COLORS.WEIGHT, weight)
                     .where(COLORS.ID.eq(namecolorId))
                     .execute();
                 return true;
@@ -384,15 +373,14 @@ public final class Queries {
          * @param namecolorId the database id
          * @return the record
          */
-        public static @Nullable Record loadColor(int namecolorId) {
+        public static @Nullable ColorsRecord loadColor(int namecolorId) {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
                 return context
-                    .select(COLORS.fields(COLORS.COLOR, COLORS.PERM, COLORS.LABEL))
-                    .from(COLORS)
+                    .selectFrom(COLORS)
                     .where(COLORS.ID.equal(namecolorId))
                     .fetchOne();
             } catch (SQLException e) {
@@ -407,15 +395,14 @@ public final class Queries {
          * @return the result
          * @implSpec Should be called on server restarts or plugin reloads.
          */
-        public static @Nullable Result<Record4<@NotNull Integer, @NotNull String, @Nullable String, @NotNull String>> loadAllColors() {
+        public static @Nullable Result<ColorsRecord> loadAllColors() {
             try (
                 Connection con = DB.getConnection()
             ) {
                 DSLContext context = DB.getContext(con);
 
                 return context
-                    .select(COLORS.ID, COLORS.COLOR, COLORS.PERM, COLORS.LABEL)
-                    .from(COLORS)
+                    .selectFrom(COLORS)
                     .fetch();
             } catch (SQLException e) {
                 Logger.get().error("SQL Query threw an error!", e);

@@ -50,7 +50,7 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      * @param label a display label
      * @return -1 if failed, otherwise the ID of the BaseCosmetic
      */
-    int add(String value, String perm, String label);
+    int add(String value, String perm, String label, int weight);
 
     /**
      * Attempts to update a BaseCosmetic to DB and, if successful, re-caches the BaseCosmetic
@@ -61,7 +61,7 @@ public interface BaseCosmeticHolder<T extends BaseCosmetic> {
      * @param databaseId a unique id
      * @return whether the value was updated
      */
-    boolean update(String value, String perm, String label, int databaseId);
+    boolean update(String value, String perm, String label, int databaseId, int weight);
 
     /**
      * Attempts to remove a BaseCosmetic from DB and, if successful, un-caches the BaseCosmetic

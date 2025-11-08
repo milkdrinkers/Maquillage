@@ -5,8 +5,8 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmetic;
 public class Tag extends BaseCosmetic {
     private String tag;
 
-    Tag(String tag, String perm, String label, String key, int databaseId) {
-        super(perm, label, key, databaseId);
+    Tag(String tag, String perm, String label, String key, int databaseId, int weight) {
+        super(perm, label, key, databaseId, weight);
         this.tag = tag;
     }
 
@@ -42,6 +42,7 @@ public class Tag extends BaseCosmetic {
             ", label='" + getLabel() + '\'' +
             ", key='" + getKey() + '\'' +
             ", databaseId=" + getDatabaseId() +
+            ", weight=" + getWeight() +
             '}';
     }
 }

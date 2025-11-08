@@ -78,7 +78,7 @@ public class ColorConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = NameColorHolder.getInstance().add(color, permission, label);
+                int ID = NameColorHolder.getInstance().add(color, permission, label, 0);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.failure")).build());
                 } else {

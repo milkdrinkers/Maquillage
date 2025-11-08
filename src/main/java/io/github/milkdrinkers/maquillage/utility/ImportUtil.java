@@ -87,7 +87,8 @@ public class ImportUtil {
         getTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
             getImport().getString("tags." + key + ".tag"),
             getImport().getString("tags." + key + ".permission-node"),
-            getImport().getString("tags." + key + ".gui-label")));
+            getImport().getString("tags." + key + ".gui-label"),
+            0));
     }
 
     public static void addAllNamecolors() {
@@ -96,7 +97,8 @@ public class ImportUtil {
         getNamecolorMap().keySet().forEach(key -> NameColorHolder.getInstance().add(
             getImport().getString("namecolors." + key + ".color"),
             getImport().getString("namecolors." + key + ".permission-node"),
-            getImport().getString("namecolors." + key + ".gui-label")));
+            getImport().getString("namecolors." + key + ".gui-label"),
+            0));
     }
 
     public static void addSupremeTags() {
@@ -105,7 +107,8 @@ public class ImportUtil {
         getSupremeTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
             getSupreme().getString("tags." + key + ".tag"),
             getSupreme().getString("tags." + key + ".permission"),
-            getSupreme().getString("tags." + key + ".displayname")
+            getSupreme().getString("tags." + key + ".displayname"),
+            0
         ));
     }
 
@@ -115,7 +118,8 @@ public class ImportUtil {
         getAlonsoTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
             getAlonso().getString("Tags." + key + ".Tag"),
             getAlonso().getString("Tags." + key + ".Permission"),
-            getAlonso().getString("Tags." + key + ".Displayname")
+            getAlonso().getString("Tags." + key + ".Displayname"),
+            0
         ));
     }
 

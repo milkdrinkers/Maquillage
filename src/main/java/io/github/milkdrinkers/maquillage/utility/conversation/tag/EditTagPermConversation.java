@@ -61,7 +61,7 @@ public class EditTagPermConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHolder.getInstance().update(tag.getTag(), updatedPerm, tag.getLabel(), tag.getDatabaseId());
+                boolean success = TagHolder.getInstance().update(tag.getTag(), updatedPerm, tag.getLabel(), tag.getDatabaseId(), 0);
                 if (success) {
                     player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.success")).build());
                 } else {

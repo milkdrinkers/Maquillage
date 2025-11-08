@@ -66,7 +66,7 @@ public class TagConversation {
             Conversable conversable = context.getForWhom();
             Player player = (Player) conversable;
             if (input.equalsIgnoreCase("YES")) {
-                int ID = TagHolder.getInstance().add(tag, permission, label);
+                int ID = TagHolder.getInstance().add(tag, permission, label, 0);
                 if (ID == -1) {
                     player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.failure")).build());
                 } else {

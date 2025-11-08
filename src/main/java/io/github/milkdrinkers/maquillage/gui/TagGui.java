@@ -22,7 +22,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -199,7 +198,14 @@ public class TagGui extends AbstractGui {
                 .values()
                 .stream()
                 .filter(tag -> tag.hasPerm(p))
-                .sorted(Comparator.comparing(Tag::getLabel))
+                .sorted(
+                    sorter(
+                        Tag::getWeight,
+                        Tag::getLabel,
+                        SortOrder.DESCENDING,
+                        SortOrder.ASCENDING
+                    )
+                )
                 .forEachOrdered(tag -> {
                     final boolean isActive = tag.getDatabaseId() == currentTag.map(BaseCosmetic::getDatabaseId).orElse(-100);
 

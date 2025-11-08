@@ -4,6 +4,7 @@ import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.TagsRecord;
 import io.github.milkdrinkers.maquillage.messaging.MessagingUtils;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
@@ -11,13 +12,10 @@ import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import io.github.milkdrinkers.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jooq.Record4;
 import org.jooq.Result;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static io.github.milkdrinkers.maquillage.database.schema.tables.Tags.TAGS;
 
 public class TagHolder implements BaseCosmeticHolder<Tag> {
     private static TagHolder INSTANCE;
@@ -72,8 +70,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String label) {
-        int databaseId = Queries.Tag.saveTag(value, perm, label);
+    public int add(String value, String perm, String label, int weight) {
+        int databaseId = Queries.Tag.saveTag(value, perm, label, weight);
         if (databaseId != -1) {
             cacheAdd(
                 new TagBuilder()
@@ -100,8 +98,8 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
     }
 
     @Override
-    public boolean update(String value, String perm, String label, int databaseId) {
-        boolean success = Queries.Tag.updateTag(value, perm, label, databaseId);
+    public boolean update(String value, String perm, String label, int databaseId, int weight) {
+        boolean success = Queries.Tag.updateTag(value, perm, label, databaseId, weight);
         if (!success)
             return false;
 
@@ -124,26 +122,13 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void loadAll() {
-        Result<Record4<Integer, String, String, String>> result = Queries.Tag.loadAllTags();
+        Result<TagsRecord> result = Queries.Tag.loadAllTags();
 
         if (result == null)
             return;
 
-        for (Record4<Integer, String, String, String> record : result) {
-            int databaseId = record.get(TAGS.ID);
-            String tag = record.get(TAGS.TAG);
-            String permission = record.get(TAGS.PERM);
-            String label = record.get(TAGS.LABEL);
-
-            cacheAdd(
-                new TagBuilder()
-                    .withTag(tag)
-                    .withPerm(permission)
-                    .withLabel(label)
-                    .withDatabaseId(databaseId)
-                    .createTag()
-            );
-        }
+        result.map(TagBuilder::deserialize)
+            .forEach(this::cacheAdd);
     }
 
     // SECTION Identifiers

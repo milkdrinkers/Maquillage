@@ -4,6 +4,7 @@ import io.github.milkdrinkers.maquillage.Maquillage;
 import io.github.milkdrinkers.maquillage.cooldown.CooldownType;
 import io.github.milkdrinkers.maquillage.cooldown.Cooldowns;
 import io.github.milkdrinkers.maquillage.database.Queries;
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.ColorsRecord;
 import io.github.milkdrinkers.maquillage.messaging.MessagingUtils;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmeticHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
@@ -11,13 +12,10 @@ import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
 import io.github.milkdrinkers.maquillage.utility.PermissionUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.jooq.Record4;
 import org.jooq.Result;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-
-import static io.github.milkdrinkers.maquillage.database.schema.tables.Colors.COLORS;
 
 public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     private static NameColorHolder INSTANCE;
@@ -71,8 +69,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     // SECTION Database
 
     @Override
-    public int add(String value, String perm, String label) {
-        int databaseId = Queries.NameColor.saveColor(value, perm, label);
+    public int add(String value, String perm, String label, int weight) {
+        int databaseId = Queries.NameColor.saveColor(value, perm, label, weight);
         if (databaseId != -1) {
             cacheAdd(
                 new NameColorBuilder()
@@ -99,8 +97,8 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
     }
 
     @Override
-    public boolean update(String value, String perm, String label, int databaseId) {
-        boolean success = Queries.NameColor.updateColor(value, perm, label, databaseId);
+    public boolean update(String value, String perm, String label, int databaseId, int weight) {
+        boolean success = Queries.NameColor.updateColor(value, perm, label, databaseId, weight);
         if (!success)
             return false;
 
@@ -123,26 +121,13 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void loadAll() {
-        Result<Record4<Integer, String, String, String>> result = Queries.NameColor.loadAllColors();
+        Result<ColorsRecord> result = Queries.NameColor.loadAllColors();
 
         if (result == null)
             return;
 
-        for (Record4<Integer, String, String, String> record : result) {
-            int databaseId = record.get(COLORS.ID);
-            String color = record.get(COLORS.COLOR);
-            String permission = record.get(COLORS.PERM);
-            String label = record.get(COLORS.LABEL);
-
-            cacheAdd(
-                new NameColorBuilder()
-                    .withColor(color)
-                    .withPerm(permission)
-                    .withLabel(label)
-                    .withDatabaseId(databaseId)
-                    .createNameColor()
-            );
-        }
+        result.map(NameColorBuilder::deserialize)
+            .forEach(this::cacheAdd);
     }
 
     // SECTION Identifiers

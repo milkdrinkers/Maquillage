@@ -33,12 +33,7 @@ public class MessageReceivedListener implements Listener {
                     if (r == null)
                         throw new IllegalStateException("Error while fetching color, r is null!");
 
-                    final NameColor nameColor = new NameColorBuilder()
-                        .withColor(r.get(Tables.COLORS.COLOR))
-                        .withPerm(r.get(Tables.COLORS.PERM))
-                        .withLabel(r.get(Tables.COLORS.LABEL))
-                        .withDatabaseId(data)
-                        .createNameColor();
+                    final NameColor nameColor = NameColorBuilder.deserialize(r);
 
                     NameColorHolder.getInstance().load(nameColor);
                 });
@@ -51,12 +46,7 @@ public class MessageReceivedListener implements Listener {
                     if (r == null)
                         throw new IllegalStateException("Error while fetching tag, r is null!");
 
-                    final Tag tag = new TagBuilder()
-                        .withTag(r.get(Tables.TAGS.TAG))
-                        .withPerm(r.get(Tables.TAGS.PERM))
-                        .withLabel(r.get(Tables.TAGS.LABEL))
-                        .withDatabaseId(data)
-                        .createTag();
+                    final Tag tag = TagBuilder.deserialize(r);
 
                     TagHolder.getInstance().load(tag);
                 });

@@ -1,13 +1,15 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.tag;
 
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.TagsRecord;
 import io.github.milkdrinkers.maquillage.utility.Util;
 import org.jetbrains.annotations.Nullable;
 
-public class TagBuilder {
+public final class TagBuilder {
     private @Nullable String tag;
     private @Nullable String perm;
     private @Nullable String label;
     private int id = -1;
+    private int weight = 0;
 
     public TagBuilder withTag(String tag) {
         this.tag = tag;
@@ -32,6 +34,11 @@ public class TagBuilder {
         return this;
     }
 
+    public TagBuilder withWeight(int weight) {
+        this.weight = weight;
+        return this;
+    }
+
     public Tag createTag() throws IllegalStateException {
         if (tag == null)
             throw new IllegalStateException("Missing state tag when creating Tag object");
@@ -50,7 +57,18 @@ public class TagBuilder {
             perm,
             label,
             Util.createKey(label, TagHolder.getInstance().getTagKeys()),
+            weight,
             id
         );
+    }
+
+    public static Tag deserialize(TagsRecord record) {
+        return new TagBuilder()
+            .withTag(record.getTag())
+            .withPerm(record.getPerm())
+            .withLabel(record.getLabel())
+            .withDatabaseId(record.getId())
+            .withWeight(record.getWeight())
+            .createTag();
     }
 }

@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -198,7 +197,14 @@ public class NameColorGui extends AbstractGui {
                 .values()
                 .stream()
                 .filter(color -> color.hasPerm(p))
-                .sorted(Comparator.comparing(NameColor::getLabel))
+                .sorted(
+                    sorter(
+                        NameColor::getWeight,
+                        NameColor::getLabel,
+                        SortOrder.DESCENDING,
+                        SortOrder.ASCENDING
+                    )
+                )
                 .forEachOrdered(color -> {
                     final boolean isActive = color.getDatabaseId() == currentColor.map(BaseCosmetic::getDatabaseId).orElse(-100);
 

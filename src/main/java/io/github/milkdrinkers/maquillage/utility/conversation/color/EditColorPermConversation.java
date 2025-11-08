@@ -61,7 +61,7 @@ public class EditColorPermConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = NameColorHolder.getInstance().update(color.getColor(), updatedPerm, color.getLabel(), color.getDatabaseId());
+                boolean success = NameColorHolder.getInstance().update(color.getColor(), updatedPerm, color.getLabel(), color.getDatabaseId(), 0);
                 if (success) {
                     player.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.edit.perm.success")).build());
                 } else {

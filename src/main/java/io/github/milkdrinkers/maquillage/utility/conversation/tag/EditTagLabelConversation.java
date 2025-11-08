@@ -46,7 +46,7 @@ public class EditTagLabelConversation {
         protected @Nullable Prompt acceptValidatedInput(@NotNull ConversationContext conversationContext, @NotNull String s) {
             Player player = (Player) conversationContext.getForWhom();
             if (s.equalsIgnoreCase("YES")) {
-                boolean success = TagHolder.getInstance().update(tag.getTag(), tag.getPerm(), updatedLabel, tag.getDatabaseId());
+                boolean success = TagHolder.getInstance().update(tag.getTag(), tag.getPerm(), updatedLabel, tag.getDatabaseId(), 0);
                 if (success) {
                     player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.label.success")).build());
                 } else {

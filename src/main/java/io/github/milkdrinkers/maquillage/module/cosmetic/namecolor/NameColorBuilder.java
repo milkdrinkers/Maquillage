@@ -1,13 +1,15 @@
 package io.github.milkdrinkers.maquillage.module.cosmetic.namecolor;
 
+import io.github.milkdrinkers.maquillage.database.schema.tables.records.ColorsRecord;
 import io.github.milkdrinkers.maquillage.utility.Util;
 import org.jetbrains.annotations.Nullable;
 
-public class NameColorBuilder {
+public final class NameColorBuilder {
     private @Nullable String color;
     private @Nullable String perm;
     private @Nullable String label;
     private int id = -1;
+    private int weight = 0;
 
     public NameColorBuilder withColor(String color) {
         this.color = color;
@@ -32,6 +34,11 @@ public class NameColorBuilder {
         return this;
     }
 
+    public NameColorBuilder withWeight(int weight) {
+        this.weight = weight;
+        return this;
+    }
+
     public NameColor createNameColor() throws IllegalStateException {
         if (color == null)
             throw new IllegalStateException("Missing state color when creating Tag object");
@@ -50,7 +57,18 @@ public class NameColorBuilder {
             perm,
             label,
             Util.createKey(label, NameColorHolder.getInstance().getColorKeys()),
+            weight,
             id
         );
+    }
+
+    public static NameColor deserialize(ColorsRecord record) {
+        return new NameColorBuilder()
+            .withColor(record.getColor())
+            .withPerm(record.getPerm())
+            .withLabel(record.getLabel())
+            .withDatabaseId(record.getId())
+            .withWeight(record.getWeight())
+            .createNameColor();
     }
 }
