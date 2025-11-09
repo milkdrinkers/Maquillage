@@ -63,11 +63,12 @@ public final class Queries {
                 DSLContext context = DB.getContext(con);
 
                 Record1<Integer> record = context
-                    .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.LABEL)
+                    .insertInto(TAGS, TAGS.TAG, TAGS.PERM, TAGS.LABEL, TAGS.WEIGHT)
                     .values(
                         tag,
                         perm,
-                        label
+                        label,
+                        weight
                     )
                     .returningResult(TAGS.ID)
                     .fetchOne();
@@ -293,11 +294,12 @@ public final class Queries {
                 DSLContext context = DB.getContext(con);
 
                 Record1<Integer> record = context
-                    .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL)
+                    .insertInto(COLORS, COLORS.COLOR, COLORS.PERM, COLORS.LABEL, COLORS.WEIGHT)
                     .values(
                         namecolor,
                         perm,
-                        label
+                        label,
+                        weight
                     )
                     .returningResult(COLORS.ID)
                     .fetchOne();
