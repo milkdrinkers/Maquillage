@@ -26,7 +26,7 @@ import java.util.Optional;
 
 public class NameColorGui extends AbstractGui {
     @Override
-    public void open(Player p) {
+    public void open(Player p, boolean editorMode) {
         final PaginatedGui gui = dev.triumphteam.gui.guis.Gui.paginated()
             .title(translate("gui.namecolor.title", p))
             .rows(6)
@@ -62,29 +62,34 @@ public class NameColorGui extends AbstractGui {
 
     @Override
     void populateButtons(PaginatedGui gui, Player p) {
-        PopulateButtons.populate(gui, p);
+        new PopulateButtons(this).populate(gui, p);
     }
 
     @Override
     void populateContent(PaginatedGui gui, Player p) {
-        PopulateContent.populate(gui, p);
+        new PopulateContent(this).populate(gui, p);
     }
 
-    private static final class PopulateButtons {
+    private final class PopulateButtons {
         private static final ItemStack nextButton = new ItemStack(org.bukkit.Material.ARROW);
         private static final ItemStack prevButton = new ItemStack(org.bukkit.Material.ARROW);
         private static final ItemStack infoButton = new ItemStack(org.bukkit.Material.PLAYER_HEAD);
 
         private static final Sound SOUND_CLICK = Sound.sound(Key.key("ui.button.click"), Sound.Source.AMBIENT, 1.0f, 1.0f);
         private static final Sound SOUND_CLICK_FAIL = Sound.sound(Key.key("minecraft:block.end_portal_frame.fill"), Sound.Source.AMBIENT, 0.5f, 1.0F);
+        private final NameColorGui parentGui;
+
+        private PopulateButtons(NameColorGui parentGui) {
+            this.parentGui = parentGui;
+        }
 
         /**
          * Add all buttons to the gui
          *
-         * @param gui gui
-         * @param p   player
+         * @param gui          gui
+         * @param p            player
          */
-        public static void populate(PaginatedGui gui, Player p) {
+        public void populate(PaginatedGui gui, Player p) {
             nextButton(gui, p);
             previousButton(gui, p);
             infoButton(gui, p);
@@ -96,7 +101,7 @@ public class NameColorGui extends AbstractGui {
          * @param gui gui
          * @param p   player
          */
-        private static void nextButton(PaginatedGui gui, Player p) {
+        private void nextButton(PaginatedGui gui, Player p) {
             final ItemStack nextPage = nextButton.clone();
             nextPage.editMeta(meta -> meta.customName(translate("gui.next-page", p)));
             gui.setItem(6, 6, PaperItemBuilder.from(nextPage).asGuiItem(event -> {
@@ -113,7 +118,7 @@ public class NameColorGui extends AbstractGui {
          * @param gui gui
          * @param p   player
          */
-        private static void previousButton(PaginatedGui gui, Player p) {
+        private void previousButton(PaginatedGui gui, Player p) {
             final ItemStack prevPage = prevButton.clone();
             prevPage.editMeta(meta -> meta.customName(translate("gui.previous-page", p)));
             gui.setItem(6, 4, PaperItemBuilder.from(prevPage).asGuiItem(event -> {
@@ -130,7 +135,7 @@ public class NameColorGui extends AbstractGui {
          * @param gui gui
          * @param p   player
          */
-        private static void infoButton(PaginatedGui gui, Player p) {
+        private void infoButton(PaginatedGui gui, Player p) {
             final ItemStack item = infoButton.clone();
 
             item.editMeta(SkullMeta.class, meta -> {
@@ -166,27 +171,32 @@ public class NameColorGui extends AbstractGui {
                 NameColorHolder.clearPlayerColor(p);
                 p.playSound(SOUND_CLICK);
                 gui.clearPageItems(false);
-                PopulateContent.populate(gui, p);
-                PopulateButtons.populate(gui, p);
+                new PopulateContent(parentGui).populate(gui, p);
+                populate(gui, p);
                 gui.update();
             }));
         }
     }
 
-    private final static class PopulateContent {
+    private final class PopulateContent {
         private static final ItemStack inactiveButton = new ItemStack(Material.GRAY_DYE);
         private static final ItemStack activeButton = new ItemStack(Material.LIME_DYE);
 
         private static final Sound SOUND_SUCCESS = Sound.sound(Key.key("entity.experience_orb.pickup"), Sound.Source.AMBIENT, 0.5f, 1.0F);
         private static final Sound SOUND_FAIL = Sound.sound(Key.key("entity.enderman.teleport"), Sound.Source.AMBIENT, 0.5f, 1.0F);
+        private final NameColorGui parentGui;
+
+        private PopulateContent(NameColorGui parentGui) {
+            this.parentGui = parentGui;
+        }
 
         /**
          * Add all content to the gui
          *
-         * @param gui gui
-         * @param p   player
+         * @param gui          gui
+         * @param p            player
          */
-        public static void populate(PaginatedGui gui, Player p) {
+        public void populate(PaginatedGui gui, Player p) {
             final PlayerData data = PlayerDataHolder.getInstance().getPlayerData(p);
             if (data == null)
                 return;
@@ -223,7 +233,7 @@ public class NameColorGui extends AbstractGui {
                                 .with("preview_tag", tag)
                                 .build()
                         );
-                        meta.lore(
+                        meta.lore( // TODO Add admin lore if editor mode is enabled
                             Translation.ofList("gui.namecolor.item.lore").stream()
                                 .map(s -> ColorParser.of(s)
                                     .papi(p)
@@ -241,6 +251,7 @@ public class NameColorGui extends AbstractGui {
                             meta.addEnchant(Enchantment.MENDING, 1, true);
                     });
 
+                    // TODO Open cosmetic in editor gui dependent on if editor mode is enabled and has perms
                     if (isActive) {
                         gui.addItem(PaperItemBuilder.from(item).asGuiItem());
                     } else {
@@ -257,7 +268,7 @@ public class NameColorGui extends AbstractGui {
          * @param p     player
          * @param color namecolor
          */
-        private static void onClick(InventoryClickEvent e, PaginatedGui gui, Player p, NameColor color) {
+        private void onClick(InventoryClickEvent e, PaginatedGui gui, Player p, NameColor color) {
             final boolean success = NameColorHolder.setPlayerColor(p, color);
 
             if (success) {
@@ -274,10 +285,10 @@ public class NameColorGui extends AbstractGui {
          * @param p     player
          * @param color namecolor
          */
-        private static void onClickSuccess(PaginatedGui gui, Player p, NameColor color) {
+        private void onClickSuccess(PaginatedGui gui, Player p, NameColor color) {
             gui.clearPageItems(false);
-            PopulateContent.populate(gui, p);
-            PopulateButtons.populate(gui, p);
+            populate(gui, p);
+            new PopulateButtons(parentGui).populate(gui, p);
             gui.update();
 
             p.playSound(SOUND_SUCCESS);
@@ -290,7 +301,7 @@ public class NameColorGui extends AbstractGui {
          * @param p     player
          * @param color namecolor
          */
-        private static void onClickFail(PaginatedGui gui, Player p, NameColor color) {
+        private void onClickFail(PaginatedGui gui, Player p, NameColor color) {
             gui.close(p, false);
             p.playSound(SOUND_FAIL);
             p.sendMessage(Translation.as("gui.on-cooldown"));

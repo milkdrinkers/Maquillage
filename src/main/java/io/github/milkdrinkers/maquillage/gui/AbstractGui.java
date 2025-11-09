@@ -2,7 +2,6 @@ package io.github.milkdrinkers.maquillage.gui;
 
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
-import io.github.milkdrinkers.maquillage.module.cosmetic.tag.Tag;
 import io.github.milkdrinkers.wordweaver.Translation;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
@@ -14,7 +13,11 @@ import java.util.function.Function;
 
 @SuppressWarnings("unused")
 public abstract class AbstractGui {
-    abstract void open(Player p);
+    public void open(Player p) {
+        open(p, false);
+    };
+
+    abstract void open(Player p, boolean editorMode);
 
     abstract void reload(PaginatedGui gui, Player p);
 
@@ -59,7 +62,7 @@ public abstract class AbstractGui {
 
         // label sorting
         if (labelOrder != SortOrder.IGNORED) {
-            Comparator<T> labelComparator = Comparator.comparing(item -> labelExtractor.apply(item));
+            Comparator<T> labelComparator = Comparator.comparing(labelExtractor);
             if (labelOrder == SortOrder.DESCENDING) {
                 labelComparator = labelComparator.reversed();
             }
