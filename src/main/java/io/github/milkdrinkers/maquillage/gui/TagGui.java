@@ -11,6 +11,7 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.tag.Tag;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
+import io.github.milkdrinkers.maquillage.utility.PermissionUtility;
 import io.github.milkdrinkers.wordweaver.Translation;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -206,7 +207,7 @@ public class TagGui extends AbstractGui {
                             return;
                         }
 
-                        final boolean success = TagHolder.getInstance().add(data.tag(), data.permission(), data.label(), (int) Math.floor(data.weight())) != -1;
+                        final boolean success = TagHolder.getInstance().add(data.tag(), PermissionUtility.sanitizePermission(data.permission()), data.label(), (int) Math.floor(data.weight())) != -1;
                         if (success) {
                             p.playSound(SOUND_CLICK);
                             player.sendMessage(Translation.as("commands.module.tag.create.success"));
@@ -406,7 +407,7 @@ public class TagGui extends AbstractGui {
                         return;
                     }
 
-                    final boolean success = TagHolder.getInstance().update(data.tag(), data.permission(), data.label(), tag.getDatabaseId(), (int) Math.floor(data.weight()));
+                    final boolean success = TagHolder.getInstance().update(data.tag(), PermissionUtility.sanitizePermission(data.permission()), data.label(), tag.getDatabaseId(), (int) Math.floor(data.weight()));
                     if (success) {
                         player.playSound(SOUND_SUCCESS);
                         new TagGui().open(player, parentGui.isEditorMode());

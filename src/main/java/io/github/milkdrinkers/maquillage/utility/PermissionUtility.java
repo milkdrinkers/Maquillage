@@ -35,4 +35,17 @@ public class PermissionUtility {
     public static boolean playerHasPermission(Player p, String permission) {
         return Hook.getVaultHook().isHookLoaded() && Hook.getVaultHook().isPermissionsLoaded() && Hook.getVaultHook().getPermissions().has(p, permission);
     }
+
+    /**
+     * Sanitizes a string into a valid permission node.
+     * @param permission permission
+     * @return sanitized permission node
+     */
+    public static String sanitizePermission(final String permission) {
+        String sanitized = permission;
+        while (sanitized.charAt(0) == '.') {
+            sanitized = sanitized.substring(1);
+        }
+        return sanitized;
+    }
 }

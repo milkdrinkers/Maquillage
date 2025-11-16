@@ -11,6 +11,7 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColorHold
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import io.github.milkdrinkers.maquillage.player.PlayerData;
 import io.github.milkdrinkers.maquillage.player.PlayerDataHolder;
+import io.github.milkdrinkers.maquillage.utility.PermissionUtility;
 import io.github.milkdrinkers.wordweaver.Translation;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
@@ -206,7 +207,7 @@ public class NameColorGui extends AbstractGui {
                             return;
                         }
 
-                        final boolean success = NameColorHolder.getInstance().add(data.color(), data.permission(), data.label(), (int) Math.floor(data.weight())) != -1;
+                        final boolean success = NameColorHolder.getInstance().add(data.color(), PermissionUtility.sanitizePermission(data.permission()), data.label(), (int) Math.floor(data.weight())) != -1;
                         if (success) {
                             p.playSound(SOUND_CLICK);
                             player.sendMessage(Translation.as("commands.module.namecolor.create.success"));
@@ -408,7 +409,7 @@ public class NameColorGui extends AbstractGui {
                         return;
                     }
 
-                    final boolean success = TagHolder.getInstance().update(data.color(), data.permission(), data.label(), color.getDatabaseId(), (int) Math.floor(data.weight()));
+                    final boolean success = TagHolder.getInstance().update(data.color(), PermissionUtility.sanitizePermission(data.permission()), data.label(), color.getDatabaseId(), (int) Math.floor(data.weight()));
                     if (success) {
                         player.playSound(SOUND_SUCCESS);
                         new NameColorGui().open(player, parentGui.isEditorMode());
