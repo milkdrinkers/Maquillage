@@ -12,8 +12,6 @@ class CommandMaquillage {
                 new TranslationCommand().command(),
                 new DumpCommand().command(),
                 CommandReload.registerCommandReload(),
-                CommandCreate.registerCommandCreate(tags, colors),
-                CommandDelete.registerCommandDelete(tags, colors),
                 CommandEdit.registerCommandEdit(tags, colors),
                 CommandImport.registerCommandImport()
             );

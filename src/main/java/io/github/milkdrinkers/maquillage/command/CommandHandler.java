@@ -36,9 +36,9 @@ public class CommandHandler implements Reloadable {
 
         CommandAPI.onEnable();
 
-        boolean tags = Cfg.get().getBoolean("module.tag.enabled");
-        boolean colors = Cfg.get().getBoolean("module.namecolor.enabled");
-        boolean nicks = Cfg.get().getBoolean("module.nickname.enabled");
+        final boolean tags = Cfg.get().getBoolean("module.tag.enabled");
+        final boolean colors = Cfg.get().getBoolean("module.namecolor.enabled");
+        final boolean nicks = Cfg.get().getBoolean("module.nickname.enabled");
 
         // Register commands here
         CommandMaquillage.registerCommandMaquillage(tags, colors).register();
