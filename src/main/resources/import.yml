@@ -17,19 +17,23 @@
 tags: # Don't repeat this for new tags, simply make new sections under this key.
   example: # This text can be anything, as long as it's not duplicated in the same section. Using "example" under both tag and namecolor is fine, but "example" twice under tags is not.
     tag: "<dark_grey>[<green>Example<dark_grey>]" # This is what the tag will actually be in-game.
-    gui-label: "<grey>Example tag" # This is the label displayed in the GUI where players pick their tags.
-    permission-node: "" # This can be anything you'd like. The final permission node (for tags) will be "maquillage.tag.<your input>". Leave blank for permissionless tag.
+    label: "<grey>Example tag" # This is the label displayed in the GUI where players pick their tags.
+    permission: "" # This can be anything you'd like. The final permission node (for tags) will be "maquillage.tag.<your input>". Leave blank for permissionless tag.
+    weight: 0 # Defaults to 0, higher weights get listed first in the GUI
   another-example:
     tag: "<dark_grey>[<green>Another example<dark_grey>]"
-    gui-label: "<grey>Another example tag"
-    permission-node: "anotherexample" # This will give the permission "maquillage.tag.anotherexample".
+    label: "<grey>Another example tag"
+    permission: "anotherexample" # This will give the permission "maquillage.tag.anotherexample".
+    weight: 100
 
 namecolors: # Don't repeat this for new namecolors, simply make new sections under this key.
   example: # This text can be anything, as long as it's not duplicated in the same section. Using "example" under both tag and namecolor is fine, but "example" twice under tags is not.
     color: "<aqua>" # This is what the namecolor will actually be in-game.
-    gui-label: "<aqua>Example color" # This is the label displayed in the GUI where players pick their tags.
-    permission-node: "" # This can be anything you'd like. The final permission node (for namecolors) will be "maquillage.namecolor.<your input>". Leave blank for permissionless namecolor.
+    label: "<aqua>Example color" # This is the label displayed in the GUI where players pick their tags.
+    permission: "" # This can be anything you'd like. The final permission node (for namecolors) will be "maquillage.namecolor.<your input>". Leave blank for permissionless namecolor.
+    weight: 0 # Defaults to 0, higher weights get listed first in the GUI
   another-example:
     color: "<green>"
-    gui-label: "<green>Another example color"
-    permission-node: "green" # This will give the permission "maquillage.namecolor.green"
+    label: "<green>Another example color"
+    permission: "green" # This will give the permission "maquillage.namecolor.green"
+    weight: 100

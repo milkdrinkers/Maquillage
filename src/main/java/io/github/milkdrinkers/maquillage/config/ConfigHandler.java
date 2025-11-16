@@ -35,12 +35,10 @@ public class ConfigHandler implements Reloadable {
             .defaults(plugin.getResource("database.yml"))
             .reload(ReloadSetting.MANUALLY)
             .build();
-
         importCfg = Config.builderConfig()
-            .path(plugin.getDataFolder().toPath().resolve("import.yml"))
+            .path(plugin.getDataFolder().toPath().resolve("data/import.yml"))
             .defaults(plugin.getResource("import.yml"))
-            .reload(ReloadSetting.MANUALLY)
-            .build();
+            .reload(ReloadSetting.INTELLIGENT)
             .build();
     }
 

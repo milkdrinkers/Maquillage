@@ -48,46 +48,25 @@ public class ImportUtil {
     /**
      * Adds all tags in the import file.
      */
-    public static void addAllTags() {
+    public static void importTags() {
         if (getTagMap() == null || getTagMap().isEmpty())
             return;
         getTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
             getImport().getString("tags." + key + ".tag"),
-            getImport().getString("tags." + key + ".permission-node"),
-            getImport().getString("tags." + key + ".gui-label"),
-            0));
+            getImport().getString("tags." + key + ".permission"),
+            getImport().getString("tags." + key + ".label"),
+            getImport().getOrDefault("tags." + key + ".weight", 0)
+        ));
     }
 
-    public static void addAllNamecolors() {
+    public static void importColors() {
         if (getNamecolorMap() == null || getNamecolorMap().isEmpty())
             return;
         getNamecolorMap().keySet().forEach(key -> NameColorHolder.getInstance().add(
             getImport().getString("namecolors." + key + ".color"),
-            getImport().getString("namecolors." + key + ".permission-node"),
-            getImport().getString("namecolors." + key + ".gui-label"),
-            0));
-    }
-
-    public static void addSupremeTags() {
-        if (getSupremeTagMap() == null || getSupremeTagMap().isEmpty())
-            return;
-        getSupremeTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
-            getSupreme().getString("tags." + key + ".tag"),
-            getSupreme().getString("tags." + key + ".permission"),
-            getSupreme().getString("tags." + key + ".displayname"),
-            0
+            getImport().getString("namecolors." + key + ".permission"),
+            getImport().getString("namecolors." + key + ".label"),
+            getImport().getOrDefault("namecolors." + key + ".weight", 0)
         ));
     }
-
-    public static void addAlonsoTags() {
-        if (getAlonsoTagMap() == null || getAlonsoTagMap().isEmpty())
-            return;
-        getAlonsoTagMap().keySet().forEach(key -> TagHolder.getInstance().add(
-            getAlonso().getString("Tags." + key + ".Tag"),
-            getAlonso().getString("Tags." + key + ".Permission"),
-            getAlonso().getString("Tags." + key + ".Displayname"),
-            0
-        ));
-    }
-
 }
