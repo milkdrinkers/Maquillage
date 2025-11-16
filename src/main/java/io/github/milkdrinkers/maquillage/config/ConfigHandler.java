@@ -13,8 +13,6 @@ public class ConfigHandler implements Reloadable {
     private Config cfg;
     private Config databaseCfg;
     private Config importCfg;
-    private Config supremeCfg;
-    private Config alonsoCfg;
 
     /**
      * Instantiates a new Config handler.
@@ -43,15 +41,6 @@ public class ConfigHandler implements Reloadable {
             .defaults(plugin.getResource("import.yml"))
             .reload(ReloadSetting.MANUALLY)
             .build();
-        supremeCfg = Config.builderConfig()
-            .path(plugin.getDataFolder().toPath().resolve("supreme-import.yml"))
-            .defaults(plugin.getResource("supreme-import.yml"))
-            .reload(ReloadSetting.MANUALLY)
-            .build();
-        alonsoCfg = Config.builderConfig()
-            .path(plugin.getDataFolder().toPath().resolve("alonso-import.yml"))
-            .defaults(plugin.getResource("alonso-import.yml"))
-            .reload(ReloadSetting.MANUALLY)
             .build();
     }
 
@@ -80,23 +69,5 @@ public class ConfigHandler implements Reloadable {
      */
     public Config getImportConfig() {
         return importCfg;
-    }
-
-    /**
-     * Gets import config object.
-     *
-     * @return the config object
-     */
-    public Config getSupremeConfig() {
-        return supremeCfg;
-    }
-
-    /**
-     * Gets import config object.
-     *
-     * @return the config object
-     */
-    public Config getAlonsoConfig() {
-        return alonsoCfg;
     }
 }

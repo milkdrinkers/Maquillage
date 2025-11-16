@@ -8,38 +8,17 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.tag.TagHolder;
 import java.util.Map;
 
 public class ImportUtil {
-
-    public static Config getImport() {
+    private static Config getImport() {
         return Maquillage.getInstance().getConfigHandler().getImportConfig();
     }
 
-    public static Config getSupreme() {
-        return Maquillage.getInstance().getConfigHandler().getSupremeConfig();
-    }
-
-    public static Config getAlonso() {
-        return Maquillage.getInstance().getConfigHandler().getAlonsoConfig();
-    }
-
-    public static Map<?, ?> getTagMap() {
+    private static Map<?, ?> getTagMap() {
         if (getImport() == null)
             return null;
         return getImport().getMap("tags");
     }
 
-    public static Map<?, ?> getSupremeTagMap() {
-        if (getSupreme() == null)
-            return null;
-        return getSupreme().getMap("tags");
-    }
-
-    public static Map<?, ?> getAlonsoTagMap() {
-        if (getAlonso() == null)
-            return null;
-        return getAlonso().getMap("tags");
-    }
-
-    public static Map<?, ?> getNamecolorMap() {
+    private static Map<?, ?> getNamecolorMap() {
         if (getImport() == null)
             return null;
         return getImport().getMap("namecolors");
@@ -49,18 +28,6 @@ public class ImportUtil {
         if (getTagMap() == null)
             return 0;
         return getTagMap().size();
-    }
-
-    public static int getSupremeTagAmount() {
-        if (getSupremeTagMap() == null)
-            return 0;
-        return getSupremeTagMap().size();
-    }
-
-    public static int getAlonsoTagAmount() {
-        if (getAlonsoTagMap() == null)
-            return 0;
-        return getAlonsoTagMap().size();
     }
 
     public static int getNamecolorAmount() {

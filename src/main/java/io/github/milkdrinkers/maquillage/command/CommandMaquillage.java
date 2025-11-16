@@ -26,5 +26,4 @@ class CommandMaquillage {
 
         return commandMaquillage;
     }
-
 }
