@@ -5,8 +5,8 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmetic;
 public class Tag extends BaseCosmetic {
     private String tag;
 
-    Tag(String tag, String perm, String label, String key, int databaseId, int weight) {
-        super(perm, label, key, databaseId, weight);
+    Tag(int databaseId, String label, String perm, String key, int weight, String tag) {
+        super(databaseId, label, perm, key, weight);
         this.tag = tag;
     }
 
@@ -31,7 +31,7 @@ public class Tag extends BaseCosmetic {
 
     @Override
     public int hashCode() {
-        return getTag().hashCode();
+        return getDatabaseId();
     }
 
     @Override

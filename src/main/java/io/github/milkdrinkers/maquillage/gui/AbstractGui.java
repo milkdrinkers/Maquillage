@@ -13,11 +13,19 @@ import java.util.function.Function;
 
 @SuppressWarnings("unused")
 public abstract class AbstractGui {
+    private boolean editorMode = false;
+
     public void open(Player p) {
         open(p, false);
     };
 
-    abstract void open(Player p, boolean editorMode);
+    void open(Player p, boolean editorMode) {
+        this.editorMode = editorMode;
+    };
+
+    public boolean isEditorMode() {
+        return editorMode;
+    }
 
     abstract void reload(PaginatedGui gui, Player p);
 

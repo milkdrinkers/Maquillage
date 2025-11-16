@@ -9,18 +9,26 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 
 public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticIdentifiable, Identifiable {
-    private String perm;
-    private String label;
-    private String key;
     private int databaseId;
+    private String label;
+    private String perm;
+    private String key;
     private int weight;
 
-    public BaseCosmetic(String perm, String label, String key, int databaseId, int weight) {
-        this.perm = perm;
-        this.label = label;
-        this.key = key;
+    public BaseCosmetic(int databaseId, String label, String perm, String key, int weight) {
         this.databaseId = databaseId;
+        this.label = label;
+        this.perm = perm;
+        this.key = key;
         this.weight = weight;
+    }
+
+    public int getDatabaseId() {
+        return databaseId;
+    }
+
+    public void setDatabaseId(int databaseId) {
+        this.databaseId = databaseId;
     }
 
     public String getLabel() {
@@ -49,14 +57,6 @@ public abstract class BaseCosmetic implements Permissible, Labelable, CosmeticId
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    public int getDatabaseId() {
-        return databaseId;
-    }
-
-    public void setDatabaseId(int databaseId) {
-        this.databaseId = databaseId;
     }
 
     public int getWeight() {

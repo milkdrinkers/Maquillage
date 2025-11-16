@@ -5,8 +5,8 @@ import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmetic;
 public class NameColor extends BaseCosmetic {
     private String color;
 
-    NameColor(String color, String perm, String label, String key, int databaseId, int weight) {
-        super(perm, label, key, databaseId, weight);
+    NameColor(int databaseId, String label, String perm, String key, int weight, String color) {
+        super(databaseId, label, perm, key, weight);
         this.color = color;
     }
 
@@ -31,7 +31,7 @@ public class NameColor extends BaseCosmetic {
 
     @Override
     public int hashCode() {
-        return getColor().hashCode();
+        return getDatabaseId();
     }
 
     @Override

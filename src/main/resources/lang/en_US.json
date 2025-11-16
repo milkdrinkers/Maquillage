@@ -1,4 +1,4 @@
- {
+{
   "update-checker": {
     "running-latest": "<white>You are running the latest version of <plugin_name>!",
     "update-found-console": "\n\n<white>An update was found for <plugin_name>!\n    <white>Current version: <red>v<version_current>\n    <white>Latest version: <green><click:open_url:'<download_link>'><hover:show_text:'<green>Open Download Page'>v<version_latest></hover></click>\n",
@@ -131,19 +131,28 @@
   "gui": {
     "namecolor": {
       "title": "Select your Name Color",
+      "title-editor": "Edit Name Colors",
       "item": {
         "name": "<label>",
         "lore": [
-          "<!i><gray><preview_tag><preview_namecolor>",
+          "<!i><gray><preview_tag> <preview_namecolor>",
+          "",
           "<active>"
         ],
         "active": {
           "yes": "<!i><gray>You are using this namecolor",
           "no": "<!i><gray>Click to select the namecolor"
-        }
+        },
+        "lore-editor": [
+          "<!i><gray><preview_tag> <preview_namecolor>",
+          "",
+          "<!i><gray>- Click to edit",
+          "<!i><gray>- Middle-Click to copy",
+          "<!i><gray>- Shift + Right-Click to delete"
+        ]
       },
       "clear-item": {
-        "name": "<!i><gray><preview_tag><preview_namecolor>",
+        "name": "<!i><gray><preview_tag> <preview_namecolor>",
         "lore": [
           "<!i><red>Click to clear your namecolor"
         ]
@@ -151,19 +160,28 @@
     },
     "tag": {
       "title": "Select your Tag",
+      "title-editor": "Edit Tags",
       "item": {
         "name": "<label>",
         "lore": [
-          "<!i><gray><preview_tag><preview_namecolor>",
+          "<!i><gray><preview_tag> <preview_namecolor>",
+          "",
           "<active>"
         ],
         "active": {
           "yes": "<!i><gray>You are using this tag",
           "no": "<!i><gray>Click to select the tag"
-        }
+        },
+        "lore-editor": [
+          "<!i><gray><preview_tag> <preview_namecolor>",
+          "",
+          "<!i><gray>- Click to edit",
+          "<!i><gray>- Middle-Click to copy",
+          "<!i><gray>- Shift + Right-Click to delete"
+        ]
       },
       "clear-item": {
-        "name": "<!i><gray><preview_tag><preview_namecolor>",
+        "name": "<!i><gray><preview_tag> <preview_namecolor>",
         "lore": [
           "<!i><red>Click to clear your tag"
         ]
@@ -172,5 +190,43 @@
     "next-page": "<!i><green>Next page",
     "previous-page": "<!i><red>Previous page",
     "on-cooldown": "<red>You are on cooldown. Try again in a few seconds."
+  },
+  "dialog": {
+    "tag": {
+      "editor": {
+        "title": "Tag Editor",
+        "preview-title": "Preview:",
+        "preview-format": "<preview> <reset><player>",
+        "preview-fallback": "<red>Invalid Format",
+        "input-tag": "Tag",
+        "input-label": "Label",
+        "input-permission": "Permission Node (Leave empty to disable)",
+        "input-weight": "Weight",
+        "input-success": "Save",
+        "input-success-tooltip": "Click to save this tag",
+        "input-update": "Update Preview",
+        "input-update-tooltip": "Click to reload the preview above",
+        "input-cancel": "Cancel",
+        "input-cancel-tooltip": "Click to discard your changes to this tag"
+      }
+    },
+    "namecolor": {
+      "editor": {
+        "title": "Name Color Editor",
+        "preview-title": "Preview:",
+        "preview-format": "<preview><player>",
+        "preview-fallback": "<red>Invalid Format",
+        "input-color": "Name Color",
+        "input-label": "Label",
+        "input-permission": "Permission Node (Leave empty to disable)",
+        "input-weight": "Weight",
+        "input-success": "Save",
+        "input-success-tooltip": "Click to save this name color",
+        "input-update": "Update Preview",
+        "input-update-tooltip": "Click to reload the preview above",
+        "input-cancel": "Cancel",
+        "input-cancel-tooltip": "Click to discard your changes to this name color"
+      }
+    }
   }
 }

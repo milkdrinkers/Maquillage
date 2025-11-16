@@ -5,14 +5,19 @@ import io.github.milkdrinkers.maquillage.utility.Util;
 import org.jetbrains.annotations.Nullable;
 
 public final class TagBuilder {
-    private @Nullable String tag;
-    private @Nullable String perm;
-    private @Nullable String label;
     private int id = -1;
-    private int weight = 0;
+    private @Nullable String label;
+    private @Nullable String perm;
+    private @Nullable Integer weight;
+    private @Nullable String tag;
 
-    public TagBuilder withTag(String tag) {
-        this.tag = tag;
+    public TagBuilder withDatabaseId(int databaseId) {
+        this.id = databaseId;
+        return this;
+    }
+
+    public TagBuilder withLabel(String label) {
+        this.label = label;
         return this;
     }
 
@@ -24,18 +29,13 @@ public final class TagBuilder {
         return this;
     }
 
-    public TagBuilder withLabel(String label) {
-        this.label = label;
-        return this;
-    }
-
-    public TagBuilder withDatabaseId(int databaseId) {
-        this.id = databaseId;
-        return this;
-    }
-
     public TagBuilder withWeight(int weight) {
         this.weight = weight;
+        return this;
+    }
+
+    public TagBuilder withTag(String tag) {
+        this.tag = tag;
         return this;
     }
 
@@ -49,26 +49,29 @@ public final class TagBuilder {
         if (label == null)
             throw new IllegalStateException("Missing state name when creating Tag object");
 
+        if (weight == null)
+            throw new IllegalStateException("Missing state weight when creating Tag object");
+
         if (id == -1)
             throw new IllegalStateException("Missing state id when creating Tag object");
 
         return new Tag(
-            tag,
-            perm,
+            id,
             label,
+            perm,
             Util.createKey(label, TagHolder.getInstance().getTagKeys()),
             weight,
-            id
+            tag
         );
     }
 
     public static Tag deserialize(TagsRecord record) {
         return new TagBuilder()
-            .withTag(record.getTag())
-            .withPerm(record.getPerm())
-            .withLabel(record.getLabel())
             .withDatabaseId(record.getId())
+            .withLabel(record.getLabel())
+            .withPerm(record.getPerm())
             .withWeight(record.getWeight())
+            .withTag(record.getTag())
             .createTag();
     }
 }

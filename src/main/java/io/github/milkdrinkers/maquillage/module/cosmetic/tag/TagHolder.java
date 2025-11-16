@@ -71,13 +71,14 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public int add(String value, String perm, String label, int weight) {
-        int databaseId = Queries.Tag.saveTag(value, perm, label, weight);
+        final int databaseId = Queries.Tag.saveTag(value, perm, label, weight);
         if (databaseId != -1) {
             cacheAdd(
                 new TagBuilder()
                     .withTag(value)
                     .withPerm(perm)
                     .withLabel(label)
+                    .withWeight(weight)
                     .withDatabaseId(databaseId)
                     .createTag()
             );
@@ -88,7 +89,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public boolean remove(Tag value) {
-        boolean success = Queries.Tag.removeTag(value.getDatabaseId());
+        final boolean success = Queries.Tag.removeTag(value.getDatabaseId());
         if (!success)
             return false;
         PlayerDataHolder.getInstance().clearTagWithId(value.getDatabaseId());
@@ -99,7 +100,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public boolean update(String value, String perm, String label, int databaseId, int weight) {
-        boolean success = Queries.Tag.updateTag(value, perm, label, databaseId, weight);
+        final boolean success = Queries.Tag.updateTag(value, perm, label, databaseId, weight);
         if (!success)
             return false;
 
@@ -109,6 +110,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
                 .withPerm(perm)
                 .withLabel(label)
                 .withDatabaseId(databaseId)
+                .withWeight(weight)
                 .createTag()
         );
         MessagingUtils.sendTagFetch(databaseId);
@@ -122,7 +124,7 @@ public class TagHolder implements BaseCosmeticHolder<Tag> {
 
     @Override
     public void loadAll() {
-        Result<TagsRecord> result = Queries.Tag.loadAllTags();
+        final Result<TagsRecord> result = Queries.Tag.loadAllTags();
 
         if (result == null)
             return;

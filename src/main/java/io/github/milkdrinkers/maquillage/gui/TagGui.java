@@ -4,6 +4,7 @@ import dev.triumphteam.gui.builder.item.PaperItemBuilder;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import io.github.milkdrinkers.colorparser.paper.ColorParser;
+import io.github.milkdrinkers.maquillage.gui.edit.TagEditor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.BaseCosmetic;
 import io.github.milkdrinkers.maquillage.module.cosmetic.namecolor.NameColor;
 import io.github.milkdrinkers.maquillage.module.cosmetic.tag.Tag;
@@ -14,9 +15,11 @@ import io.github.milkdrinkers.wordweaver.Translation;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.sound.Sound;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -28,8 +31,9 @@ import java.util.Optional;
 public class TagGui extends AbstractGui {
     @Override
     public void open(Player p, boolean editorMode) {
+        super.open(p, editorMode);
         final PaginatedGui gui = dev.triumphteam.gui.guis.Gui.paginated()
-            .title(translate("gui.tag.title", p))
+            .title(editorMode ? translate("gui.tag.title-editor", p) : translate("gui.tag.title", p))
             .rows(6)
             .disableItemPlace()
             .disableItemSwap()
@@ -71,7 +75,7 @@ public class TagGui extends AbstractGui {
         new PopulateContent(this).populate(gui, p);
     }
 
-    private final class PopulateButtons {
+    private static final class PopulateButtons {
         private static final ItemStack nextButton = new ItemStack(Material.ARROW);
         private static final ItemStack prevButton = new ItemStack(Material.ARROW);
         private static final ItemStack infoButton = new ItemStack(Material.PLAYER_HEAD);
@@ -172,14 +176,14 @@ public class TagGui extends AbstractGui {
                 TagHolder.clearPlayerTag(p);
                 p.playSound(SOUND_CLICK);
                 gui.clearPageItems(false);
-                new PopulateContent(parentGui).populate(gui, p);
+                parentGui.populateContent(gui, p);
                 populate(gui, p);
                 gui.update();
             }));
         }
     }
 
-    private final class PopulateContent {
+    private static final class PopulateContent {
         private static final ItemStack inactiveButton = new ItemStack(Material.NAME_TAG);
         private static final ItemStack activeButton = new ItemStack(Material.ENCHANTED_BOOK);
 
@@ -233,8 +237,8 @@ public class TagGui extends AbstractGui {
                                 .with("preview_tag", tag.getTag())
                                 .build()
                         );
-                        meta.lore( // TODO Add admin lore if editor mode is enabled
-                            Translation.ofList("gui.tag.item.lore").stream()
+                        meta.lore(
+                            Translation.ofList(parentGui.isEditorMode() ? "gui.tag.item.lore-editor" : "gui.tag.item.lore").stream()
                                 .map(s -> ColorParser.of(s)
                                     .papi(p)
                                     .mini(p)
@@ -251,9 +255,12 @@ public class TagGui extends AbstractGui {
                             meta.addEnchant(Enchantment.MENDING, 1, true);
                     });
 
-                    // TODO Open cosmetic in editor gui dependent on if editor mode is enabled and has perms
-                    if (isActive) {
-                        gui.addItem(PaperItemBuilder.from(item).asGuiItem());
+                    if (!parentGui.isEditorMode()) {
+                        if (isActive) {
+                            gui.addItem(PaperItemBuilder.from(item).asGuiItem());
+                        } else {
+                            gui.addItem(PaperItemBuilder.from(item).asGuiItem(e -> onClick(e, gui, p, tag)));
+                        }
                     } else {
                         gui.addItem(PaperItemBuilder.from(item).asGuiItem(e -> onClick(e, gui, p, tag)));
                     }
@@ -269,12 +276,35 @@ public class TagGui extends AbstractGui {
          * @param tag   tag
          */
         private void onClick(InventoryClickEvent e, PaginatedGui gui, Player p, Tag tag) {
-            final boolean success = TagHolder.setPlayerTag(p, tag);
+            final boolean isLeftClick = e.isLeftClick();
+            final boolean isRightClick = e.isRightClick();
+            final boolean isShiftClick = e.isShiftClick();
+            final boolean isMiddleClick = e.getAction().equals(InventoryAction.CLONE_STACK);
 
-            if (success) {
-                onClickSuccess(gui, p, tag);
-            } else {
-                onClickFail(gui, p, tag);
+            if (parentGui.isEditorMode()) {
+                if (isShiftClick && isRightClick) {
+                    onClickDelete(gui, p, tag);
+                    return;
+                }
+
+                if (isLeftClick || isRightClick) {
+                    onClickEdit(gui, p, tag);
+                    return;
+                }
+
+                if (isMiddleClick) {
+                    onClickClone(gui, p, tag);
+                    return;
+                }
+            } else if (!parentGui.isEditorMode() && !isShiftClick && isLeftClick) {
+                final boolean success = TagHolder.setPlayerTag(p, tag);
+
+                if (success) {
+                    onClickSuccess(gui, p, tag);
+                } else {
+                    onClickFail(gui, p, tag);
+                }
+                return;
             }
         }
 
@@ -288,7 +318,7 @@ public class TagGui extends AbstractGui {
         private void onClickSuccess(PaginatedGui gui, Player p, Tag tag) {
             gui.clearPageItems(false);
             populate(gui, p);
-            new PopulateButtons(parentGui).populate(gui, p);
+            parentGui.populateButtons(gui, p);
             gui.update();
             
             p.playSound(SOUND_SUCCESS);
@@ -305,6 +335,114 @@ public class TagGui extends AbstractGui {
             gui.close(p, false);
             p.playSound(SOUND_FAIL);
             p.sendMessage(Translation.as("gui.on-cooldown"));
+        }
+
+        /**
+         * On click edit
+         *
+         * @param gui   gui
+         * @param p     player
+         * @param tag   tag
+         */
+        private void onClickEdit(PaginatedGui gui, Player p, Tag tag) {
+            if (!p.hasPermission("maquillage.command.admin.edit.tag")) {
+                gui.close(p, false);
+                p.playSound(SOUND_FAIL);
+                p.sendMessage(Bukkit.permissionMessage());
+                return;
+            }
+
+            // Opening dialog automatically closes gui
+            p.playSound(SOUND_SUCCESS);
+            TagEditor.edit(
+                p,
+                tag,
+                (response, player, data) -> {
+                    if (!player.hasPermission("maquillage.command.admin.edit.tag")) {
+                        player.playSound(SOUND_FAIL);
+                        player.sendMessage(Bukkit.permissionMessage());
+                        return;
+                    }
+
+                    final boolean success = TagHolder.getInstance().update(data.tag(), data.permission(), data.label(), tag.getDatabaseId(), (int) Math.floor(data.weight()));
+                    if (success) {
+                        player.playSound(SOUND_SUCCESS);
+                        new TagGui().open(player, parentGui.isEditorMode());
+                    } else {
+                        player.playSound(SOUND_FAIL);
+                        player.sendMessage(ColorParser.of(Translation.of("commands.module.tag.edit.perm.failure")).build());
+                    }
+                },
+                (response, player, data) -> {
+                },
+                (response, player, data) -> {
+                    new TagGui().open(player, parentGui.isEditorMode());
+                }
+            );
+        }
+
+        /**
+         * On click clone
+         *
+         * @param gui   gui
+         * @param p     player
+         * @param tag   tag
+         */
+        private void onClickClone(PaginatedGui gui, Player p, Tag tag) {
+            if (!p.hasPermission("maquillage.command.admin.create.tag")) {
+                gui.close(p, false);
+                p.playSound(SOUND_FAIL);
+                p.sendMessage(Bukkit.permissionMessage());
+                return;
+            }
+
+            // Creates a new tag with the same data as the old one
+            final int id = TagHolder.getInstance().add(tag.getTag(), tag.getPerm(), tag.getLabel(), tag.getWeight());
+            if (id == -1) {
+                gui.close(p, false);
+                p.playSound(SOUND_FAIL);
+                p.sendMessage(ColorParser.of(Translation.of("commands.module.tag.create.failure")).build());
+                return;
+            }
+
+            gui.clearPageItems(false);
+            populate(gui, p);
+            parentGui.populateButtons(gui, p);
+            gui.update();
+
+            p.playSound(SOUND_SUCCESS);
+        }
+
+        /**
+         * On click delete
+         *
+         * @param gui   gui
+         * @param p     player
+         * @param tag   tag
+         */
+        private void onClickDelete(PaginatedGui gui, Player p, Tag tag) {
+            if (!p.hasPermission("maquillage.command.admin.delete.tag")) {
+                gui.close(p, false);
+                p.playSound(SOUND_FAIL);
+                p.sendMessage(Bukkit.permissionMessage());
+                return;
+            }
+
+            // Delete the tag
+            final boolean success = TagHolder.getInstance().remove(tag);
+            if (!success) {
+                gui.close(p, false);
+                p.playSound(SOUND_FAIL);
+                p.sendMessage(ColorParser.of(Translation.of("commands.module.tag.delete.failure")).build());
+                return;
+            }
+
+            gui.clearPageItems(false);
+            populate(gui, p);
+            parentGui.populateButtons(gui, p);
+            gui.update();
+
+            p.playSound(SOUND_SUCCESS);
         }
     }
 }

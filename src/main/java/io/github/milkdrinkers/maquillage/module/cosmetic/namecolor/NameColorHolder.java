@@ -70,13 +70,14 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public int add(String value, String perm, String label, int weight) {
-        int databaseId = Queries.NameColor.saveColor(value, perm, label, weight);
+        final int databaseId = Queries.NameColor.saveColor(value, perm, label, weight);
         if (databaseId != -1) {
             cacheAdd(
                 new NameColorBuilder()
                     .withColor(value)
                     .withPerm(perm)
                     .withLabel(label)
+                    .withWeight(weight)
                     .withDatabaseId(databaseId)
                     .createNameColor()
             );
@@ -87,7 +88,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public boolean remove(NameColor value) {
-        boolean success = Queries.NameColor.removeColor(value.getDatabaseId());
+        final boolean success = Queries.NameColor.removeColor(value.getDatabaseId());
         if (!success)
             return false;
         PlayerDataHolder.getInstance().clearNameColorWithId(value.getDatabaseId());
@@ -98,7 +99,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public boolean update(String value, String perm, String label, int databaseId, int weight) {
-        boolean success = Queries.NameColor.updateColor(value, perm, label, databaseId, weight);
+        final boolean success = Queries.NameColor.updateColor(value, perm, label, databaseId, weight);
         if (!success)
             return false;
 
@@ -108,6 +109,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
                 .withPerm(perm)
                 .withLabel(label)
                 .withDatabaseId(databaseId)
+                .withWeight(weight)
                 .createNameColor()
         );
         MessagingUtils.sendNameColorFetch(databaseId);
@@ -121,7 +123,7 @@ public class NameColorHolder implements BaseCosmeticHolder<NameColor> {
 
     @Override
     public void loadAll() {
-        Result<ColorsRecord> result = Queries.NameColor.loadAllColors();
+        final Result<ColorsRecord> result = Queries.NameColor.loadAllColors();
 
         if (result == null)
             return;
