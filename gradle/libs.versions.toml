@@ -3,8 +3,8 @@ paper-api = "1.21.8-R0.1-SNAPSHOT"
 paper-run = "1.21.8"
 crate = "4.0.0-RC.5"
 commandapi = "11.0.0"
-flyway = "11.16.0"
-jooq = "3.20.8"
+flyway = "11.17.0"
+jooq = "3.20.9"
 
 [libraries]
 # Core dependencies
@@ -45,7 +45,7 @@ mariadb = "org.mariadb.jdbc:mariadb-java-client:3.5.6"
 
 # Messaging drivers
 jedis = "redis.clients:jedis:7.0.0"
-nats = "io.nats:jnats:2.23.0"
+nats = "io.nats:jnats:2.24.0"
 rabbitmq = "com.rabbitmq:amqp-client:5.27.1"
 
 # Testing
@@ -68,7 +68,7 @@ junit = ["junit-jupiter", "junit-platform"]
 testcontainers = ["testcontainers-jupiter", "testcontainers-mysql", "testcontainers-mariadb", "testcontainers-redis", "testcontainers-rabbitmq"]
 
 [plugins]
-publisher = "com.vanniktech.maven.publish:0.34.0"
+publisher = "com.vanniktech.maven.publish:0.35.0"
 shadow = "com.gradleup.shadow:9.2.2"
 run-paper = "xyz.jpenilla.run-paper:3.0.2"
 plugin-yml-bukkit = "de.eldoria.plugin-yml.bukkit:0.8.0"
