@@ -76,7 +76,13 @@ public final class Queries {
                 if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    return context.lastID().intValue();
+                    final int rowId = context.lastID().intValue();
+                    context // Update ID field for SQLite
+                        .update(TAGS)
+                        .set(TAGS.ID, rowId)
+                        .where("rowid = ?", rowId)
+                        .execute();
+                    return rowId;
                 }
 
             } catch (SQLException | ArithmeticException e) {
@@ -307,7 +313,13 @@ public final class Queries {
                 if (!DB.getHandler().getDatabaseConfig().getDatabaseType().equals(DatabaseType.SQLITE) && record != null && record.value1() != null) {
                     return record.value1(); // For H2, MySQL, MariaDB
                 } else {
-                    return context.lastID().intValue();
+                    final int rowId = context.lastID().intValue();
+                    context // Update ID field for SQLite
+                        .update(TAGS)
+                        .set(TAGS.ID, rowId)
+                        .where("rowid = ?", rowId)
+                        .execute();
+                    return rowId;
                 }
 
             } catch (SQLException | ArithmeticException e) {
