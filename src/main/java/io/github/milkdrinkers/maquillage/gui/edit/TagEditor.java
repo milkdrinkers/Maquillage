@@ -21,6 +21,113 @@ import java.util.List;
 
 @SuppressWarnings("UnstableApiUsage")
 public final class TagEditor {
+    // TODO Input validation on permission (don't allow weird as fucking symbols)
+    public static void create(
+        Player player,
+        EditActionCallback onSuccessCb,
+        EditActionCallback onUpdateCb,
+        EditActionCallback onCancelCb
+    ) {
+        if (!player.hasPermission("maquillage.command.admin.create.tag")) {
+            player.sendMessage(Bukkit.permissionMessage());
+            return;
+        }
+
+        final TagGuiData data = new TagGuiData(
+            "",
+            "",
+            "",
+            0.0f
+        );
+
+        final DialogAction onSuccess = DialogAction.customClick((response, audience) -> {
+                if (!(audience instanceof Player p))
+                    return;
+
+                onSuccessCb.accept(response, p, extractData(response));
+            },
+            ClickCallback.Options.builder()
+                .uses(1)
+                .lifetime(ClickCallback.DEFAULT_LIFETIME)
+                .build()
+        );
+
+        final DialogAction onCancel = DialogAction.customClick(
+            (response, audience) -> {
+                if (!(audience instanceof Player p))
+                    return;
+
+                onCancelCb.accept(response, p, extractData(response));
+            },
+            ClickCallback.Options.builder()
+                .uses(1)
+                .lifetime(ClickCallback.DEFAULT_LIFETIME)
+                .build()
+        );
+
+        final DialogAction onPreview = DialogAction.customClick(
+            (response, audience) -> {
+                if (!(audience instanceof Player p))
+                    return;
+
+                onUpdateCb.accept(response, p, extractData(response));
+                p.closeDialog();
+                edit(p, extractData(response), onSuccessCb, onUpdateCb, onCancelCb);
+            },
+            ClickCallback.Options.builder()
+                .uses(1)
+                .lifetime(ClickCallback.DEFAULT_LIFETIME)
+                .build()
+        );
+
+        Component previewComponent;
+        try {
+            previewComponent = ColorParser.of(Translation.of("dialog.tag.editor.preview-format"))
+                .with("preview", Component.empty())
+                .with("player", player.getName())
+                .papi(player)
+                .mini(player)
+                .build();
+        } catch (Exception e) {
+            previewComponent = Translation.as("dialog.tag.editor.preview-fallback");
+        }
+
+        final Component finalPreviewComponent = previewComponent;
+        final Dialog dialog = Dialog.create(
+            builder -> builder.empty()
+                .base(
+                    DialogBase.builder(Translation.as("dialog.tag.creator.title"))
+                        .externalTitle(Component.empty())
+                        .canCloseWithEscape(true)
+                        .afterAction(DialogBase.DialogAfterAction.CLOSE)
+                        .pause(false)
+                        .body(
+                            List.of(
+                                DialogBody.plainMessage(Translation.as("dialog.tag.editor.preview-title")),
+                                DialogBody.plainMessage(
+                                    finalPreviewComponent
+                                )
+                            )
+                        )
+                        .inputs(dialogInputs(data))
+                        .build()
+                )
+                .type(
+                    DialogType.multiAction(
+                            editorActions(
+                                data,
+                                onSuccess,
+                                onPreview,
+                                onCancel
+                            )
+                        )
+                        .build()
+                )
+        );
+
+        player.showDialog(dialog);
+    }
+
     public static void edit(
         Player player,
         Tag tag,
@@ -140,55 +247,17 @@ public final class TagEditor {
                             )
                         )
                         .inputs(
-                            List.of(
-                                DialogInput.text("tag", Translation.as("dialog.tag.editor.input-tag"))
-                                    .initial(data.tag())
-                                    .labelVisible(true)
-                                    .maxLength(255)
-                                    .build(),
-                                DialogInput.text("label", Translation.as("dialog.tag.editor.input-label"))
-                                    .initial(data.label())
-                                    .labelVisible(true)
-                                    .maxLength(255)
-                                    .build(),
-                                DialogInput.text("permission", Translation.as("dialog.tag.editor.input-permission"))
-                                    .initial(data.permission())
-                                    .labelVisible(true)
-                                    .maxLength(255)
-                                    .build(),
-                                DialogInput.numberRange("weight", Translation.as("dialog.tag.editor.input-weight"), 0, 100)
-                                    .step(1F)
-                                    .initial(data.weight())
-                                    .build()
-                            )
+                            dialogInputs(data)
                         )
                         .build()
                 )
                 .type(
                     DialogType.multiAction(
-                            List.of(
-                                ActionButton.builder(Translation.as("dialog.tag.editor.input-success"))
-                                    .action(
-                                        onSuccess
-                                    )
-                                    .tooltip(
-                                        Translation.as("dialog.tag.editor.input-success-tooltip")
-                                    )
-                                    .build(),
-                                ActionButton.builder(Translation.as("dialog.tag.editor.input-update"))
-                                    .action(onPreview)
-                                    .tooltip(
-                                        Translation.as("dialog.tag.editor.input-update-tooltip")
-                                    )
-                                    .build(),
-                                ActionButton.builder(Translation.as("dialog.tag.editor.input-cancel"))
-                                    .action(
-                                        onCancel
-                                    )
-                                    .tooltip(
-                                        Translation.as("dialog.tag.editor.input-cancel-tooltip")
-                                    )
-                                    .build()
+                            editorActions(
+                                data,
+                                onSuccess,
+                                onPreview,
+                                onCancel
                             )
                         )
                         .build()
@@ -196,6 +265,62 @@ public final class TagEditor {
         );
 
         player.showDialog(dialog);
+    }
+
+    private static List<ActionButton> editorActions(
+        TagGuiData data,
+        DialogAction onSuccess,
+        DialogAction onPreview,
+        DialogAction onCancel
+    ) {
+        return List.of(
+            ActionButton.builder(Translation.as("dialog.tag.editor.input-success"))
+                .action(
+                    onSuccess
+                )
+                .tooltip(
+                    Translation.as("dialog.tag.editor.input-success-tooltip")
+                )
+                .build(),
+            ActionButton.builder(Translation.as("dialog.tag.editor.input-update"))
+                .action(onPreview)
+                .tooltip(
+                    Translation.as("dialog.tag.editor.input-update-tooltip")
+                )
+                .build(),
+            ActionButton.builder(Translation.as("dialog.tag.editor.input-cancel"))
+                .action(
+                    onCancel
+                )
+                .tooltip(
+                    Translation.as("dialog.tag.editor.input-cancel-tooltip")
+                )
+                .build()
+        );
+    }
+
+    private static List<DialogInput> dialogInputs(TagGuiData data) {
+        return List.of(
+            DialogInput.text("tag", Translation.as("dialog.tag.editor.input-tag"))
+                .initial(data.tag())
+                .labelVisible(true)
+                .maxLength(255)
+                .build(),
+            DialogInput.text("label", Translation.as("dialog.tag.editor.input-label"))
+                .initial(data.label())
+                .labelVisible(true)
+                .maxLength(255)
+                .build(),
+            DialogInput.text("permission", Translation.as("dialog.tag.editor.input-permission"))
+                .initial(data.permission())
+                .labelVisible(true)
+                .maxLength(255)
+                .build(),
+            DialogInput.numberRange("weight", Translation.as("dialog.tag.editor.input-weight"), 0, 100)
+                .step(1F)
+                .initial(data.weight())
+                .build()
+        );
     }
 
     @FunctionalInterface

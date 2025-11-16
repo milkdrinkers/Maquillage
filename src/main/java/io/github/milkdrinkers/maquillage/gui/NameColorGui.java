@@ -79,6 +79,7 @@ public class NameColorGui extends AbstractGui {
         private static final ItemStack nextButton = new ItemStack(org.bukkit.Material.ARROW);
         private static final ItemStack prevButton = new ItemStack(org.bukkit.Material.ARROW);
         private static final ItemStack infoButton = new ItemStack(org.bukkit.Material.PLAYER_HEAD);
+        private static final ItemStack createButton = new ItemStack(Material.CRAFTING_TABLE);
 
         private static final Sound SOUND_CLICK = Sound.sound(Key.key("ui.button.click"), Sound.Source.AMBIENT, 1.0f, 1.0f);
         private static final Sound SOUND_CLICK_FAIL = Sound.sound(Key.key("minecraft:block.end_portal_frame.fill"), Sound.Source.AMBIENT, 0.5f, 1.0F);
@@ -98,6 +99,7 @@ public class NameColorGui extends AbstractGui {
             nextButton(gui, p);
             previousButton(gui, p);
             infoButton(gui, p);
+            createButton(gui, p);
         }
 
         /**
@@ -179,6 +181,47 @@ public class NameColorGui extends AbstractGui {
                 parentGui.populateContent(gui, p);
                 populate(gui, p);
                 gui.update();
+            }));
+        }
+
+        /**
+         * Add button to gui
+         *
+         * @param gui gui
+         * @param p   player
+         */
+        private void createButton(PaginatedGui gui, Player p) {
+            if (!parentGui.isEditorMode())
+                return;
+
+            final ItemStack createItem = createButton.clone();
+            createItem.editMeta(meta -> meta.customName(translate("gui.previous-page", p)));
+            gui.setItem(1, 5, PaperItemBuilder.from(createItem).asGuiItem(event -> {
+                p.playSound(SOUND_CLICK);
+                NameColorEditor.create(
+                    p,
+                    (response, player, data) -> {
+                        if (!player.hasPermission("maquillage.command.admin.create.color")) {
+                            player.sendMessage(Bukkit.permissionMessage());
+                            return;
+                        }
+
+                        final boolean success = NameColorHolder.getInstance().add(data.color(), data.permission(), data.label(), (int) Math.floor(data.weight())) != -1;
+                        if (success) {
+                            p.playSound(SOUND_CLICK);
+                            player.sendMessage(Translation.as("commands.module.namecolor.create.success"));
+                            new NameColorGui().open(player, parentGui.isEditorMode());
+                        } else {
+                            p.playSound(SOUND_CLICK_FAIL);
+                            player.sendMessage(Translation.as("commands.module.namecolor.create.failure"));
+                        }
+                    },
+                    (response, player, data) -> {
+                    },
+                    (response, player, data) -> {
+                        new NameColorGui().open(player, parentGui.isEditorMode());
+                    }
+                );
             }));
         }
     }
@@ -398,8 +441,8 @@ public class NameColorGui extends AbstractGui {
             }
 
             // Creates a new namecolor with the same data as the old one
-            final int id = NameColorHolder.getInstance().add(color.getColor(), color.getPerm(), color.getLabel(), color.getWeight());
-            if (id == -1) {
+            final boolean success = NameColorHolder.getInstance().add(color.getColor(), color.getPerm(), color.getLabel(), color.getWeight()) != -1;
+            if (!success) {
                 gui.close(p, false);
                 p.playSound(SOUND_FAIL);
                 p.sendMessage(ColorParser.of(Translation.of("commands.module.namecolor.create.failure")).build());

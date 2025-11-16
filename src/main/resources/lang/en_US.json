@@ -208,6 +208,9 @@
         "input-update-tooltip": "Click to reload the preview above",
         "input-cancel": "Cancel",
         "input-cancel-tooltip": "Click to discard your changes to this tag"
+      },
+      "creator": {
+        "title": "Tag Creator"
       }
     },
     "namecolor": {
@@ -226,6 +229,9 @@
         "input-update-tooltip": "Click to reload the preview above",
         "input-cancel": "Cancel",
         "input-cancel-tooltip": "Click to discard your changes to this name color"
+      },
+      "creator": {
+        "title": "Name Color Creator"
       }
     }
   }
