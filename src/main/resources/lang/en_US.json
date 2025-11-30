@@ -151,6 +151,10 @@
           "<!i><gray>- Shift + Right-Click to delete"
         ]
       },
+      "create-item": {
+        "name": "<!i><green>Create namecolor",
+        "lore": []
+      },
       "clear-item": {
         "name": "<!i><gray><preview_tag> <preview_namecolor>",
         "lore": [
@@ -179,6 +183,10 @@
           "<!i><gray>- Middle-Click to copy",
           "<!i><gray>- Shift + Right-Click to delete"
         ]
+      },
+      "create-item": {
+        "name": "<!i><green>Create namecolor",
+        "lore": []
       },
       "clear-item": {
         "name": "<!i><gray><preview_tag> <preview_namecolor>",

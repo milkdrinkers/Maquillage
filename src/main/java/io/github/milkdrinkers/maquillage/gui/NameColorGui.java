@@ -196,7 +196,10 @@ public class NameColorGui extends AbstractGui {
                 return;
 
             final ItemStack createItem = createButton.clone();
-            createItem.editMeta(meta -> meta.customName(translate("gui.previous-page", p)));
+            createItem.editMeta(meta -> {
+                meta.customName(translate("gui.namecolor.create-item.name", p));
+                meta.lore(translateList("gui.namecolor.create-item.lore", p));
+            });
             gui.setItem(1, 5, PaperItemBuilder.from(createItem).asGuiItem(event -> {
                 p.playSound(SOUND_CLICK);
                 NameColorEditor.create(

@@ -196,7 +196,10 @@ public class TagGui extends AbstractGui {
                 return;
 
             final ItemStack createItem = createButton.clone();
-            createItem.editMeta(meta -> meta.customName(translate("gui.previous-page", p)));
+            createItem.editMeta(meta -> {
+                meta.customName(translate("gui.tag.create-item.name", p));
+                meta.lore(translateList("gui.tag.create-item.lore", p));
+            });
             gui.setItem(1, 5, PaperItemBuilder.from(createItem).asGuiItem(event -> {
                 p.playSound(SOUND_CLICK);
                 TagEditor.create(
