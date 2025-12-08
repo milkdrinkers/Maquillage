@@ -69,7 +69,7 @@ testcontainers = ["testcontainers-jupiter", "testcontainers-mysql", "testcontain
 
 [plugins]
 publisher = "com.vanniktech.maven.publish:0.35.0"
-shadow = "com.gradleup.shadow:9.2.2"
+shadow = "com.gradleup.shadow:9.3.0"
 run-paper = "xyz.jpenilla.run-paper:3.0.2"
 plugin-yml-bukkit = "de.eldoria.plugin-yml.bukkit:0.8.0"
 plugin-yml-paper = "de.eldoria.plugin-yml.paper:0.8.0"
