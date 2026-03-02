@@ -24,7 +24,7 @@ commandapi-shade = { module = "dev.jorel:commandapi-paper-shade", version.ref = 
 triumph-gui = "dev.triumphteam:triumph-gui-paper:3.1.13"
 
 # Plugin dependencies
-bstats = "org.bstats:bstats-bukkit:3.1.0"
+bstats = "org.bstats:bstats-bukkit:3.2.1"
 vault = "com.github.MilkBowl:VaultAPI:1.7.1"
 essentialsx = "net.essentialsx:EssentialsX:2.21.2"
 packetevents = "com.github.retrooper:packetevents-spigot:2.11.2"
