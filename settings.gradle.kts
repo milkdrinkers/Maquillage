@@ -12,3 +12,5 @@ plugins {
 rootProject.name = "Maquillage"
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
+include("api", "common", "paper")

@@ -12,7 +12,7 @@ on:
         description: "The Java version the workflow should use"
         required: false
         type: number
-        default: 21
+        default: 25
       retention_days:
         description: "Artifact retention days (default: 7)"
         required: false
@@ -67,12 +67,12 @@ jobs:
       # Get version field in project properties file for snapshot version
       - name: Get Project Version
         id: version
-        uses: ./.github/actions/version
+        uses: ./.github/actions/getversion
         with:
           snapshot_suffix: ${{ inputs.snapshot_suffix }}
 
       # Build the project with the snapshot version
-      - name: Build with Gradle
+      - name: Build with Gradle & Publish
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
@@ -92,19 +92,23 @@ jobs:
       # Generate build provenance attestations if enabled
       - name: Generate Build Provenance Attestations
         if: ${{ inputs.generate_attestations }}
-        uses: actions/attest-build-provenance@v4
+        uses: actions/attest@v4
         with:
           subject-path: |
-            ${{ github.workspace }}/**/build/libs/*.jar
+            ${{ github.workspace }}/api/build/libs/*.jar
+            ${{ github.workspace }}/paper/build/libs/*.jar
 
       # Upload the snapshot artifacts
       - name: Upload Snapshot Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: Snapshot-${{ github.run_number }}
-          path: ${{ github.workspace }}/**/build/libs/*.jar
+          path: |
+            ${{ github.workspace }}/api/build/libs/
+            ${{ github.workspace }}/paper/build/libs/
           retention-days: ${{ inputs.retention_days }}
           if-no-files-found: error
+
 
   # Update version in properties file for release builds
   stage-version:
@@ -122,7 +126,7 @@ jobs:
       # Update version field in project properties file
       - name: Update Project Version
         if: ${{ !contains(github.ref_name, inputs.prerelease_suffix) }}
-        uses: ./.github/actions/updateversion
+        uses: ./.github/actions/setversion
         with:
           version: ${{ github.ref_name }}
 
@@ -159,7 +163,7 @@ jobs:
         run: |
           echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
-      # Build with Gradle and Publish
+      # Build with Gradle
       - name: Build with Gradle & Publish
         shell: bash
         run: |
@@ -179,15 +183,18 @@ jobs:
 
       - name: Generate Build Provenance Attestations
         if: ${{ inputs.generate_attestations }}
-        uses: actions/attest-build-provenance@v4
+        uses: actions/attest@v4
         with:
           subject-path: |
-            ${{ github.workspace }}/**/build/libs/*.jar
+            ${{ github.workspace }}/api/build/libs/*.jar
+            ${{ github.workspace }}/paper/build/libs/*.jar
 
       - name: Upload Release Artifacts
         uses: actions/upload-artifact@v7
         with:
           name: Release
-          path: ${{ github.workspace }}/**/build/libs/*.jar
+          path: |
+            ${{ github.workspace }}/api/build/libs/
+            ${{ github.workspace }}/paper/build/libs/
           retention-days: ${{ inputs.retention_days }}
           if-no-files-found: error
