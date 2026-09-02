@@ -76,7 +76,7 @@ jobs:
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew publish --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew build publish --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
           
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
@@ -168,7 +168,7 @@ jobs:
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew publishAllPublicationsToMavenCentralRepository -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew build publishAllPublicationsToMavenCentralRepository -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
           
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
