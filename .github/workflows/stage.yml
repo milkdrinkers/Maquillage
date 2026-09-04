@@ -72,22 +72,34 @@ jobs:
           snapshot_suffix: ${{ inputs.snapshot_suffix }}
 
       # Build the project with the snapshot version
+#      - name: Build with Gradle & Publish
+#        shell: bash
+#        run: |
+#          set +e  # Don't exit immediately on error
+#          ./gradlew build publish --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
+#          BUILD_EXIT_CODE=$?
+#
+#          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+#            echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
+#            exit $BUILD_EXIT_CODE
+#          fi
+#        env:
+#          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+#          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
+
       - name: Build with Gradle & Publish
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew build publish --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew build --no-configuration-cache -PaltVer=${{ steps.version.outputs.version_snapshot }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
-          
+
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
             echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
             exit $BUILD_EXIT_CODE
           fi
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
 
       # Generate build provenance attestations if enabled
       - name: Generate Build Provenance Attestations
@@ -164,22 +176,34 @@ jobs:
           echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
 
       # Build with Gradle
+#      - name: Build with Gradle & Publish
+#        shell: bash
+#        run: |
+#          set +e  # Don't exit immediately on error
+#          ./gradlew build publishAllPublicationsToMavenCentralRepository -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
+#          BUILD_EXIT_CODE=$?
+#
+#          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+#            echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
+#            exit $BUILD_EXIT_CODE
+#          fi
+#        env:
+#          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+#          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
+#          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
+
       - name: Build with Gradle & Publish
         shell: bash
         run: |
           set +e  # Don't exit immediately on error
-          ./gradlew build publishAllPublicationsToMavenCentralRepository -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
+          ./gradlew build -PaltVer=${{ steps.version.outputs.version }} -x test ${{ inputs.gradle_build_options }}
           BUILD_EXIT_CODE=$?
-          
+
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
             echo "::error::Build failed with exit code $BUILD_EXIT_CODE"
             exit $BUILD_EXIT_CODE
           fi
-        env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
-          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY }}
-          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.MAVEN_CENTRAL_GPG_SECRET_KEY_PASSWORD }}
 
       - name: Generate Build Provenance Attestations
         if: ${{ inputs.generate_attestations }}
